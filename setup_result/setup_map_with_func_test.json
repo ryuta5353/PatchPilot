@@ -1,0 +1,2187 @@
+{
+    "astropy__astropy-12907": {
+        "repo_path": "/opt/SWE-bench/testbed/astropy__astropy-12907",
+        "env_name": "setup_astropy__astropy-12907",
+        "pre_install": [
+            "sed -i 's/requires = \\[\"setuptools\",/requires = \\[\"setuptools==68.0.0\",/' pyproject.toml",
+            "python -m pip install numpy==1.22.0"
+        ],
+        "install": "python -m pip install -e .[test]",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider astropy/modeling/tests/test_separable.py astropy/modeling/tests/test_compound.py astropy/modeling/tests/test_core.py"
+    },
+    "astropy__astropy-14182": {
+        "repo_path": "/opt/SWE-bench/testbed/astropy__astropy-14182",
+        "env_name": "setup_astropy__astropy-14182",
+        "pre_install": [
+            "sed -i 's/requires = \\[\"setuptools\",/requires = \\[\"setuptools==68.0.0\",/' pyproject.toml",
+            "python -m pip install numpy==1.22.0"
+        ],
+        "install": "python -m pip install -e .[test]",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider astropy/io/ascii/tests/test_rst.py astropy/io/ascii/tests/test_write.py astropy/io/ascii/tests/test_fixedwidth.py"
+    },
+    "astropy__astropy-14365": {
+        "repo_path": "/opt/SWE-bench/testbed/astropy__astropy-14365",
+        "env_name": "setup_astropy__astropy-14365",
+        "pre_install": [
+            "sed -i 's/requires = \\[\"setuptools\",/requires = \\[\"setuptools==68.0.0\",/' pyproject.toml",
+            "python -m pip install numpy==1.22.0"
+        ],
+        "install": "python -m pip install -e .[test]",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider astropy/io/ascii/tests/test_qdp.py astropy/io/ascii/tests/test_read.py astropy/io/ascii/tests/test_write.py"
+    },
+    "astropy__astropy-14995": {
+        "repo_path": "/opt/SWE-bench/testbed/astropy__astropy-14995",
+        "env_name": "setup_astropy__astropy-14995",
+        "pre_install": [
+            "sed -i 's/requires = \\[\"setuptools\",/requires = \\[\"setuptools==68.0.0\",/' pyproject.toml",
+            "python -m pip install numpy==1.22.0"
+        ],
+        "install": "python -m pip install -e .[test]",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider astropy/nddata/mixins/tests/test_ndarithmetic.py astropy/nddata/tests/test_nddata.py astropy/nddata/tests/test_nddata_base.py"
+    },
+    "astropy__astropy-6938": {
+        "repo_path": "/opt/SWE-bench/testbed/astropy__astropy-6938",
+        "env_name": "setup_astropy__astropy-6938",
+        "pre_install": [
+            "python -m pip install setuptools==68.0",
+            "python -m pip install numpy==1.22.0"
+        ],
+        "install": "python -m pip install -e .[test]",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider astropy/io/fits/tests/test_table.py astropy/io/fits/tests/test_core.py astropy/io/fits/tests/test_structured.py"
+    },
+    "astropy__astropy-7746": {
+        "repo_path": "/opt/SWE-bench/testbed/astropy__astropy-7746",
+        "env_name": "setup_astropy__astropy-7746",
+        "pre_install": [
+            "python -m pip install setuptools==68.0",
+            "python -m pip install numpy==1.22.0"
+        ],
+        "install": "python -m pip install -e .[test]",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider astropy/wcs/tests/test_wcs.py astropy/wcs/tests/test_wcsprm.py astropy/wcs/tests/test_utils.py"
+    },
+    "django__django-10914": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-10914",
+        "env_name": "setup_django__django-10914",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 file_uploads.tests file_uploads.uploadhandler responses.test_fileresponse"
+    },
+    "django__django-10924": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-10924",
+        "env_name": "setup_django__django-10924",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 migrations.test_operations field_deconstruction.tests model_fields.test_filefield"
+    },
+    "django__django-11001": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-11001",
+        "env_name": "setup_django__django-11001",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 raw_query.tests expressions.tests ordering.tests"
+    },
+    "django__django-11019": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-11019",
+        "env_name": "setup_django__django-11019",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 forms_tests.tests.test_media forms_tests.widget_tests.test_widget forms_tests.tests.test_forms"
+    },
+    "django__django-11039": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-11039",
+        "env_name": "setup_django__django-11039",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 migrations.test_commands migrations.test_executor migrations.test_operations"
+    },
+    "django__django-11049": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-11049",
+        "env_name": "setup_django__django-11049",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 forms_tests.field_tests.test_durationfield utils_tests.test_duration model_fields.test_durationfield"
+    },
+    "django__django-11099": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-11099",
+        "env_name": "setup_django__django-11099",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 auth_tests.test_validators validators.tests forms_tests.tests.test_validators"
+    },
+    "django__django-11133": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-11133",
+        "env_name": "setup_django__django-11133",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 httpwrappers.tests responses.tests responses.test_fileresponse"
+    },
+    "django__django-11179": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-11179",
+        "env_name": "setup_django__django-11179",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 delete.tests save_delete_hooks.tests delete_regress.tests"
+    },
+    "django__django-11283": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-11283",
+        "env_name": "setup_django__django-11283",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 auth_tests.test_migrations proxy_models.tests migrations.test_operations"
+    },
+    "django__django-11422": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-11422",
+        "env_name": "setup_django__django-11422",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 utils_tests.test_autoreload admin_scripts.tests test_runner.test_discover_runner"
+    },
+    "django__django-11564": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-11564",
+        "env_name": "setup_django__django-11564",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 staticfiles_tests.test_templatetags staticfiles_tests.test_storage staticfiles_tests.test_views"
+    },
+    "django__django-11583": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-11583",
+        "env_name": "setup_django__django-11583",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 utils_tests.test_autoreload django/test/runner.py test_runner.test_discover_runner"
+    },
+    "django__django-11620": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-11620",
+        "env_name": "setup_django__django-11620",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 urlpatterns_reverse.tests handlers.test_exception middleware_exceptions.tests"
+    },
+    "django__django-11630": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-11630",
+        "env_name": "setup_django__django-11630",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 multiple_database.tests check_framework.test_multi_db migrations.test_multidb"
+    },
+    "django__django-11742": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-11742",
+        "env_name": "setup_django__django-11742",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 max_lengths.tests model_fields.test_charfield validation.test_validators"
+    },
+    "django__django-11797": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-11797",
+        "env_name": "setup_django__django-11797",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 aggregation.tests aggregation.test_filter_argument expressions.test_queryset_values"
+    },
+    "django__django-11815": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-11815",
+        "env_name": "setup_django__django-11815",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 migrations.test_autodetector migrations.test_operations migrations.test_state"
+    },
+    "django__django-11848": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-11848",
+        "env_name": "setup_django__django-11848",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 utils_tests.test_http httpwrappers.tests responses.test_cookie"
+    },
+    "django__django-11905": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-11905",
+        "env_name": "setup_django__django-11905",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 lookup.test_lookups null_queries.tests queries.tests"
+    },
+    "django__django-11910": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-11910",
+        "env_name": "setup_django__django-11910",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 migrations.test_operations migrations.test_autodetector migrations.test_executor"
+    },
+    "django__django-11964": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-11964",
+        "env_name": "setup_django__django-11964",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 model_fields.test_charfield model_enums.tests model_fields.tests"
+    },
+    "django__django-11999": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-11999",
+        "env_name": "setup_django__django-11999",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 custom_methods.tests model_fields.tests model_options.tests"
+    },
+    "django__django-12113": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-12113",
+        "env_name": "setup_django__django-12113",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 admin_views.test_multidb test_sqlite runtests"
+    },
+    "django__django-12125": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-12125",
+        "env_name": "setup_django__django-12125",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 migrations.test_autodetector migrations.test_operations migrations.test_state"
+    },
+    "django__django-12184": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-12184",
+        "env_name": "setup_django__django-12184",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 urlpatterns_reverse.tests view_tests.tests.test_defaults urls"
+    },
+    "django__django-12284": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-12284",
+        "env_name": "setup_django__django-12284",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 model_inheritance.tests model_fields.tests model_inheritance.test_abstract_inheritance"
+    },
+    "django__django-12286": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-12286",
+        "env_name": "setup_django__django-12286",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 check_framework.test_translation i18n.tests i18n.test_management"
+    },
+    "django__django-12308": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-12308",
+        "env_name": "setup_django__django-12308",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 admin_registration.tests admin_views.tests admin_widgets.tests"
+    },
+    "django__django-12453": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-12453",
+        "env_name": "setup_django__django-12453",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 transactions.tests test_utils.test_transactiontestcase fixtures_regress.tests"
+    },
+    "django__django-12470": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-12470",
+        "env_name": "setup_django__django-12470",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 model_inheritance.tests ordering.tests model_inheritance.test_abstract_inheritance"
+    },
+    "django__django-12497": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-12497",
+        "env_name": "setup_django__django-12497",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 m2m_intermediary.tests m2m_recursive.tests m2m_multiple.tests"
+    },
+    "django__django-12589": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-12589",
+        "env_name": "setup_django__django-12589",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 annotations.tests queries.tests aggregation.tests"
+    },
+    "django__django-12700": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-12700",
+        "env_name": "setup_django__django-12700",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 view_tests.tests.test_debug view_tests.tests.__init__ view_tests.tests.test_specials"
+    },
+    "django__django-12708": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-12708",
+        "env_name": "setup_django__django-12708",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 migrations.test_operations indexes.tests migrations.test_autodetector"
+    },
+    "django__django-12747": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-12747",
+        "env_name": "setup_django__django-12747",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 delete.tests delete_regress.tests save_delete_hooks.tests"
+    },
+    "django__django-12856": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-12856",
+        "env_name": "setup_django__django-12856",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 constraints.tests migrations.test_autodetector migrations.test_operations"
+    },
+    "django__django-12908": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-12908",
+        "env_name": "setup_django__django-12908",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 queries.test_qs_combinators annotations.tests expressions.tests"
+    },
+    "django__django-12915": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-12915",
+        "env_name": "setup_django__django-12915",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 asgi.tests staticfiles_tests.test_views staticfiles_tests.test_checks"
+    },
+    "django__django-12983": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-12983",
+        "env_name": "setup_django__django-12983",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 utils_tests.test_text template_tests.filter_tests.test_slugify template_tests.filter_tests.test_striptags"
+    },
+    "django__django-13028": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-13028",
+        "env_name": "setup_django__django-13028",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 admin_registration.tests filtered_relation.tests managers_regress.tests"
+    },
+    "django__django-13033": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-13033",
+        "env_name": "setup_django__django-13033",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 nested_foreign_keys.tests foreign_object.tests select_related.tests"
+    },
+    "django__django-13158": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-13158",
+        "env_name": "setup_django__django-13158",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 model_forms.test_modelchoicefield model_forms.tests forms_tests.tests.test_forms"
+    },
+    "django__django-13220": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-13220",
+        "env_name": "setup_django__django-13220",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 test_exceptions.test_validation_error validators.tests forms_tests.tests.test_validators"
+    },
+    "django__django-13230": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-13230",
+        "env_name": "setup_django__django-13230",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 syndication_tests.tests syndication_tests.feeds syndication_tests.models"
+    },
+    "django__django-13265": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-13265",
+        "env_name": "setup_django__django-13265",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 order_with_respect_to.tests indexes.tests migrations.test_operations"
+    },
+    "django__django-13315": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-13315",
+        "env_name": "setup_django__django-13315",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 model_fields.test_foreignkey admin_widgets.test_autocomplete_widget admin_registration.tests"
+    },
+    "django__django-13321": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-13321",
+        "env_name": "setup_django__django-13321",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 sessions_tests.tests signing.tests messages_tests.test_session"
+    },
+    "django__django-13401": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-13401",
+        "env_name": "setup_django__django-13401",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 model_inheritance.test_abstract_inheritance model_fields.tests model_inheritance.tests"
+    },
+    "django__django-13447": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-13447",
+        "env_name": "setup_django__django-13447",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 admin_registration.tests admin_views.tests admin_views.test_adminsite"
+    },
+    "django__django-13448": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-13448",
+        "env_name": "setup_django__django-13448",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 test_runner.test_discover_runner test_runner.test_parallel test_runner.tests"
+    },
+    "django__django-13551": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-13551",
+        "env_name": "setup_django__django-13551",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 auth_tests.test_tokens auth_tests.test_models auth_tests.test_views"
+    },
+    "django__django-13590": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-13590",
+        "env_name": "setup_django__django-13590",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 defer_regress.tests queries.tests expressions.tests"
+    },
+    "django__django-13658": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-13658",
+        "env_name": "setup_django__django-13658",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 admin_scripts.test_django_admin_py admin_scripts.tests test_runner.tests"
+    },
+    "django__django-13660": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-13660",
+        "env_name": "setup_django__django-13660",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 shell.tests admin_scripts.test_django_admin_py admin_scripts.tests"
+    },
+    "django__django-13710": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-13710",
+        "env_name": "setup_django__django-13710",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 admin_inlines.tests admin_registration.tests admin_views.tests"
+    },
+    "django__django-13757": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-13757",
+        "env_name": "setup_django__django-13757",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 model_fields.test_jsonfield test_sqlite null_queries.tests"
+    },
+    "django__django-13768": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-13768",
+        "env_name": "setup_django__django-13768",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 signals.tests django/test/signals.py postgres_tests.test_signals"
+    },
+    "django__django-13925": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-13925",
+        "env_name": "setup_django__django-13925",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 model_inheritance.tests model_fields.test_autofield check_framework.test_model_checks"
+    },
+    "django__django-13933": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-13933",
+        "env_name": "setup_django__django-13933",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 model_forms.test_modelchoicefield forms_tests.field_tests.test_choicefield forms_tests.field_tests.test_multiplechoicefield"
+    },
+    "django__django-13964": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-13964",
+        "env_name": "setup_django__django-13964",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 foreign_object.tests nested_foreign_keys.tests many_to_one.tests"
+    },
+    "django__django-14016": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-14016",
+        "env_name": "setup_django__django-14016",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 queries.test_q or_lookups.tests queries.tests"
+    },
+    "django__django-14017": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-14017",
+        "env_name": "setup_django__django-14017",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 queries.test_q queries.test_query expressions.tests"
+    },
+    "django__django-14155": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-14155",
+        "env_name": "setup_django__django-14155",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 urlpatterns_reverse.tests resolve_url.tests urlpatterns.test_resolvers"
+    },
+    "django__django-14238": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-14238",
+        "env_name": "setup_django__django-14238",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 model_fields.test_autofield check_framework.test_model_checks model_options.test_default_pk"
+    },
+    "django__django-14382": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-14382",
+        "env_name": "setup_django__django-14382",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 admin_scripts.tests admin_scripts.management.commands.app_command admin_scripts.management.commands.custom_startproject"
+    },
+    "django__django-14411": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-14411",
+        "env_name": "setup_django__django-14411",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 admin_widgets.tests admin_registration.tests admin_views.tests"
+    },
+    "django__django-14534": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-14534",
+        "env_name": "setup_django__django-14534",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 forms_tests.widget_tests.test_checkboxselectmultiple forms_tests.widget_tests.test_widget forms_tests.tests.test_forms"
+    },
+    "django__django-14580": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-14580",
+        "env_name": "setup_django__django-14580",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 migrations.test_writer migrations.test_autodetector migrations.test_operations"
+    },
+    "django__django-14608": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-14608",
+        "env_name": "setup_django__django-14608",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 forms_tests.tests.test_formsets forms_tests.tests.test_error_messages forms_tests.tests.test_forms"
+    },
+    "django__django-14667": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-14667",
+        "env_name": "setup_django__django-14667",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 defer_regress.tests defer.tests extra_regress.tests"
+    },
+    "django__django-14672": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-14672",
+        "env_name": "setup_django__django-14672",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 proxy_models.tests m2m_through.tests m2m_regress.tests"
+    },
+    "django__django-14730": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-14730",
+        "env_name": "setup_django__django-14730",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 model_fields.test_manytomanyfield m2m_regress.tests m2m_signals.tests"
+    },
+    "django__django-14752": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-14752",
+        "env_name": "setup_django__django-14752",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 admin_views.test_autocomplete_view admin_widgets.test_autocomplete_widget admin_views.tests"
+    },
+    "django__django-14787": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-14787",
+        "env_name": "setup_django__django-14787",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 decorators.tests django/test/utils.py utils_tests.test_decorators"
+    },
+    "django__django-14855": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-14855",
+        "env_name": "setup_django__django-14855",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 admin_views.test_adminsite admin_registration.tests admin_views.tests"
+    },
+    "django__django-14915": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-14915",
+        "env_name": "setup_django__django-14915",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 model_forms.test_modelchoicefield forms_tests.widget_tests.test_select forms_tests.widget_tests.test_selectmultiple"
+    },
+    "django__django-14997": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-14997",
+        "env_name": "setup_django__django-14997",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 test_sqlite migrations.test_operations constraints.tests"
+    },
+    "django__django-14999": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-14999",
+        "env_name": "setup_django__django-14999",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 migrations.test_operations migrations.test_autodetector migrations.test_executor"
+    },
+    "django__django-15061": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-15061",
+        "env_name": "setup_django__django-15061",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 forms_tests.widget_tests.test_multiwidget forms_tests.widget_tests.test_widget forms_tests.tests.test_widgets"
+    },
+    "django__django-15202": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-15202",
+        "env_name": "setup_django__django-15202",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 forms_tests.field_tests.test_urlfield forms_tests.tests.test_validators forms_tests.tests.test_forms"
+    },
+    "django__django-15213": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-15213",
+        "env_name": "setup_django__django-15213",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 expressions.tests queries.test_q queries.test_query"
+    },
+    "django__django-15252": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-15252",
+        "env_name": "setup_django__django-15252",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 multiple_database.tests migrations.test_multidb migrations.test_executor"
+    },
+    "django__django-15320": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-15320",
+        "env_name": "setup_django__django-15320",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 expressions.tests queries.test_sqlcompiler queries.tests"
+    },
+    "django__django-15347": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-15347",
+        "env_name": "setup_django__django-15347",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 messages_tests.test_cookie messages_tests.test_session messages_tests.test_api"
+    },
+    "django__django-15388": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-15388",
+        "env_name": "setup_django__django-15388",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 admin_scripts.tests utils_tests.test_autoreload check_framework.test_templates"
+    },
+    "django__django-15400": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-15400",
+        "env_name": "setup_django__django-15400",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 utils_tests.test_simplelazyobject utils_tests.test_lazyobject utils_tests.test_functional"
+    },
+    "django__django-15498": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-15498",
+        "env_name": "setup_django__django-15498",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 httpwrappers.tests requests.test_accept_header middleware.tests"
+    },
+    "django__django-15695": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-15695",
+        "env_name": "setup_django__django-15695",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 migrations.test_operations migrations.test_state migrations.test_executor"
+    },
+    "django__django-15738": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-15738",
+        "env_name": "setup_django__django-15738",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 migrations.test_operations migrations.test_autodetector migrations.test_executor"
+    },
+    "django__django-15781": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-15781",
+        "env_name": "setup_django__django-15781",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 admin_scripts.tests admin_scripts.management.commands.base_command admin_scripts.management.commands.label_command"
+    },
+    "django__django-15789": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-15789",
+        "env_name": "setup_django__django-15789",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 template_tests.filter_tests.test_json_script utils_tests.test_html view_tests.tests.test_json"
+    },
+    "django__django-15790": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-15790",
+        "env_name": "setup_django__django-15790",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 check_framework.test_templates check_framework.template_test_apps.same_tags_app_1.templatetags.same_tags check_framework.template_test_apps.same_tags_app_2.templatetags.same_tags"
+    },
+    "django__django-15814": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-15814",
+        "env_name": "setup_django__django-15814",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 proxy_models.tests select_related.tests defer_regress.tests"
+    },
+    "django__django-15819": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-15819",
+        "env_name": "setup_django__django-15819",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 inspectdb.tests model_options.test_default_related_name invalid_models_tests.test_models"
+    },
+    "django__django-15851": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-15851",
+        "env_name": "setup_django__django-15851",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 dbshell.test_postgresql dbshell.tests dbshell.test_mysql"
+    },
+    "django__django-15902": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-15902",
+        "env_name": "setup_django__django-15902",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 forms_tests.tests.test_deprecation_forms forms_tests.tests.test_forms forms_tests.tests.test_formsets"
+    },
+    "django__django-15996": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-15996",
+        "env_name": "setup_django__django-15996",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 serializers.tests serializers.test_data serializers.test_json"
+    },
+    "django__django-16041": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-16041",
+        "env_name": "setup_django__django-16041",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 forms_tests.tests.test_formsets forms_tests.tests.test_forms forms_tests.tests.test_widgets"
+    },
+    "django__django-16046": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-16046",
+        "env_name": "setup_django__django-16046",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 utils_tests.test_numberformat admin_registration.tests admin_views.tests"
+    },
+    "django__django-16139": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-16139",
+        "env_name": "setup_django__django-16139",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 admin_registration.tests admin_views.test_forms admin_views.tests"
+    },
+    "django__django-16229": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-16229",
+        "env_name": "setup_django__django-16229",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 admin_inlines.tests admin_views.test_forms field_defaults.tests"
+    },
+    "django__django-16255": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-16255",
+        "env_name": "setup_django__django-16255",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 sitemaps_tests.test_generic sitemaps_tests.test_http sitemaps_tests.test_https"
+    },
+    "django__django-16379": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-16379",
+        "env_name": "setup_django__django-16379",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 cache.tests cache.tests_async check_framework.test_caches"
+    },
+    "django__django-16400": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-16400",
+        "env_name": "setup_django__django-16400",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 migrate_signals.tests migrations.test_multidb multiple_database.tests"
+    },
+    "django__django-16408": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-16408",
+        "env_name": "setup_django__django-16408",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 known_related_objects.tests filtered_relation.tests select_related.tests"
+    },
+    "django__django-16527": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-16527",
+        "env_name": "setup_django__django-16527",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 admin_views.tests admin_registration.tests admin_views.test_forms"
+    },
+    "django__django-16595": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-16595",
+        "env_name": "setup_django__django-16595",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 migrations.test_optimizer migrations.test_operations migrations.test_autodetector"
+    },
+    "django__django-16816": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-16816",
+        "env_name": "setup_django__django-16816",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 admin_registration.tests admin_checks.tests admin_views.tests"
+    },
+    "django__django-16820": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-16820",
+        "env_name": "setup_django__django-16820",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 indexes.tests migrations.test_operations migrations.test_autodetector"
+    },
+    "django__django-16873": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-16873",
+        "env_name": "setup_django__django-16873",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 template_tests.filter_tests.test_join template_tests.filter_tests.test_autoescape template_tests.syntax_tests.test_autoescape"
+    },
+    "django__django-16910": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-16910",
+        "env_name": "setup_django__django-16910",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 select_related_onetoone.tests select_related.tests defer_regress.tests"
+    },
+    "django__django-17051": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-17051",
+        "env_name": "setup_django__django-17051",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 bulk_create.tests queries.test_db_returning postgres_tests.test_bulk_update"
+    },
+    "django__django-17087": {
+        "repo_path": "/opt/SWE-bench/testbed/django__django-17087",
+        "env_name": "setup_django__django-17087",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "./tests/runtests.py --verbosity 2 migrations.test_operations field_defaults.tests migrate_signals.tests"
+    },
+    "matplotlib__matplotlib-18869": {
+        "repo_path": "/opt/SWE-bench/testbed/matplotlib__matplotlib-18869",
+        "env_name": "setup_matplotlib__matplotlib-18869",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider lib/matplotlib/tests/test_matplotlib.py lib/matplotlib/tests/test_rcparams.py lib/matplotlib/tests/test_cbook.py"
+    },
+    "matplotlib__matplotlib-22711": {
+        "repo_path": "/opt/SWE-bench/testbed/matplotlib__matplotlib-22711",
+        "env_name": "setup_matplotlib__matplotlib-22711",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider lib/matplotlib/tests/test_widgets.py lib/matplotlib/tests/test_axes.py lib/matplotlib/tests/test_figure.py"
+    },
+    "matplotlib__matplotlib-22835": {
+        "repo_path": "/opt/SWE-bench/testbed/matplotlib__matplotlib-22835",
+        "env_name": "setup_matplotlib__matplotlib-22835",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider lib/matplotlib/tests/test_colors.py lib/matplotlib/tests/test_image.py lib/matplotlib/tests/test_artist.py"
+    },
+    "matplotlib__matplotlib-23299": {
+        "repo_path": "/opt/SWE-bench/testbed/matplotlib__matplotlib-23299",
+        "env_name": "setup_matplotlib__matplotlib-23299",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider lib/matplotlib/tests/test_pyplot.py lib/matplotlib/tests/test_backend_qt.py lib/matplotlib/tests/test_figure.py"
+    },
+    "matplotlib__matplotlib-23314": {
+        "repo_path": "/opt/SWE-bench/testbed/matplotlib__matplotlib-23314",
+        "env_name": "setup_matplotlib__matplotlib-23314",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider lib/mpl_toolkits/tests/test_mplot3d.py"
+    },
+    "matplotlib__matplotlib-23476": {
+        "repo_path": "/opt/SWE-bench/testbed/matplotlib__matplotlib-23476",
+        "env_name": "setup_matplotlib__matplotlib-23476",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider lib/matplotlib/tests/test_pickle.py lib/matplotlib/tests/test_backend_macosx.py lib/matplotlib/tests/test_figure.py"
+    },
+    "matplotlib__matplotlib-23562": {
+        "repo_path": "/opt/SWE-bench/testbed/matplotlib__matplotlib-23562",
+        "env_name": "setup_matplotlib__matplotlib-23562",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider lib/mpl_toolkits/tests/test_mplot3d.py lib/matplotlib/tests/test_collections.py lib/matplotlib/tests/test_axes.py"
+    },
+    "matplotlib__matplotlib-23563": {
+        "repo_path": "/opt/SWE-bench/testbed/matplotlib__matplotlib-23563",
+        "env_name": "setup_matplotlib__matplotlib-23563",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider lib/mpl_toolkits/tests/test_mplot3d.py lib/matplotlib/tests/test_axes.py lib/matplotlib/tests/test_lines.py"
+    },
+    "matplotlib__matplotlib-23913": {
+        "repo_path": "/opt/SWE-bench/testbed/matplotlib__matplotlib-23913",
+        "env_name": "setup_matplotlib__matplotlib-23913",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider lib/matplotlib/tests/test_legend.py lib/matplotlib/tests/test_artist.py lib/matplotlib/tests/test_axes.py"
+    },
+    "matplotlib__matplotlib-23964": {
+        "repo_path": "/opt/SWE-bench/testbed/matplotlib__matplotlib-23964",
+        "env_name": "setup_matplotlib__matplotlib-23964",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider lib/matplotlib/tests/test_backend_ps.py lib/matplotlib/tests/test_text.py lib/matplotlib/tests/test_figure.py"
+    },
+    "matplotlib__matplotlib-23987": {
+        "repo_path": "/opt/SWE-bench/testbed/matplotlib__matplotlib-23987",
+        "env_name": "setup_matplotlib__matplotlib-23987",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider lib/matplotlib/tests/test_constrainedlayout.py lib/matplotlib/tests/test_subplots.py lib/matplotlib/tests/test_tightlayout.py"
+    },
+    "matplotlib__matplotlib-24149": {
+        "repo_path": "/opt/SWE-bench/testbed/matplotlib__matplotlib-24149",
+        "env_name": "setup_matplotlib__matplotlib-24149",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider lib/matplotlib/tests/test_axes.py lib/matplotlib/tests/test_collections.py lib/matplotlib/tests/test_artist.py"
+    },
+    "matplotlib__matplotlib-24265": {
+        "repo_path": "/opt/SWE-bench/testbed/matplotlib__matplotlib-24265",
+        "env_name": "setup_matplotlib__matplotlib-24265",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider lib/matplotlib/tests/test_style.py lib/matplotlib/tests/test_rcparams.py lib/matplotlib/tests/test_pyplot.py"
+    },
+    "matplotlib__matplotlib-24334": {
+        "repo_path": "/opt/SWE-bench/testbed/matplotlib__matplotlib-24334",
+        "env_name": "setup_matplotlib__matplotlib-24334",
+        "pre_install": [
+            "python -m pip install numpy==1.24.0"
+        ],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider lib/matplotlib/tests/test_axes.py lib/matplotlib/tests/test_text.py lib/matplotlib/tests/test_ticker.py"
+    },
+    "matplotlib__matplotlib-24970": {
+        "repo_path": "/opt/SWE-bench/testbed/matplotlib__matplotlib-24970",
+        "env_name": "setup_matplotlib__matplotlib-24970",
+        "pre_install": [
+            "python -m pip install numpy==1.24.0"
+        ],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider lib/matplotlib/tests/test_colors.py lib/matplotlib/tests/test_pyplot.py lib/matplotlib/tests/test_axes.py"
+    },
+    "matplotlib__matplotlib-25079": {
+        "repo_path": "/opt/SWE-bench/testbed/matplotlib__matplotlib-25079",
+        "env_name": "setup_matplotlib__matplotlib-25079",
+        "pre_install": [
+            "python -m pip install numpy==1.24.0"
+        ],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider lib/matplotlib/tests/test_colorbar.py lib/matplotlib/tests/test_colors.py lib/matplotlib/tests/test_axes.py"
+    },
+    "matplotlib__matplotlib-25311": {
+        "repo_path": "/opt/SWE-bench/testbed/matplotlib__matplotlib-25311",
+        "env_name": "setup_matplotlib__matplotlib-25311",
+        "pre_install": [
+            "python -m pip install numpy==1.26.4"
+        ],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider lib/matplotlib/tests/test_pickle.py lib/matplotlib/tests/test_legend.py lib/matplotlib/tests/test_figure.py"
+    },
+    "matplotlib__matplotlib-25332": {
+        "repo_path": "/opt/SWE-bench/testbed/matplotlib__matplotlib-25332",
+        "env_name": "setup_matplotlib__matplotlib-25332",
+        "pre_install": [
+            "python -m pip install numpy==1.26.4"
+        ],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider lib/matplotlib/tests/test_pickle.py lib/matplotlib/tests/test_figure.py lib/matplotlib/tests/test_axes.py"
+    },
+    "matplotlib__matplotlib-25433": {
+        "repo_path": "/opt/SWE-bench/testbed/matplotlib__matplotlib-25433",
+        "env_name": "setup_matplotlib__matplotlib-25433",
+        "pre_install": [
+            "python -m pip install numpy==1.26.4"
+        ],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider lib/matplotlib/tests/test_widgets.py lib/matplotlib/tests/test_pyplot.py lib/matplotlib/tests/test_figure.py"
+    },
+    "matplotlib__matplotlib-25442": {
+        "repo_path": "/opt/SWE-bench/testbed/matplotlib__matplotlib-25442",
+        "env_name": "setup_matplotlib__matplotlib-25442",
+        "pre_install": [
+            "python -m pip install numpy==1.26.4"
+        ],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider lib/matplotlib/tests/test_offsetbox.py lib/matplotlib/tests/test_backend_qt.py lib/matplotlib/tests/test_pyplot.py"
+    },
+    "matplotlib__matplotlib-25498": {
+        "repo_path": "/opt/SWE-bench/testbed/matplotlib__matplotlib-25498",
+        "env_name": "setup_matplotlib__matplotlib-25498",
+        "pre_install": [
+            "python -m pip install numpy==1.26.4"
+        ],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider lib/matplotlib/tests/test_colorbar.py lib/matplotlib/tests/test_colors.py lib/matplotlib/tests/test_image.py"
+    },
+    "matplotlib__matplotlib-26011": {
+        "repo_path": "/opt/SWE-bench/testbed/matplotlib__matplotlib-26011",
+        "env_name": "setup_matplotlib__matplotlib-26011",
+        "pre_install": [
+            "python -m pip install numpy==1.26.4"
+        ],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider lib/matplotlib/tests/test_axes.py lib/matplotlib/tests/test_transforms.py lib/matplotlib/tests/test_subplots.py"
+    },
+    "matplotlib__matplotlib-26020": {
+        "repo_path": "/opt/SWE-bench/testbed/matplotlib__matplotlib-26020",
+        "env_name": "setup_matplotlib__matplotlib-26020",
+        "pre_install": [
+            "python -m pip install numpy==1.26.4"
+        ],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider lib/mpl_toolkits/axes_grid1/tests/test_axes_grid1.py lib/mpl_toolkits/axisartist/tests/test_axislines.py lib/mpl_toolkits/axisartist/tests/test_axis_artist.py"
+    },
+    "mwaskom__seaborn-2848": {
+        "repo_path": "/opt/SWE-bench/testbed/mwaskom__seaborn-2848",
+        "env_name": "setup_mwaskom__seaborn-2848",
+        "pre_install": [],
+        "install": "python -m pip install -e .[dev]",
+        "test_cmd": "pytest --no-header -rA tests/test_axisgrid.py tests/test_relational.py tests/test_core.py"
+    },
+    "mwaskom__seaborn-3010": {
+        "repo_path": "/opt/SWE-bench/testbed/mwaskom__seaborn-3010",
+        "env_name": "setup_mwaskom__seaborn-3010",
+        "pre_install": [],
+        "install": "python -m pip install -e .[dev]",
+        "test_cmd": "pytest --no-header -rA tests/_stats/test_regression.py tests/_core/test_groupby.py tests/_core/test_plot.py"
+    },
+    "mwaskom__seaborn-3190": {
+        "repo_path": "/opt/SWE-bench/testbed/mwaskom__seaborn-3190",
+        "env_name": "setup_mwaskom__seaborn-3190",
+        "pre_install": [],
+        "install": "python -m pip install -e .[dev]",
+        "test_cmd": "pytest --no-header -rA tests/_core/test_scales.py tests/_core/test_plot.py tests/test_objects.py"
+    },
+    "mwaskom__seaborn-3407": {
+        "repo_path": "/opt/SWE-bench/testbed/mwaskom__seaborn-3407",
+        "env_name": "setup_mwaskom__seaborn-3407",
+        "pre_install": [],
+        "install": "python -m pip install -e .[dev]",
+        "test_cmd": "pytest --no-header -rA tests/test_axisgrid.py tests/test_miscplot.py tests/test_core.py"
+    },
+    "pallets__flask-4045": {
+        "repo_path": "/opt/SWE-bench/testbed/pallets__flask-4045",
+        "env_name": "setup_pallets__flask-4045",
+        "pre_install": [
+            "python -m pip install setuptools==68.0"
+        ],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider tests/test_blueprints.py tests/test_regression.py tests/test_basic.py"
+    },
+    "pallets__flask-4992": {
+        "repo_path": "/opt/SWE-bench/testbed/pallets__flask-4992",
+        "env_name": "setup_pallets__flask-4992",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider tests/test_config.py tests/test_instance_config.py tests/test_basic.py"
+    },
+    "pallets__flask-5063": {
+        "repo_path": "/opt/SWE-bench/testbed/pallets__flask-5063",
+        "env_name": "setup_pallets__flask-5063",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider tests/test_blueprints.py tests/test_views.py tests/test_apps/subdomaintestmodule/__init__.py"
+    },
+    "psf__requests-1963": {
+        "repo_path": "/opt/SWE-bench/testbed/psf__requests-1963",
+        "env_name": "setup_psf__requests-1963",
+        "pre_install": [],
+        "install": "python -m pip install .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider test_requests.py"
+    },
+    "psf__requests-2148": {
+        "repo_path": "/opt/SWE-bench/testbed/psf__requests-2148",
+        "env_name": "setup_psf__requests-2148",
+        "pre_install": [],
+        "install": "python -m pip install .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider test_requests.py"
+    },
+    "psf__requests-2317": {
+        "repo_path": "/opt/SWE-bench/testbed/psf__requests-2317",
+        "env_name": "setup_psf__requests-2317",
+        "pre_install": [],
+        "install": "python -m pip install .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider test_requests.py"
+    },
+    "psf__requests-2674": {
+        "repo_path": "/opt/SWE-bench/testbed/psf__requests-2674",
+        "env_name": "setup_psf__requests-2674",
+        "pre_install": [],
+        "install": "python -m pip install .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider test_requests.py"
+    },
+    "psf__requests-3362": {
+        "repo_path": "/opt/SWE-bench/testbed/psf__requests-3362",
+        "env_name": "setup_psf__requests-3362",
+        "pre_install": [],
+        "install": "python -m pip install .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider tests/test_requests.py tests/test_lowlevel.py tests/test_utils.py"
+    },
+    "psf__requests-863": {
+        "repo_path": "/opt/SWE-bench/testbed/psf__requests-863",
+        "env_name": "setup_psf__requests-863",
+        "pre_install": [],
+        "install": "python -m pip install .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider tests/test_requests.py tests/test_requests_ext.py tests/test_proxies.py"
+    },
+    "pydata__xarray-3364": {
+        "repo_path": "/opt/SWE-bench/testbed/pydata__xarray-3364",
+        "env_name": "setup_pydata__xarray-3364",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider xarray/tests/test_concat.py xarray/tests/test_merge.py xarray/tests/test_dataset.py"
+    },
+    "pydata__xarray-4094": {
+        "repo_path": "/opt/SWE-bench/testbed/pydata__xarray-4094",
+        "env_name": "setup_pydata__xarray-4094",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider xarray/tests/test_dataset.py xarray/tests/test_merge.py xarray/tests/test_combine.py"
+    },
+    "pydata__xarray-4248": {
+        "repo_path": "/opt/SWE-bench/testbed/pydata__xarray-4248",
+        "env_name": "setup_pydata__xarray-4248",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider xarray/tests/test_dataset.py xarray/tests/test_formatting.py xarray/tests/test_units.py"
+    },
+    "pydata__xarray-4493": {
+        "repo_path": "/opt/SWE-bench/testbed/pydata__xarray-4493",
+        "env_name": "setup_pydata__xarray-4493",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider xarray/tests/test_dataset.py xarray/tests/test_dask.py xarray/tests/test_merge.py"
+    },
+    "pydata__xarray-5131": {
+        "repo_path": "/opt/SWE-bench/testbed/pydata__xarray-5131",
+        "env_name": "setup_pydata__xarray-5131",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider xarray/tests/test_groupby.py xarray/tests/test_formatting.py xarray/tests/test_dataset.py"
+    },
+    "pylint-dev__pylint-5859": {
+        "repo_path": "/opt/SWE-bench/testbed/pylint-dev__pylint-5859",
+        "env_name": "setup_pylint-dev__pylint-5859",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider tests/functional/f/fixme.py tests/functional/f/fixme_bad_formatting_1139.py tests/checkers/unittest_misc.py"
+    },
+    "pylint-dev__pylint-6506": {
+        "repo_path": "/opt/SWE-bench/testbed/pylint-dev__pylint-6506",
+        "env_name": "setup_pylint-dev__pylint-6506",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider tests/test_pylint_runners.py tests/test_epylint.py tests/lint/test_pylinter.py"
+    },
+    "pylint-dev__pylint-7080": {
+        "repo_path": "/opt/SWE-bench/testbed/pylint-dev__pylint-7080",
+        "env_name": "setup_pylint-dev__pylint-7080",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider tests/test_functional_directories.py tests/test_pylint_runners.py tests/test_functional.py"
+    },
+    "pylint-dev__pylint-7114": {
+        "repo_path": "/opt/SWE-bench/testbed/pylint-dev__pylint-7114",
+        "env_name": "setup_pylint-dev__pylint-7114",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider tests/test_import_graph.py tests/test_functional_directories.py tests/test_functional.py"
+    },
+    "pylint-dev__pylint-7228": {
+        "repo_path": "/opt/SWE-bench/testbed/pylint-dev__pylint-7228",
+        "env_name": "setup_pylint-dev__pylint-7228",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider tests/config/test_functional_config_loading.py tests/config/test_config.py tests/config/test_argparse_config.py"
+    },
+    "pylint-dev__pylint-7993": {
+        "repo_path": "/opt/SWE-bench/testbed/pylint-dev__pylint-7993",
+        "env_name": "setup_pylint-dev__pylint-7993",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider tests/lint/test_run_pylint.py tests/config/test_functional_config_loading.py tests/checkers/unittest_format.py"
+    },
+    "pytest-dev__pytest-11143": {
+        "repo_path": "/opt/SWE-bench/testbed/pytest-dev__pytest-11143",
+        "env_name": "setup_pytest-dev__pytest-11143",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest -rA testing/example_scripts/collect/package_infinite_recursion/tests/test_basic.py testing/example_scripts/collect/collect_init_tests/tests/test_foo.py testing/freeze/tests/test_trivial.py"
+    },
+    "pytest-dev__pytest-11148": {
+        "repo_path": "/opt/SWE-bench/testbed/pytest-dev__pytest-11148",
+        "env_name": "setup_pytest-dev__pytest-11148",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest -rA testing/example_scripts/collect/package_infinite_recursion/tests/test_basic.py testing/example_scripts/collect/collect_init_tests/tests/test_foo.py testing/freeze/tests/test_trivial.py"
+    },
+    "pytest-dev__pytest-5103": {
+        "repo_path": "/opt/SWE-bench/testbed/pytest-dev__pytest-5103",
+        "env_name": "setup_pytest-dev__pytest-5103",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest -rA testing/freeze/tests/test_trivial.py testing/example_scripts/collect/package_infinite_recursion/tests/test_basic.py testing/example_scripts/collect/collect_init_tests/tests/test_foo.py"
+    },
+    "pytest-dev__pytest-5221": {
+        "repo_path": "/opt/SWE-bench/testbed/pytest-dev__pytest-5221",
+        "env_name": "setup_pytest-dev__pytest-5221",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest -rA testing/freeze/tests/test_trivial.py testing/example_scripts/collect/collect_init_tests/tests/test_foo.py testing/example_scripts/collect/package_infinite_recursion/tests/test_basic.py"
+    },
+    "pytest-dev__pytest-5227": {
+        "repo_path": "/opt/SWE-bench/testbed/pytest-dev__pytest-5227",
+        "env_name": "setup_pytest-dev__pytest-5227",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest -rA testing/freeze/tests/test_trivial.py testing/example_scripts/collect/collect_init_tests/tests/test_foo.py testing/example_scripts/collect/package_infinite_recursion/tests/test_basic.py"
+    },
+    "pytest-dev__pytest-5413": {
+        "repo_path": "/opt/SWE-bench/testbed/pytest-dev__pytest-5413",
+        "env_name": "setup_pytest-dev__pytest-5413",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest -rA testing/freeze/tests/test_trivial.py testing/example_scripts/collect/package_infinite_recursion/tests/test_basic.py testing/example_scripts/collect/collect_init_tests/tests/test_foo.py"
+    },
+    "pytest-dev__pytest-5495": {
+        "repo_path": "/opt/SWE-bench/testbed/pytest-dev__pytest-5495",
+        "env_name": "setup_pytest-dev__pytest-5495",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest -rA testing/freeze/tests/test_trivial.py testing/example_scripts/collect/collect_init_tests/tests/test_foo.py testing/example_scripts/collect/package_infinite_recursion/tests/test_basic.py"
+    },
+    "pytest-dev__pytest-5692": {
+        "repo_path": "/opt/SWE-bench/testbed/pytest-dev__pytest-5692",
+        "env_name": "setup_pytest-dev__pytest-5692",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest -rA testing/freeze/tests/test_trivial.py testing/example_scripts/collect/package_infinite_recursion/tests/test_basic.py testing/example_scripts/collect/collect_init_tests/tests/test_foo.py"
+    },
+    "pytest-dev__pytest-6116": {
+        "repo_path": "/opt/SWE-bench/testbed/pytest-dev__pytest-6116",
+        "env_name": "setup_pytest-dev__pytest-6116",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest -rA testing/example_scripts/collect/package_infinite_recursion/tests/test_basic.py testing/example_scripts/collect/collect_init_tests/tests/test_foo.py testing/freeze/tests/test_trivial.py"
+    },
+    "pytest-dev__pytest-7168": {
+        "repo_path": "/opt/SWE-bench/testbed/pytest-dev__pytest-7168",
+        "env_name": "setup_pytest-dev__pytest-7168",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest -rA testing/example_scripts/collect/package_infinite_recursion/tests/test_basic.py testing/example_scripts/collect/collect_init_tests/tests/test_foo.py testing/freeze/tests/test_trivial.py"
+    },
+    "pytest-dev__pytest-7220": {
+        "repo_path": "/opt/SWE-bench/testbed/pytest-dev__pytest-7220",
+        "env_name": "setup_pytest-dev__pytest-7220",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest -rA testing/example_scripts/collect/collect_init_tests/tests/test_foo.py testing/example_scripts/collect/package_infinite_recursion/tests/test_basic.py testing/freeze/tests/test_trivial.py"
+    },
+    "pytest-dev__pytest-7373": {
+        "repo_path": "/opt/SWE-bench/testbed/pytest-dev__pytest-7373",
+        "env_name": "setup_pytest-dev__pytest-7373",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest -rA testing/freeze/tests/test_trivial.py testing/example_scripts/collect/package_infinite_recursion/tests/test_basic.py testing/example_scripts/collect/collect_init_tests/tests/test_foo.py"
+    },
+    "pytest-dev__pytest-7432": {
+        "repo_path": "/opt/SWE-bench/testbed/pytest-dev__pytest-7432",
+        "env_name": "setup_pytest-dev__pytest-7432",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest -rA testing/freeze/tests/test_trivial.py testing/example_scripts/collect/package_infinite_recursion/tests/test_basic.py testing/example_scripts/collect/collect_init_tests/tests/test_foo.py"
+    },
+    "pytest-dev__pytest-7490": {
+        "repo_path": "/opt/SWE-bench/testbed/pytest-dev__pytest-7490",
+        "env_name": "setup_pytest-dev__pytest-7490",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest -rA testing/freeze/tests/test_trivial.py testing/example_scripts/collect/collect_init_tests/tests/test_foo.py testing/example_scripts/collect/package_infinite_recursion/tests/test_basic.py"
+    },
+    "pytest-dev__pytest-8365": {
+        "repo_path": "/opt/SWE-bench/testbed/pytest-dev__pytest-8365",
+        "env_name": "setup_pytest-dev__pytest-8365",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest -rA testing/freeze/tests/test_trivial.py testing/example_scripts/collect/package_infinite_recursion/tests/test_basic.py testing/example_scripts/collect/collect_init_tests/tests/test_foo.py"
+    },
+    "pytest-dev__pytest-8906": {
+        "repo_path": "/opt/SWE-bench/testbed/pytest-dev__pytest-8906",
+        "env_name": "setup_pytest-dev__pytest-8906",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest -rA testing/freeze/tests/test_trivial.py testing/example_scripts/collect/collect_init_tests/tests/test_foo.py testing/example_scripts/collect/package_infinite_recursion/tests/test_basic.py"
+    },
+    "pytest-dev__pytest-9359": {
+        "repo_path": "/opt/SWE-bench/testbed/pytest-dev__pytest-9359",
+        "env_name": "setup_pytest-dev__pytest-9359",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "pytest -rA testing/freeze/tests/test_trivial.py testing/example_scripts/collect/package_infinite_recursion/tests/test_basic.py testing/example_scripts/collect/collect_init_tests/tests/test_foo.py"
+    },
+    "scikit-learn__scikit-learn-10297": {
+        "repo_path": "/opt/SWE-bench/testbed/scikit-learn__scikit-learn-10297",
+        "env_name": "setup_scikit-learn__scikit-learn-10297",
+        "pre_install": [],
+        "install": "python -m pip install -v --no-use-pep517 --no-build-isolation -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider sklearn/linear_model/tests/test_ridge.py sklearn/linear_model/tests/test_base.py sklearn/linear_model/tests/test_coordinate_descent.py"
+    },
+    "scikit-learn__scikit-learn-10508": {
+        "repo_path": "/opt/SWE-bench/testbed/scikit-learn__scikit-learn-10508",
+        "env_name": "setup_scikit-learn__scikit-learn-10508",
+        "pre_install": [],
+        "install": "python -m pip install -v --no-use-pep517 --no-build-isolation -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider sklearn/preprocessing/tests/test_label.py sklearn/preprocessing/tests/test_data.py sklearn/preprocessing/tests/test_function_transformer.py"
+    },
+    "scikit-learn__scikit-learn-10949": {
+        "repo_path": "/opt/SWE-bench/testbed/scikit-learn__scikit-learn-10949",
+        "env_name": "setup_scikit-learn__scikit-learn-10949",
+        "pre_install": [],
+        "install": "python -m pip install -v --no-use-pep517 --no-build-isolation -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider sklearn/utils/tests/test_validation.py sklearn/utils/tests/test_utils.py sklearn/utils/tests/test_fixes.py"
+    },
+    "scikit-learn__scikit-learn-11040": {
+        "repo_path": "/opt/SWE-bench/testbed/scikit-learn__scikit-learn-11040",
+        "env_name": "setup_scikit-learn__scikit-learn-11040",
+        "pre_install": [],
+        "install": "python -m pip install -v --no-use-pep517 --no-build-isolation -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider sklearn/neighbors/tests/test_neighbors.py sklearn/neighbors/tests/test_kd_tree.py sklearn/neighbors/tests/test_ball_tree.py"
+    },
+    "scikit-learn__scikit-learn-11281": {
+        "repo_path": "/opt/SWE-bench/testbed/scikit-learn__scikit-learn-11281",
+        "env_name": "setup_scikit-learn__scikit-learn-11281",
+        "pre_install": [],
+        "install": "python -m pip install -v --no-use-pep517 --no-build-isolation -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider sklearn/mixture/tests/test_mixture.py sklearn/mixture/tests/test_gaussian_mixture.py sklearn/cluster/tests/test_k_means.py"
+    },
+    "scikit-learn__scikit-learn-12471": {
+        "repo_path": "/opt/SWE-bench/testbed/scikit-learn__scikit-learn-12471",
+        "env_name": "setup_scikit-learn__scikit-learn-12471",
+        "pre_install": [],
+        "install": "python -m pip install -v --no-use-pep517 --no-build-isolation -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider sklearn/preprocessing/tests/test_encoders.py sklearn/preprocessing/tests/test_common.py sklearn/preprocessing/tests/test_base.py"
+    },
+    "scikit-learn__scikit-learn-13142": {
+        "repo_path": "/opt/SWE-bench/testbed/scikit-learn__scikit-learn-13142",
+        "env_name": "setup_scikit-learn__scikit-learn-13142",
+        "pre_install": [],
+        "install": "python -m pip install -v --no-use-pep517 --no-build-isolation -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider sklearn/mixture/tests/test_gaussian_mixture.py sklearn/mixture/tests/test_mixture.py sklearn/mixture/tests/test_bayesian_mixture.py"
+    },
+    "scikit-learn__scikit-learn-13241": {
+        "repo_path": "/opt/SWE-bench/testbed/scikit-learn__scikit-learn-13241",
+        "env_name": "setup_scikit-learn__scikit-learn-13241",
+        "pre_install": [],
+        "install": "python -m pip install -v --no-use-pep517 --no-build-isolation -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider sklearn/decomposition/tests/test_kernel_pca.py sklearn/decomposition/tests/test_pca.py sklearn/decomposition/tests/test_sparse_pca.py"
+    },
+    "scikit-learn__scikit-learn-13439": {
+        "repo_path": "/opt/SWE-bench/testbed/scikit-learn__scikit-learn-13439",
+        "env_name": "setup_scikit-learn__scikit-learn-13439",
+        "pre_install": [],
+        "install": "python -m pip install -v --no-use-pep517 --no-build-isolation -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider sklearn/tests/test_pipeline.py sklearn/feature_selection/tests/test_feature_select.py sklearn/feature_selection/tests/test_base.py"
+    },
+    "scikit-learn__scikit-learn-13496": {
+        "repo_path": "/opt/SWE-bench/testbed/scikit-learn__scikit-learn-13496",
+        "env_name": "setup_scikit-learn__scikit-learn-13496",
+        "pre_install": [],
+        "install": "python -m pip install -v --no-use-pep517 --no-build-isolation -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider sklearn/ensemble/tests/test_iforest.py sklearn/ensemble/tests/test_base.py sklearn/ensemble/tests/test_bagging.py"
+    },
+    "scikit-learn__scikit-learn-13497": {
+        "repo_path": "/opt/SWE-bench/testbed/scikit-learn__scikit-learn-13497",
+        "env_name": "setup_scikit-learn__scikit-learn-13497",
+        "pre_install": [],
+        "install": "python -m pip install -v --no-use-pep517 --no-build-isolation -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider sklearn/feature_selection/tests/test_mutual_info.py sklearn/feature_selection/tests/test_base.py sklearn/feature_selection/tests/test_feature_select.py"
+    },
+    "scikit-learn__scikit-learn-13584": {
+        "repo_path": "/opt/SWE-bench/testbed/scikit-learn__scikit-learn-13584",
+        "env_name": "setup_scikit-learn__scikit-learn-13584",
+        "pre_install": [],
+        "install": "python -m pip install -v --no-use-pep517 --no-build-isolation -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider sklearn/linear_model/tests/test_logistic.py sklearn/utils/tests/test_pprint.py sklearn/tests/test_config.py"
+    },
+    "scikit-learn__scikit-learn-13779": {
+        "repo_path": "/opt/SWE-bench/testbed/scikit-learn__scikit-learn-13779",
+        "env_name": "setup_scikit-learn__scikit-learn-13779",
+        "pre_install": [],
+        "install": "python -m pip install -v --no-use-pep517 --no-build-isolation -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider sklearn/ensemble/tests/test_voting.py sklearn/tests/test_metaestimators.py sklearn/utils/tests/test_metaestimators.py"
+    },
+    "scikit-learn__scikit-learn-14087": {
+        "repo_path": "/opt/SWE-bench/testbed/scikit-learn__scikit-learn-14087",
+        "env_name": "setup_scikit-learn__scikit-learn-14087",
+        "pre_install": [],
+        "install": "python -m pip install -v --no-use-pep517 --no-build-isolation -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider sklearn/linear_model/tests/test_logistic.py sklearn/model_selection/tests/test_validation.py sklearn/model_selection/tests/test_search.py"
+    },
+    "scikit-learn__scikit-learn-14092": {
+        "repo_path": "/opt/SWE-bench/testbed/scikit-learn__scikit-learn-14092",
+        "env_name": "setup_scikit-learn__scikit-learn-14092",
+        "pre_install": [],
+        "install": "python -m pip install -v --no-use-pep517 --no-build-isolation -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider sklearn/neighbors/tests/test_nca.py sklearn/model_selection/tests/test_search.py sklearn/utils/tests/test_validation.py"
+    },
+    "scikit-learn__scikit-learn-14894": {
+        "repo_path": "/opt/SWE-bench/testbed/scikit-learn__scikit-learn-14894",
+        "env_name": "setup_scikit-learn__scikit-learn-14894",
+        "pre_install": [],
+        "install": "python -m pip install -v --no-use-pep517 --no-build-isolation -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider sklearn/svm/tests/test_sparse.py sklearn/svm/tests/test_svm.py sklearn/svm/tests/test_bounds.py"
+    },
+    "scikit-learn__scikit-learn-14983": {
+        "repo_path": "/opt/SWE-bench/testbed/scikit-learn__scikit-learn-14983",
+        "env_name": "setup_scikit-learn__scikit-learn-14983",
+        "pre_install": [],
+        "install": "python -m pip install -v --no-use-pep517 --no-build-isolation -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider sklearn/model_selection/tests/test_split.py sklearn/model_selection/tests/test_validation.py sklearn/model_selection/tests/test_search.py"
+    },
+    "scikit-learn__scikit-learn-15512": {
+        "repo_path": "/opt/SWE-bench/testbed/scikit-learn__scikit-learn-15512",
+        "env_name": "setup_scikit-learn__scikit-learn-15512",
+        "pre_install": [],
+        "install": "python -m pip install -v --no-use-pep517 --no-build-isolation -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider sklearn/cluster/tests/test_affinity_propagation.py sklearn/cluster/tests/test_common.py sklearn/cluster/tests/test_k_means.py"
+    },
+    "scikit-learn__scikit-learn-15535": {
+        "repo_path": "/opt/SWE-bench/testbed/scikit-learn__scikit-learn-15535",
+        "env_name": "setup_scikit-learn__scikit-learn-15535",
+        "pre_install": [],
+        "install": "python -m pip install -v --no-use-pep517 --no-build-isolation -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider sklearn/metrics/cluster/tests/test_supervised.py sklearn/metrics/cluster/tests/test_common.py sklearn/metrics/cluster/tests/test_unsupervised.py"
+    },
+    "scikit-learn__scikit-learn-25500": {
+        "repo_path": "/opt/SWE-bench/testbed/scikit-learn__scikit-learn-25500",
+        "env_name": "setup_scikit-learn__scikit-learn-25500",
+        "pre_install": [],
+        "install": "python -m pip install -v --no-use-pep517 --no-build-isolation -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider sklearn/tests/test_calibration.py sklearn/tests/test_isotonic.py sklearn/utils/tests/test_set_output.py"
+    },
+    "scikit-learn__scikit-learn-25570": {
+        "repo_path": "/opt/SWE-bench/testbed/scikit-learn__scikit-learn-25570",
+        "env_name": "setup_scikit-learn__scikit-learn-25570",
+        "pre_install": [],
+        "install": "python -m pip install -v --no-use-pep517 --no-build-isolation -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider sklearn/compose/tests/test_column_transformer.py sklearn/utils/tests/test_set_output.py sklearn/tests/test_pipeline.py"
+    },
+    "scikit-learn__scikit-learn-25638": {
+        "repo_path": "/opt/SWE-bench/testbed/scikit-learn__scikit-learn-25638",
+        "env_name": "setup_scikit-learn__scikit-learn-25638",
+        "pre_install": [],
+        "install": "python -m pip install -v --no-use-pep517 --no-build-isolation -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider sklearn/utils/tests/test_multiclass.py sklearn/utils/tests/test_validation.py sklearn/utils/tests/test_arrayfuncs.py"
+    },
+    "scikit-learn__scikit-learn-25747": {
+        "repo_path": "/opt/SWE-bench/testbed/scikit-learn__scikit-learn-25747",
+        "env_name": "setup_scikit-learn__scikit-learn-25747",
+        "pre_install": [],
+        "install": "python -m pip install -v --no-use-pep517 --no-build-isolation -e .",
+        "test_cmd": "pytest --no-header -rA --tb=no -p no:cacheprovider sklearn/utils/tests/test_set_output.py sklearn/tests/test_pipeline.py sklearn/compose/tests/test_column_transformer.py"
+    },
+    "sphinx-doc__sphinx-10325": {
+        "repo_path": "/opt/SWE-bench/testbed/sphinx-doc__sphinx-10325",
+        "env_name": "setup_sphinx-doc__sphinx-10325",
+        "pre_install": [
+            "sed -i 's/pytest/pytest -rA/' tox.ini"
+        ],
+        "install": "python -m pip install -e .[test]",
+        "test_cmd": "pytest -rA tests/test_ext_autodoc_automodule.py tests/test_ext_autodoc.py tests/test_ext_autodoc_autoclass.py"
+    },
+    "sphinx-doc__sphinx-10451": {
+        "repo_path": "/opt/SWE-bench/testbed/sphinx-doc__sphinx-10451",
+        "env_name": "setup_sphinx-doc__sphinx-10451",
+        "pre_install": [
+            "sed -i 's/pytest/pytest -rA/' tox.ini"
+        ],
+        "install": "python -m pip install -e .[test]",
+        "test_cmd": "pytest -rA tests/test_ext_autodoc.py tests/test_ext_autodoc_autoclass.py tests/test_ext_autodoc_configs.py"
+    },
+    "sphinx-doc__sphinx-11445": {
+        "repo_path": "/opt/SWE-bench/testbed/sphinx-doc__sphinx-11445",
+        "env_name": "setup_sphinx-doc__sphinx-11445",
+        "pre_install": [
+            "sed -i 's/pytest/pytest -rA/' tox.ini"
+        ],
+        "install": "python -m pip install -e .[test]",
+        "test_cmd": "pytest -rA tests/test_util_rst.py tests/test_environment_toctree.py tests/test_transforms_post_transforms.py"
+    },
+    "sphinx-doc__sphinx-7686": {
+        "repo_path": "/opt/SWE-bench/testbed/sphinx-doc__sphinx-7686",
+        "env_name": "setup_sphinx-doc__sphinx-7686",
+        "pre_install": [
+            "sed -i 's/pytest/pytest -rA/' tox.ini",
+            "sed -i 's/Jinja2>=2.3/Jinja2<3.1/' setup.py"
+        ],
+        "install": "python -m pip install -e .[test]",
+        "test_cmd": "pytest -rA tests/test_ext_autosummary.py tests/roots/test-ext-autosummary-imported_members/conf.py tests/roots/test-ext-autosummary/conf.py"
+    },
+    "sphinx-doc__sphinx-7738": {
+        "repo_path": "/opt/SWE-bench/testbed/sphinx-doc__sphinx-7738",
+        "env_name": "setup_sphinx-doc__sphinx-7738",
+        "pre_install": [
+            "sed -i 's/pytest/pytest -rA/' tox.ini",
+            "sed -i 's/Jinja2>=2.3/Jinja2<3.1/' setup.py"
+        ],
+        "install": "python -m pip install -e .[test]",
+        "test_cmd": "pytest -rA tests/test_ext_napoleon.py tests/test_ext_autodoc.py tests/test_ext_napoleon_docstring.py"
+    },
+    "sphinx-doc__sphinx-7975": {
+        "repo_path": "/opt/SWE-bench/testbed/sphinx-doc__sphinx-7975",
+        "env_name": "setup_sphinx-doc__sphinx-7975",
+        "pre_install": [
+            "sed -i 's/pytest/pytest -rA/' tox.ini",
+            "sed -i 's/Jinja2>=2.3/Jinja2<3.1/' setup.py"
+        ],
+        "install": "python -m pip install -e .[test]",
+        "test_cmd": "pytest -rA tests/test_build_html.py tests/test_environment_indexentries.py tests/test_environment.py"
+    },
+    "sphinx-doc__sphinx-8273": {
+        "repo_path": "/opt/SWE-bench/testbed/sphinx-doc__sphinx-8273",
+        "env_name": "setup_sphinx-doc__sphinx-8273",
+        "pre_install": [
+            "sed -i 's/pytest/pytest -rA/' tox.ini",
+            "sed -i 's/Jinja2>=2.3/Jinja2<3.1/' setup.py"
+        ],
+        "install": "python -m pip install -e .[test]",
+        "test_cmd": "pytest -rA tests/test_build_manpage.py tests/test_builder.py tests/test_build.py"
+    },
+    "sphinx-doc__sphinx-8282": {
+        "repo_path": "/opt/SWE-bench/testbed/sphinx-doc__sphinx-8282",
+        "env_name": "setup_sphinx-doc__sphinx-8282",
+        "pre_install": [
+            "sed -i 's/pytest/pytest -rA/' tox.ini",
+            "sed -i 's/Jinja2>=2.3/Jinja2<3.1/' setup.py"
+        ],
+        "install": "python -m pip install -e .[test]",
+        "test_cmd": "pytest -rA tests/test_ext_autodoc.py tests/test_ext_autodoc_configs.py tests/test_ext_autodoc_autofunction.py"
+    },
+    "sphinx-doc__sphinx-8435": {
+        "repo_path": "/opt/SWE-bench/testbed/sphinx-doc__sphinx-8435",
+        "env_name": "setup_sphinx-doc__sphinx-8435",
+        "pre_install": [
+            "sed -i 's/pytest/pytest -rA/' tox.ini",
+            "sed -i 's/Jinja2>=2.3/Jinja2<3.1/' setup.py"
+        ],
+        "install": "python -m pip install -e .[test]",
+        "test_cmd": "pytest -rA tests/test_ext_autodoc.py tests/test_ext_autodoc_configs.py tests/test_ext_autodoc_autoclass.py"
+    },
+    "sphinx-doc__sphinx-8474": {
+        "repo_path": "/opt/SWE-bench/testbed/sphinx-doc__sphinx-8474",
+        "env_name": "setup_sphinx-doc__sphinx-8474",
+        "pre_install": [
+            "sed -i 's/pytest/pytest -rA/' tox.ini",
+            "sed -i 's/Jinja2>=2.3/Jinja2<3.1/' setup.py"
+        ],
+        "install": "python -m pip install -e .[test]",
+        "test_cmd": "pytest -rA tests/test_writer_latex.py tests/test_build_latex.py tests/roots/test-latex-table/conf.py"
+    },
+    "sphinx-doc__sphinx-8506": {
+        "repo_path": "/opt/SWE-bench/testbed/sphinx-doc__sphinx-8506",
+        "env_name": "setup_sphinx-doc__sphinx-8506",
+        "pre_install": [
+            "sed -i 's/pytest/pytest -rA/' tox.ini",
+            "sed -i 's/Jinja2>=2.3/Jinja2<3.1/' setup.py"
+        ],
+        "install": "python -m pip install -e .[test]",
+        "test_cmd": "pytest -rA tests/test_domain_rst.py tests/test_util_rst.py tests/test_directive_code.py"
+    },
+    "sphinx-doc__sphinx-8595": {
+        "repo_path": "/opt/SWE-bench/testbed/sphinx-doc__sphinx-8595",
+        "env_name": "setup_sphinx-doc__sphinx-8595",
+        "pre_install": [
+            "sed -i 's/pytest/pytest -rA/' tox.ini",
+            "sed -i 's/Jinja2>=2.3/Jinja2<3.1/' setup.py"
+        ],
+        "install": "python -m pip install -e .[test]",
+        "test_cmd": "pytest -rA tests/test_ext_autodoc.py tests/test_ext_autodoc_events.py tests/test_ext_autodoc_private_members.py"
+    },
+    "sphinx-doc__sphinx-8627": {
+        "repo_path": "/opt/SWE-bench/testbed/sphinx-doc__sphinx-8627",
+        "env_name": "setup_sphinx-doc__sphinx-8627",
+        "pre_install": [
+            "sed -i 's/pytest/pytest -rA/' tox.ini",
+            "sed -i 's/Jinja2>=2.3/Jinja2<3.1/' setup.py"
+        ],
+        "install": "python -m pip install -e .[test]",
+        "test_cmd": "pytest -rA tests/test_ext_autodoc.py tests/test_ext_autodoc_automodule.py tests/test_ext_autodoc_autofunction.py"
+    },
+    "sphinx-doc__sphinx-8713": {
+        "repo_path": "/opt/SWE-bench/testbed/sphinx-doc__sphinx-8713",
+        "env_name": "setup_sphinx-doc__sphinx-8713",
+        "pre_install": [
+            "sed -i 's/pytest/pytest -rA/' tox.ini",
+            "sed -i 's/Jinja2>=2.3/Jinja2<3.1/' setup.py"
+        ],
+        "install": "python -m pip install -e .[test]",
+        "test_cmd": "pytest -rA tests/test_ext_napoleon.py tests/test_ext_napoleon_docstring.py tests/test_ext_napoleon_iterators.py"
+    },
+    "sphinx-doc__sphinx-8721": {
+        "repo_path": "/opt/SWE-bench/testbed/sphinx-doc__sphinx-8721",
+        "env_name": "setup_sphinx-doc__sphinx-8721",
+        "pre_install": [
+            "sed -i 's/pytest/pytest -rA/' tox.ini",
+            "sed -i 's/Jinja2>=2.3/Jinja2<3.1/' setup.py"
+        ],
+        "install": "python -m pip install -e .[test]",
+        "test_cmd": "pytest -rA tests/test_ext_viewcode.py tests/test_build_epub.py tests/roots/test-ext-viewcode/conf.py"
+    },
+    "sphinx-doc__sphinx-8801": {
+        "repo_path": "/opt/SWE-bench/testbed/sphinx-doc__sphinx-8801",
+        "env_name": "setup_sphinx-doc__sphinx-8801",
+        "pre_install": [
+            "sed -i 's/pytest/pytest -rA/' tox.ini",
+            "sed -i 's/Jinja2>=2.3/Jinja2<3.1/' setup.py"
+        ],
+        "install": "python -m pip install -e .[test]",
+        "test_cmd": "pytest -rA tests/test_ext_autodoc.py tests/test_ext_autodoc_autoattribute.py tests/test_ext_autodoc_autoclass.py"
+    },
+    "sympy__sympy-11400": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-11400",
+        "env_name": "setup_sympy__sympy-11400",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/printing/tests/test_ccode.py sympy/utilities/tests/test_codegen.py sympy/external/tests/test_codegen.py"
+    },
+    "sympy__sympy-11870": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-11870",
+        "env_name": "setup_sympy__sympy-11870",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/simplify/tests/test_trigsimp.py sympy/simplify/tests/test_simplify.py sympy/functions/elementary/tests/test_trigonometric.py"
+    },
+    "sympy__sympy-11897": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-11897",
+        "env_name": "setup_sympy__sympy-11897",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/printing/tests/test_latex.py sympy/printing/pretty/tests/test_pretty.py sympy/physics/vector/tests/test_printing.py"
+    },
+    "sympy__sympy-12171": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-12171",
+        "env_name": "setup_sympy__sympy-12171",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/printing/tests/test_mathematica.py sympy/printing/tests/test_codeprinter.py sympy/printing/tests/test_python.py"
+    },
+    "sympy__sympy-12236": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-12236",
+        "env_name": "setup_sympy__sympy-12236",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/polys/tests/test_partfrac.py sympy/polys/tests/test_polytools.py sympy/simplify/tests/test_ratsimp.py"
+    },
+    "sympy__sympy-12419": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-12419",
+        "env_name": "setup_sympy__sympy-12419",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/matrices/expressions/tests/test_matexpr.py sympy/matrices/expressions/tests/test_matmul.py sympy/matrices/tests/test_matrices.py"
+    },
+    "sympy__sympy-12454": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-12454",
+        "env_name": "setup_sympy__sympy-12454",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/matrices/tests/test_matrices.py sympy/matrices/tests/test_densearith.py sympy/matrices/tests/test_densetools.py"
+    },
+    "sympy__sympy-12481": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-12481",
+        "env_name": "setup_sympy__sympy-12481",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/combinatorics/tests/test_permutations.py sympy/combinatorics/tests/test_perm_groups.py sympy/combinatorics/tests/test_group_constructs.py"
+    },
+    "sympy__sympy-13031": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-13031",
+        "env_name": "setup_sympy__sympy-13031",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/matrices/tests/test_matrices.py sympy/matrices/expressions/tests/test_blockmatrix.py sympy/matrices/tests/test_densearith.py"
+    },
+    "sympy__sympy-13043": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-13043",
+        "env_name": "setup_sympy__sympy-13043",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/integrals/tests/test_intpoly.py sympy/polys/tests/test_polytools.py sympy/polys/tests/test_polyclasses.py"
+    },
+    "sympy__sympy-13146": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-13146",
+        "env_name": "setup_sympy__sympy-13146",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/simplify/tests/test_powsimp.py sympy/simplify/tests/test_simplify.py sympy/core/tests/test_evalf.py"
+    },
+    "sympy__sympy-13177": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-13177",
+        "env_name": "setup_sympy__sympy-13177",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/ntheory/tests/test_modular.py sympy/core/tests/test_arit.py sympy/core/tests/test_eval.py"
+    },
+    "sympy__sympy-13437": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-13437",
+        "env_name": "setup_sympy__sympy-13437",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/functions/combinatorial/tests/test_comb_numbers.py sympy/series/tests/test_limits.py sympy/concrete/tests/test_sums_products.py"
+    },
+    "sympy__sympy-13471": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-13471",
+        "env_name": "setup_sympy__sympy-13471",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/utilities/tests/test_pickling.py sympy/core/tests/test_numbers.py sympy/core/tests/test_compatibility.py"
+    },
+    "sympy__sympy-13480": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-13480",
+        "env_name": "setup_sympy__sympy-13480",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/functions/elementary/tests/test_hyperbolic.py sympy/core/tests/test_subs.py sympy/core/tests/test_eval.py"
+    },
+    "sympy__sympy-13647": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-13647",
+        "env_name": "setup_sympy__sympy-13647",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/matrices/tests/test_matrices.py sympy/matrices/tests/test_densearith.py sympy/matrices/tests/test_densetools.py"
+    },
+    "sympy__sympy-13773": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-13773",
+        "env_name": "setup_sympy__sympy-13773",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/matrices/expressions/tests/test_matmul.py sympy/matrices/tests/test_matrices.py sympy/matrices/tests/test_densearith.py"
+    },
+    "sympy__sympy-13895": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-13895",
+        "env_name": "setup_sympy__sympy-13895",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/simplify/tests/test_simplify.py sympy/simplify/tests/test_powsimp.py sympy/core/tests/test_evalf.py"
+    },
+    "sympy__sympy-13915": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-13915",
+        "env_name": "setup_sympy__sympy-13915",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/core/tests/test_subs.py sympy/core/tests/test_eval.py sympy/series/tests/test_limits.py"
+    },
+    "sympy__sympy-13971": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-13971",
+        "env_name": "setup_sympy__sympy-13971",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/printing/tests/test_latex.py sympy/printing/pretty/tests/test_pretty.py sympy/interactive/tests/test_ipythonprinting.py"
+    },
+    "sympy__sympy-14024": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-14024",
+        "env_name": "setup_sympy__sympy-14024",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/simplify/tests/test_simplify.py sympy/simplify/tests/test_powsimp.py sympy/core/tests/test_evalf.py"
+    },
+    "sympy__sympy-14308": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-14308",
+        "env_name": "setup_sympy__sympy-14308",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/physics/vector/tests/test_printing.py sympy/vector/tests/test_printing.py sympy/vector/tests/test_vector.py"
+    },
+    "sympy__sympy-14317": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-14317",
+        "env_name": "setup_sympy__sympy-14317",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/printing/tests/test_latex.py sympy/printing/pretty/tests/test_pretty.py sympy/polys/tests/test_polytools.py"
+    },
+    "sympy__sympy-14396": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-14396",
+        "env_name": "setup_sympy__sympy-14396",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/polys/tests/test_polyoptions.py sympy/polys/tests/test_polytools.py sympy/polys/domains/tests/test_domains.py"
+    },
+    "sympy__sympy-14774": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-14774",
+        "env_name": "setup_sympy__sympy-14774",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/printing/tests/test_latex.py sympy/printing/pretty/tests/test_pretty.py sympy/printing/tests/test_codeprinter.py"
+    },
+    "sympy__sympy-14817": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-14817",
+        "env_name": "setup_sympy__sympy-14817",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/matrices/expressions/tests/test_matadd.py sympy/printing/pretty/tests/test_pretty.py sympy/core/tests/test_sympify.py"
+    },
+    "sympy__sympy-15011": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-15011",
+        "env_name": "setup_sympy__sympy-15011",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/utilities/tests/test_lambdify.py sympy/matrices/expressions/tests/test_matexpr.py sympy/matrices/tests/test_matrices.py"
+    },
+    "sympy__sympy-15308": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-15308",
+        "env_name": "setup_sympy__sympy-15308",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/printing/tests/test_latex.py sympy/matrices/expressions/tests/test_trace.py sympy/matrices/expressions/tests/test_matexpr.py"
+    },
+    "sympy__sympy-15345": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-15345",
+        "env_name": "setup_sympy__sympy-15345",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/printing/tests/test_mathematica.py sympy/printing/tests/test_codeprinter.py sympy/printing/tests/test_python.py"
+    },
+    "sympy__sympy-15346": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-15346",
+        "env_name": "setup_sympy__sympy-15346",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/simplify/tests/test_trigsimp.py sympy/simplify/tests/test_simplify.py sympy/core/tests/test_numbers.py"
+    },
+    "sympy__sympy-15609": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-15609",
+        "env_name": "setup_sympy__sympy-15609",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/printing/tests/test_latex.py sympy/matrices/expressions/tests/test_matexpr.py sympy/matrices/expressions/tests/test_indexing.py"
+    },
+    "sympy__sympy-15678": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-15678",
+        "env_name": "setup_sympy__sympy-15678",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/geometry/tests/test_util.py sympy/solvers/tests/test_solvers.py sympy/core/tests/test_relational.py"
+    },
+    "sympy__sympy-16106": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-16106",
+        "env_name": "setup_sympy__sympy-16106",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/printing/tests/test_mathml.py sympy/tensor/tests/test_indexed.py sympy/printing/tests/test_pretty.py"
+    },
+    "sympy__sympy-16281": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-16281",
+        "env_name": "setup_sympy__sympy-16281",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/concrete/tests/test_products.py sympy/concrete/tests/test_sums_products.py sympy/printing/pretty/tests/test_pretty.py"
+    },
+    "sympy__sympy-16503": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-16503",
+        "env_name": "setup_sympy__sympy-16503",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/printing/pretty/tests/test_pretty.py sympy/concrete/tests/test_sums_products.py sympy/printing/tests/test_str.py"
+    },
+    "sympy__sympy-16792": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-16792",
+        "env_name": "setup_sympy__sympy-16792",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/utilities/tests/test_autowrap.py sympy/external/tests/test_autowrap.py sympy/external/tests/test_codegen.py"
+    },
+    "sympy__sympy-16988": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-16988",
+        "env_name": "setup_sympy__sympy-16988",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/sets/tests/test_sets.py sympy/sets/tests/test_conditionset.py sympy/sets/tests/test_fancysets.py"
+    },
+    "sympy__sympy-17022": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-17022",
+        "env_name": "setup_sympy__sympy-17022",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/utilities/tests/test_lambdify.py sympy/printing/tests/test_numpy.py sympy/matrices/expressions/tests/test_matexpr.py"
+    },
+    "sympy__sympy-17139": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-17139",
+        "env_name": "setup_sympy__sympy-17139",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/simplify/tests/test_simplify.py sympy/simplify/tests/test_trigsimp.py sympy/simplify/tests/test_fu.py"
+    },
+    "sympy__sympy-17630": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-17630",
+        "env_name": "setup_sympy__sympy-17630",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/matrices/expressions/tests/test_blockmatrix.py sympy/matrices/expressions/tests/test_matmul.py sympy/matrices/expressions/tests/test_matexpr.py"
+    },
+    "sympy__sympy-17655": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-17655",
+        "env_name": "setup_sympy__sympy-17655",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/geometry/tests/test_point.py sympy/geometry/tests/test_geometrysets.py sympy/geometry/tests/test_util.py"
+    },
+    "sympy__sympy-18057": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-18057",
+        "env_name": "setup_sympy__sympy-18057",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/core/tests/test_relational.py sympy/core/tests/test_sympify.py sympy/parsing/tests/test_sympy_parser.py"
+    },
+    "sympy__sympy-18087": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-18087",
+        "env_name": "setup_sympy__sympy-18087",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/simplify/tests/test_trigsimp.py sympy/simplify/tests/test_simplify.py sympy/simplify/tests/test_radsimp.py"
+    },
+    "sympy__sympy-18189": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-18189",
+        "env_name": "setup_sympy__sympy-18189",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/solvers/tests/test_diophantine.py sympy/solvers/tests/test_solvers.py sympy/solvers/tests/test_solveset.py"
+    },
+    "sympy__sympy-18199": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-18199",
+        "env_name": "setup_sympy__sympy-18199",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/ntheory/tests/test_modular.py sympy/ntheory/tests/test_residue.py sympy/polys/tests/test_polytools.py"
+    },
+    "sympy__sympy-18532": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-18532",
+        "env_name": "setup_sympy__sympy-18532",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/core/tests/test_expr.py sympy/core/tests/test_basic.py sympy/core/tests/test_args.py"
+    },
+    "sympy__sympy-18621": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-18621",
+        "env_name": "setup_sympy__sympy-18621",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/matrices/expressions/tests/test_blockmatrix.py sympy/matrices/expressions/tests/test_matexpr.py sympy/matrices/tests/test_matrices.py"
+    },
+    "sympy__sympy-18698": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-18698",
+        "env_name": "setup_sympy__sympy-18698",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/polys/tests/test_sqfreetools.py sympy/polys/tests/test_polytools.py sympy/polys/tests/test_factortools.py"
+    },
+    "sympy__sympy-18835": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-18835",
+        "env_name": "setup_sympy__sympy-18835",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/utilities/tests/test_iterables.py sympy/utilities/tests/test_misc.py sympy/core/tests/test_containers.py"
+    },
+    "sympy__sympy-19007": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-19007",
+        "env_name": "setup_sympy__sympy-19007",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/matrices/expressions/tests/test_blockmatrix.py sympy/matrices/expressions/tests/test_indexing.py sympy/matrices/expressions/tests/test_matexpr.py"
+    },
+    "sympy__sympy-19254": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-19254",
+        "env_name": "setup_sympy__sympy-19254",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/polys/tests/test_factortools.py sympy/polys/tests/test_polytools.py sympy/polys/tests/test_densebasic.py"
+    },
+    "sympy__sympy-19487": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-19487",
+        "env_name": "setup_sympy__sympy-19487",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/functions/elementary/tests/test_miscellaneous.py sympy/core/tests/test_function.py sympy/simplify/tests/test_rewrite.py"
+    },
+    "sympy__sympy-20049": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-20049",
+        "env_name": "setup_sympy__sympy-20049",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/physics/vector/tests/test_point.py sympy/physics/vector/tests/test_vector.py sympy/physics/mechanics/tests/test_functions.py"
+    },
+    "sympy__sympy-20154": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-20154",
+        "env_name": "setup_sympy__sympy-20154",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/utilities/tests/test_iterables.py sympy/combinatorics/tests/test_partitions.py sympy/ntheory/tests/test_partitions.py"
+    },
+    "sympy__sympy-20212": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-20212",
+        "env_name": "setup_sympy__sympy-20212",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/core/tests/test_power.py sympy/core/tests/test_eval.py sympy/core/tests/test_evalf.py"
+    },
+    "sympy__sympy-20322": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-20322",
+        "env_name": "setup_sympy__sympy-20322",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/simplify/tests/test_simplify.py sympy/core/tests/test_sympify.py sympy/core/tests/test_eval.py"
+    },
+    "sympy__sympy-20442": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-20442",
+        "env_name": "setup_sympy__sympy-20442",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/physics/units/tests/test_util.py sympy/physics/units/tests/test_unitsystem.py sympy/physics/units/tests/test_quantities.py"
+    },
+    "sympy__sympy-20590": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-20590",
+        "env_name": "setup_sympy__sympy-20590",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/core/tests/test_symbol.py sympy/core/tests/test_basic.py sympy/core/tests/test_constructor_postprocessor.py"
+    },
+    "sympy__sympy-20639": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-20639",
+        "env_name": "setup_sympy__sympy-20639",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/printing/pretty/tests/test_pretty.py sympy/printing/tests/test_latex.py sympy/printing/tests/test_str.py"
+    },
+    "sympy__sympy-21055": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-21055",
+        "env_name": "setup_sympy__sympy-21055",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/assumptions/tests/test_refine.py sympy/simplify/tests/test_simplify.py sympy/integrals/tests/test_integrals.py"
+    },
+    "sympy__sympy-21171": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-21171",
+        "env_name": "setup_sympy__sympy-21171",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/physics/continuum_mechanics/tests/test_beam.py sympy/functions/special/tests/test_singularity_functions.py sympy/integrals/tests/test_singularityfunctions.py"
+    },
+    "sympy__sympy-21379": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-21379",
+        "env_name": "setup_sympy__sympy-21379",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/core/tests/test_subs.py sympy/functions/elementary/tests/test_hyperbolic.py sympy/functions/elementary/tests/test_piecewise.py"
+    },
+    "sympy__sympy-21612": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-21612",
+        "env_name": "setup_sympy__sympy-21612",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/parsing/tests/test_latex.py sympy/parsing/tests/test_latex_deps.py sympy/printing/tests/test_latex.py"
+    },
+    "sympy__sympy-21614": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-21614",
+        "env_name": "setup_sympy__sympy-21614",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/matrices/expressions/tests/test_derivatives.py sympy/core/tests/test_kind.py sympy/matrices/expressions/tests/test_matexpr.py"
+    },
+    "sympy__sympy-21627": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-21627",
+        "env_name": "setup_sympy__sympy-21627",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/functions/elementary/tests/test_hyperbolic.py sympy/core/tests/test_function.py sympy/core/tests/test_sympify.py"
+    },
+    "sympy__sympy-21847": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-21847",
+        "env_name": "setup_sympy__sympy-21847",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/polys/tests/test_monomials.py sympy/polys/tests/test_polytools.py sympy/polys/tests/test_orderings.py"
+    },
+    "sympy__sympy-22005": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-22005",
+        "env_name": "setup_sympy__sympy-22005",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/solvers/tests/test_polysys.py sympy/solvers/tests/test_solvers.py sympy/polys/tests/test_solvers.py"
+    },
+    "sympy__sympy-22714": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-22714",
+        "env_name": "setup_sympy__sympy-22714",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/geometry/tests/test_point.py sympy/parsing/tests/test_sympy_parser.py sympy/core/tests/test_sympify.py"
+    },
+    "sympy__sympy-22840": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-22840",
+        "env_name": "setup_sympy__sympy-22840",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/matrices/expressions/tests/test_indexing.py sympy/matrices/expressions/tests/test_matexpr.py sympy/simplify/tests/test_cse.py"
+    },
+    "sympy__sympy-23117": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-23117",
+        "env_name": "setup_sympy__sympy-23117",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/tensor/array/tests/test_ndim_array.py sympy/tensor/array/tests/test_immutable_ndim_array.py sympy/tensor/array/tests/test_mutable_ndim_array.py"
+    },
+    "sympy__sympy-23191": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-23191",
+        "env_name": "setup_sympy__sympy-23191",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/vector/tests/test_printing.py sympy/printing/pretty/tests/test_pretty.py sympy/vector/tests/test_vector.py"
+    },
+    "sympy__sympy-23262": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-23262",
+        "env_name": "setup_sympy__sympy-23262",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/utilities/tests/test_lambdify.py sympy/printing/tests/test_python.py sympy/printing/tests/test_codeprinter.py"
+    },
+    "sympy__sympy-24066": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-24066",
+        "env_name": "setup_sympy__sympy-24066",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/physics/units/tests/test_dimensions.py sympy/physics/units/tests/test_unitsystem.py sympy/physics/units/tests/test_dimensionsystem.py"
+    },
+    "sympy__sympy-24102": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-24102",
+        "env_name": "setup_sympy__sympy-24102",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/parsing/tests/test_mathematica.py sympy/parsing/tests/test_sympy_parser.py sympy/parsing/tests/test_sym_expr.py"
+    },
+    "sympy__sympy-24152": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-24152",
+        "env_name": "setup_sympy__sympy-24152",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/physics/quantum/tests/test_tensorproduct.py sympy/physics/quantum/tests/test_qapply.py sympy/physics/quantum/tests/test_operator.py"
+    },
+    "sympy__sympy-24213": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-24213",
+        "env_name": "setup_sympy__sympy-24213",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/physics/units/tests/test_unitsystem.py sympy/physics/units/tests/test_dimensions.py sympy/physics/units/tests/test_quantities.py"
+    },
+    "sympy__sympy-24909": {
+        "repo_path": "/opt/SWE-bench/testbed/sympy__sympy-24909",
+        "env_name": "setup_sympy__sympy-24909",
+        "pre_install": [],
+        "install": "python -m pip install -e .",
+        "test_cmd": "bin/test -C --verbose sympy/physics/units/tests/test_prefixes.py sympy/physics/units/tests/test_quantities.py sympy/physics/units/tests/test_unitsystem.py"
+    }
+}
