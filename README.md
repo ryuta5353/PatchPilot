@@ -96,9 +96,7 @@ python patchpilot/reproduce/reproduce.py \
 
 python patchpilot/fl/localize.py \
     --file_level \
-    --related_level \
-    --fine_grain_line_level \
-    --review_level \
+    --direct_line_level \
     --output_folder results/localization \
     --top_n 5 \
     --compress \
@@ -144,6 +142,7 @@ python patchpilot/repair/repair.py \
     --refine_mod \
     --benchmark verified
 ```
+> **Note**: Functionality tests are retrieved through `useful_scripts/generate_functest.py` and do not use the `pass_to_pass` approach.
 
 ### 📊 4. Evaluation
 

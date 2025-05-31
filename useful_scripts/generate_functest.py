@@ -285,24 +285,6 @@ def main():
 
     swe_bench_data = load_dataset("princeton-nlp/SWE-bench_Lite", split="test")
 
-
-    # 使用线程池并行；如果你想用进程池，可以换成 ProcessPoolExecutor
-    # 注意如果系统资源有限，可以根据实际情况调小 max_workers
-    # with concurrent.futures.ThreadPoolExecutor(max_workers=24) as executor:
-    #     future_to_project = {
-    #         executor.submit(run_coverage_for_project, p): p
-    #         for p in project_paths
-    #     }
-    #
-    #     for future in concurrent.futures.as_completed(future_to_project):
-    #         p = future_to_project[future]
-    #         try:
-    #             future.result()  # 这里可能抛出在子线程中发生的异常
-    #         except Exception as exc:
-    #             print(f"[ERROR] 处理项目 {p} 时发生异常: {exc}")
-    #         else:
-    #             print(f"[INFO] 处理项目 {p} 完成。")
-
     results_dict = {}
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=24) as executor:
@@ -321,10 +303,9 @@ def main():
                 traceback.print_exc()
 
             else:
-                # 把结果存到字典里，以 instance_id 做键
                 results_dict[instance_id] = result_value
 
-    with open("/home/yuheng/ucsb/PatchingAgent/results_func_test/llm_find/result.json", "w") as f:
+    with open("results_func_test/llm_find/result.json", "w") as f:
         json.dump(results_dict, f)
 
 
