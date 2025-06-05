@@ -9,6 +9,7 @@ import ast
 import shlex
 import tempfile
 from pathlib import Path
+from typing import Set, List
 client = docker.from_env(timeout=300)
 
 def copy_directory_from_container(container_id, src_path, dst_path):
@@ -466,6 +467,78 @@ def parse_modified_functions_from_diff(container_id, diff_text):
 
     return result
 
+
+def get_existing_imports(container_id, file_name, function_name):
+    """
+    Get all import statements that are in effect for the given function (by name or qualified name)
+    in the specified Python file. Includes imports at the module level and in all enclosing scopes.
+    Returns: set of import statement strings.
+    """
+    code = get_file_content(container_id, file_name)
+    if not code:
+        return set()
+    tree = ast.parse(code)
+    scope_stack: List[ast.AST] = []
+    target_node = None
+
+    class ScopeFinder(ast.NodeVisitor):
+        def __init__(self):
+            self.stack = []
+            self.path = []
+        def visit_ClassDef(self, node):
+            self.stack.append(node.name)
+            for child in node.body:
+                self.visit(child)
+            self.stack.pop()
+        def visit_FunctionDef(self, node):
+            self.stack.append(node.name)
+            qualified = ".".join(self.stack)
+            if qualified == function_name or node.name == function_name:
+                # Match by qualified name or just the function name
+                self.path = self.stack[:]
+                nonlocal target_node
+                target_node = node
+            for child in node.body:
+                self.visit(child)
+            self.stack.pop()
+        def visit_AsyncFunctionDef(self, node):
+            self.visit_FunctionDef(node)
+
+    finder = ScopeFinder()
+    finder.visit(tree)
+
+    if not target_node:
+        return set()
+
+    # Example: ["LatexPrinter", "_print_SingularityFunction"]
+    scope_path = finder.path
+
+    # Recursively find all relevant enclosing scope nodes (module, class, function)
+    imports = set()
+    nodes_to_check = []
+
+    # 1. Always check module (file-level) scope
+    nodes_to_check.append(tree)
+    # 2. Check all enclosing class/function scopes for the target function
+    def find_scope_nodes(node, scope_path):
+        if not scope_path:
+            return [node]
+        for child in ast.iter_child_nodes(node):
+            if isinstance(child, (ast.FunctionDef, ast.ClassDef)) and child.name == scope_path[0]:
+                return [child] + find_scope_nodes(child, scope_path[1:])
+        return []
+    nodes_to_check += find_scope_nodes(tree, scope_path[:-1])
+
+    # Collect import statements from each relevant node body
+    for node in nodes_to_check:
+        for stmt in node.body:
+            if isinstance(stmt, ast.Import):
+                imports.add(ast.get_source_segment(code, stmt).strip())
+            elif isinstance(stmt, ast.ImportFrom):
+                imports.add(ast.get_source_segment(code, stmt).strip())
+
+    return imports
+
 def get_function_from_file(container_id, file_path, function_name):
     # Retrieve file content from the container.
     file_content = get_file_content(container_id, file_path)
@@ -474,7 +547,11 @@ def get_function_from_file(container_id, file_path, function_name):
         return None
 
     # Get a mapping from qualified function names to (start_line, end_line)
-    function_mapping = get_python_functions(file_content)
+    try:
+        function_mapping = get_python_functions(file_content)
+    except Exception as e:
+        print(f"Error parsing file {file_path}: {e}")
+        return None
     if function_name not in function_mapping:
         print(f"Function {function_name} not found in file {file_path}")
         return None
