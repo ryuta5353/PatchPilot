@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import List
 import re
+import requests
+import json
 from patchpilot.util.api_requests import create_chatgpt_config, request_chatgpt_engine, create_anthropic_config, \
     request_anthropic_engine, request_chatgpt_response_engine
 
@@ -371,6 +373,90 @@ class ClaudeChatDecoder(DecoderBase):
         return False
 
 
+class OllamaChatDecoder(DecoderBase):
+    def __init__(self, name: str, logger, base_url: str = "http://localhost:11434", **kwargs) -> None:
+        super().__init__(name, logger, **kwargs)
+        self.base_url = base_url
+        self.model_name = name
+        
+    def codegen(self, message: str, num_samples: int = 1, **kwargs) -> List[dict]:
+        if self.temperature == 0:
+            assert num_samples == 1
+        
+        trajs = []
+        for _ in range(num_samples):
+            try:
+                # Ollamaリクエストを送信
+                response = requests.post(
+                    f"{self.base_url}/api/generate",
+                    json={
+                        "model": self.model_name,
+                        "prompt": message,
+                        "stream": False,
+                        "options": {
+                            "temperature": self.temperature,
+                            "num_predict": self.max_new_tokens
+                        }
+                    },
+                    timeout=300  # 5分タイムアウト
+                )
+                
+                if response.status_code == 200:
+                    result = response.json()
+                    content = result.get("response", "")
+                    
+                    # reasoning content抽出（<think>タグがある場合）
+                    reasoning_content_match = re.search(r"<think>(.*?)</think>", content, re.DOTALL)
+                    reasoning_content = reasoning_content_match.group(1).strip() if reasoning_content_match else ""
+                    
+                    # 概算トークン数計算（Ollamaはトークン数を返さない）
+                    prompt_tokens = len(message.split()) * 1.3  # 概算
+                    completion_tokens = len(content.split()) * 1.3  # 概算
+                    
+                    trajs.append({
+                        "response": content,
+                        "reasoning_content": reasoning_content,
+                        "usage": {
+                            "completion_tokens": int(completion_tokens),
+                            "prompt_tokens": int(prompt_tokens),
+                        },
+                    })
+                else:
+                    print(f"Ollama request failed with status {response.status_code}: {response.text}")
+                    trajs.append({
+                        "response": "",
+                        "reasoning_content": "",
+                        "usage": {
+                            "completion_tokens": 0,
+                            "prompt_tokens": 0,
+                        },
+                    })
+                    
+            except Exception as e:
+                print(f"Ollama request error: {e}")
+                trajs.append({
+                    "response": "",
+                    "reasoning_content": "",
+                    "usage": {
+                        "completion_tokens": 0,
+                        "prompt_tokens": 0,
+                    },
+                })
+        
+        return trajs
+    
+    def is_direct_completion(self) -> bool:
+        return False
+    
+    def test_connection(self) -> bool:
+        """Ollamaサーバーとの接続をテスト"""
+        try:
+            response = requests.get(f"{self.base_url}/api/tags", timeout=10)
+            return response.status_code == 200
+        except:
+            return False
+
+
 def make_model(
         model: str,
         backend: str,
@@ -409,6 +495,15 @@ def make_model(
         )
     elif backend == "opensource":
         return OpenSourceChatDecoder(
+            name=model,
+            logger=logger,
+            batch_size=batch_size,
+            max_new_tokens=max_tokens,
+            temperature=temperature,
+            **kwargs
+        )
+    elif backend == "ollama":
+        return OllamaChatDecoder(
             name=model,
             logger=logger,
             batch_size=batch_size,

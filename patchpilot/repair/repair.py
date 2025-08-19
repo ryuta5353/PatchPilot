@@ -790,6 +790,10 @@ def process_loc(loc, args, swe_bench_data, prev_generations):
                     )
                     traj = tool_model.codegen(ask_llm_for_search_prompt, num_samples=1,
                                               tools=[search_func_def_with_class_and_file_schema])[0]
+                elif args.backend == "ollama":
+                    # Ollamaはtool callingをサポートしないため、スキップ
+                    print("⚠️  Ollama detected: Skipping advanced search tool (not supported)")
+                    traj = {"response": "", "tool_call": None}
                 else:
                     raise ValueError(f"Backend {args.backend} is not supported")
                 if traj:
@@ -1084,6 +1088,9 @@ def process_loc(loc, args, swe_bench_data, prev_generations):
             availabel_model = {'claude-3-5-sonnet-20241022': 1}
         elif args.backend == "deepseek":
             availabel_model = {'deepseek-reasoner': 1}
+        elif args.backend == "ollama":
+            # Ollamaは引数で指定されたモデルのみ使用
+            availabel_model = {args.model: 1}
         else:
             raise NotImplementedError(f"backend {args.backend} not implemented for diverse sampling")
 
@@ -1726,7 +1733,7 @@ def main():
         default="gpt-4o-2024-08-06",
     )
     parser.add_argument(
-        "--backend", type=str, default="openai", choices=["openai", "deepseek", "claude"]
+        "--backend", type=str, default="openai", choices=["openai", "deepseek", "claude", "ollama"]
     )
     parser.add_argument("--output_folder", type=str, required=True)
     parser.add_argument("--add_space", action="store_true")
