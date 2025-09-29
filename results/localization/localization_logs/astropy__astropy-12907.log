@@ -1,0 +1,837 @@
+2025-09-24 08:25:33,451 - INFO - Processing bug astropy__astropy-12907
+2025-09-24 08:28:34,086 - INFO - ================ localize astropy__astropy-12907 ================
+2025-09-24 08:28:34,149 - INFO - prompting with message for search:
+
+Please look through the following GitHub issue description, decide whether there is a need to search for a specific string, class, or function, and call the appropriate function to search for the relevant information.
+You can search for a specific string, class, or function to identify the file that need to be edited to fix the problem. 
+If you search a class or function, please use only the name of the class or function as argument.
+If you search for a string, please use the specific string as argument.
+You should pay attention to error message or specific strings in the output or code snippets mentioned in the issue description. 
+When you search for a string in the poc output, you should try to search for the descrptive sentence telling you what is happening, but remember to exclude variable names or details unique to individual instances. You should delete each part that may be dynamically generated, only keeping the general description of the error or issue.
+You need to make the string as short as possible while still being specific enough to identify the relevant code, don't include any details, just search for the general error message or issue description.
+For example, if the error message is "TypeError: 'int' object is not iterable", you should search for "object is not iterable". If the error message is "ValueError: invalid literal for int() with base 10: 'a'", you should search for "invalid literal".
+You don't have to search for all three types of information, you can search any one or more of them as needed. 
+Only search the string if you think it is unique enough to identify the relevant code. If you think the string is too generic and will return too many results, you should skip searching for the string.
+
+### GitHub Issue Description ###
+Modeling's `separability_matrix` does not compute separability correctly for nested CompoundModels
+Consider the following model:
+
+```python
+from astropy.modeling import models as m
+from astropy.modeling.separable import separability_matrix
+
+cm = m.Linear1D(10) & m.Linear1D(5)
+```
+
+It's separability matrix as you might expect is a diagonal:
+
+```python
+>>> separability_matrix(cm)
+array([[ True, False],
+       [False,  True]])
+```
+
+If I make the model more complex:
+```python
+>>> separability_matrix(m.Pix2Sky_TAN() & m.Linear1D(10) & m.Linear1D(5))
+array([[ True,  True, False, False],
+       [ True,  True, False, False],
+       [False, False,  True, False],
+       [False, False, False,  True]])
+```
+
+The output matrix is again, as expected, the outputs and inputs to the linear models are separable and independent of each other.
+
+If however, I nest these compound models:
+```python
+>>> separability_matrix(m.Pix2Sky_TAN() & cm)
+array([[ True,  True, False, False],
+       [ True,  True, False, False],
+       [False, False,  True,  True],
+       [False, False,  True,  True]])
+```
+Suddenly the inputs and outputs are no longer separable?
+
+This feels like a bug to me, but I might be missing something?
+
+###
+
+
+
+Please perform all necessary tool calls in one step, as this is your only opportunity to execute searches. 
+You may call multiple tools (e.g., search_func_def, search_class_def, search_string) as needed in this single operation.
+
+2025-09-24 08:28:34,160 - INFO - ================================================================================
+2025-09-24 08:28:34,181 - INFO - Creating API request
+2025-09-24 08:28:39,497 - INFO - API response ChatCompletion(id='chatcmpl-CJF9VIUUPnOxbvi12LfcQ4kxNpaSi', choices=[Choice(finish_reason='length', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None))], created=1758702513, model='o3-mini-2025-01-31', object='chat.completion', service_tier='default', system_fingerprint='fp_c278fb013d', usage=CompletionUsage(completion_tokens=500, prompt_tokens=911, total_tokens=1411, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=500, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0)))
+2025-09-24 08:28:39,499 - INFO - Response for search:
+{'response': '', 'tool_call': None, 'usage': {'completion_tokens': 500, 'prompt_tokens': 911}}
+2025-09-24 08:28:39,500 - INFO - prompting with message:
+Please look through the following GitHub problem description and Repository structure and provide a list of files that one would need to edit to fix the problem.
+
+### GitHub Problem Description ###
+Modeling's `separability_matrix` does not compute separability correctly for nested CompoundModels
+Consider the following model:
+
+```python
+from astropy.modeling import models as m
+from astropy.modeling.separable import separability_matrix
+
+cm = m.Linear1D(10) & m.Linear1D(5)
+```
+
+It's separability matrix as you might expect is a diagonal:
+
+```python
+>>> separability_matrix(cm)
+array([[ True, False],
+       [False,  True]])
+```
+
+If I make the model more complex:
+```python
+>>> separability_matrix(m.Pix2Sky_TAN() & m.Linear1D(10) & m.Linear1D(5))
+array([[ True,  True, False, False],
+       [ True,  True, False, False],
+       [False, False,  True, False],
+       [False, False, False,  True]])
+```
+
+The output matrix is again, as expected, the outputs and inputs to the linear models are separable and independent of each other.
+
+If however, I nest these compound models:
+```python
+>>> separability_matrix(m.Pix2Sky_TAN() & cm)
+array([[ True,  True, False, False],
+       [ True,  True, False, False],
+       [False, False,  True,  True],
+       [False, False,  True,  True]])
+```
+Suddenly the inputs and outputs are no longer separable?
+
+This feels like a bug to me, but I might be missing something?
+
+
+###
+
+### Repository Structure ###
+astropy/
+    conftest.py
+    setup.py
+    logger.py
+    version.py
+    __init__.py
+    config/
+        affiliated.py
+        configuration.py
+        paths.py
+        __init__.py
+    constants/
+        astropyconst13.py
+        astropyconst20.py
+        astropyconst40.py
+        cgs.py
+        codata2010.py
+        codata2014.py
+        codata2018.py
+        config.py
+        constant.py
+        iau2012.py
+        iau2015.py
+        si.py
+        utils.py
+        __init__.py
+    convolution/
+        convolve.py
+        core.py
+        kernels.py
+        setup_package.py
+        utils.py
+        __init__.py
+    coordinates/
+        angles.py
+        angle_formats.py
+        angle_lextab.py
+        angle_parsetab.py
+        angle_utilities.py
+        attributes.py
+        baseframe.py
+        calculation.py
+        distances.py
+        earth.py
+        earth_orientation.py
+        erfa_astrom.py
+        errors.py
+        funcs.py
+        jparser.py
+        matching.py
+        matrix_utilities.py
+        name_resolve.py
+        orbital_elements.py
+        representation.py
+        sites.py
+        sky_coordinate.py
+        sky_coordinate_parsers.py
+        solar_system.py
+        spectral_coordinate.py
+        spectral_quantity.py
+        transformations.py
+        __init__.py
+        builtin_frames/
+            altaz.py
+            baseradec.py
+            cirs.py
+            cirs_observed_transforms.py
+            ecliptic.py
+            ecliptic_transforms.py
+            equatorial.py
+            fk4.py
+            fk4_fk5_transforms.py
+            fk5.py
+            galactic.py
+            galactic_transforms.py
+            galactocentric.py
+            gcrs.py
+            hadec.py
+            hcrs.py
+            icrs.py
+            icrs_cirs_transforms.py
+            icrs_fk5_transforms.py
+            icrs_observed_transforms.py
+            intermediate_rotation_transforms.py
+            itrs.py
+            lsr.py
+            skyoffset.py
+            supergalactic.py
+            supergalactic_transforms.py
+            utils.py
+            __init__.py
+    cosmology/
+        connect.py
+        core.py
+        flrw.py
+        funcs.py
+        parameter.py
+        parameters.py
+        realizations.py
+        units.py
+        utils.py
+        __init__.py
+        io/
+            cosmology.py
+            ecsv.py
+            mapping.py
+            model.py
+            row.py
+            table.py
+            utils.py
+            yaml.py
+            __init__.py
+    extern/
+        _strptime.py
+        __init__.py
+        configobj/
+            configobj.py
+            validate.py
+            __init__.py
+        jquery/
+            __init__.py
+        ply/
+            cpp.py
+            ctokens.py
+            lex.py
+            yacc.py
+            ygen.py
+            __init__.py
+    io/
+        __init__.py
+        ascii/
+            basic.py
+            cds.py
+            connect.py
+            core.py
+            daophot.py
+            docs.py
+            ecsv.py
+            fastbasic.py
+            fixedwidth.py
+            html.py
+            ipac.py
+            latex.py
+            misc.py
+            mrt.py
+            qdp.py
+            rst.py
+            setup_package.py
+            sextractor.py
+            ui.py
+            __init__.py
+        fits/
+            card.py
+            column.py
+            connect.py
+            convenience.py
+            diff.py
+            file.py
+            fitsrec.py
+            fitstime.py
+            header.py
+            setup_package.py
+            util.py
+            verify.py
+            __init__.py
+            hdu/
+                base.py
+                compressed.py
+                groups.py
+                hdulist.py
+                image.py
+                nonstandard.py
+                streaming.py
+                table.py
+                __init__.py
+            scripts/
+                fitscheck.py
+                fitsdiff.py
+                fitsheader.py
+                fitsinfo.py
+                __init__.py
+        misc/
+            connect.py
+            hdf5.py
+            parquet.py
+            pickle_helpers.py
+            yaml.py
+            __init__.py
+            asdf/
+                connect.py
+                extension.py
+                types.py
+                __init__.py
+                tags/
+                    helpers.py
+                    __init__.py
+                    coordinates/
+                        angle.py
+                        earthlocation.py
+                        frames.py
+                        representation.py
+                        skycoord.py
+                        spectralcoord.py
+                        __init__.py
+                    fits/
+                        fits.py
+                        __init__.py
+                    table/
+                        table.py
+                        __init__.py
+                    time/
+                        time.py
+                        timedelta.py
+                        __init__.py
+                    transform/
+                        basic.py
+                        compound.py
+                        functional_models.py
+                        math.py
+                        physical_models.py
+                        polynomial.py
+                        powerlaws.py
+                        projections.py
+                        spline.py
+                        tabular.py
+                        __init__.py
+                    unit/
+                        equivalency.py
+                        quantity.py
+                        unit.py
+                        __init__.py
+            pandas/
+                connect.py
+                __init__.py
+        registry/
+            base.py
+            compat.py
+            core.py
+            interface.py
+            __init__.py
+        votable/
+            connect.py
+            converters.py
+            exceptions.py
+            setup_package.py
+            table.py
+            tree.py
+            ucd.py
+            util.py
+            volint.py
+            xmlutil.py
+            __init__.py
+            validator/
+                html.py
+                main.py
+                result.py
+                __init__.py
+    modeling/
+        bounding_box.py
+        convolution.py
+        core.py
+        fitting.py
+        functional_models.py
+        mappings.py
+        math_functions.py
+        models.py
+        optimizers.py
+        parameters.py
+        physical_models.py
+        polynomial.py
+        powerlaws.py
+        projections.py
+        rotations.py
+        separable.py
+        setup_package.py
+        spline.py
+        statistic.py
+        tabular.py
+        utils.py
+        __init__.py
+    nddata/
+        bitmask.py
+        blocks.py
+        ccddata.py
+        compat.py
+        decorators.py
+        flag_collection.py
+        nddata.py
+        nddata_base.py
+        nddata_withmixins.py
+        nduncertainty.py
+        utils.py
+        _testing.py
+        __init__.py
+        mixins/
+            ndarithmetic.py
+            ndio.py
+            ndslicing.py
+            __init__.py
+    samp/
+        client.py
+        constants.py
+        errors.py
+        hub.py
+        hub_proxy.py
+        hub_script.py
+        integrated_client.py
+        lockfile_helpers.py
+        setup_package.py
+        standard_profile.py
+        utils.py
+        web_profile.py
+        __init__.py
+    stats/
+        bayesian_blocks.py
+        biweight.py
+        circstats.py
+        funcs.py
+        histogram.py
+        info_theory.py
+        jackknife.py
+        setup_package.py
+        sigma_clipping.py
+        spatial.py
+        __init__.py
+        bls/
+            __init__.py
+        lombscargle/
+            __init__.py
+    table/
+        bst.py
+        column.py
+        connect.py
+        groups.py
+        index.py
+        info.py
+        jsviewer.py
+        meta.py
+        ndarray_mixin.py
+        np_utils.py
+        operations.py
+        pandas.py
+        pprint.py
+        row.py
+        serialize.py
+        setup_package.py
+        soco.py
+        sorted_array.py
+        table.py
+        table_helpers.py
+        __init__.py
+        mixins/
+            dask.py
+            registry.py
+            __init__.py
+        scripts/
+            showtable.py
+            __init__.py
+    time/
+        core.py
+        formats.py
+        setup_package.py
+        utils.py
+        __init__.py
+    timeseries/
+        binned.py
+        core.py
+        downsample.py
+        sampled.py
+        __init__.py
+        io/
+            kepler.py
+            __init__.py
+        periodograms/
+            base.py
+            __init__.py
+            bls/
+                core.py
+                methods.py
+                setup_package.py
+                __init__.py
+            lombscargle/
+                core.py
+                utils.py
+                _statistics.py
+                __init__.py
+                implementations/
+                    chi2_impl.py
+                    fastchi2_impl.py
+                    fast_impl.py
+                    main.py
+                    mle.py
+                    scipy_impl.py
+                    slow_impl.py
+                    utils.py
+                    __init__.py
+    uncertainty/
+        core.py
+        distributions.py
+        __init__.py
+    units/
+        astrophys.py
+        cds.py
+        cgs.py
+        core.py
+        decorators.py
+        deprecated.py
+        equivalencies.py
+        imperial.py
+        misc.py
+        photometric.py
+        physical.py
+        quantity.py
+        required_by_vounit.py
+        si.py
+        structured.py
+        utils.py
+        _typing.py
+        __init__.py
+        format/
+            base.py
+            cds.py
+            cds_lextab.py
+            cds_parsetab.py
+            console.py
+            fits.py
+            generic.py
+            generic_lextab.py
+            generic_parsetab.py
+            latex.py
+            ogip.py
+            ogip_lextab.py
+            ogip_parsetab.py
+            unicode_format.py
+            utils.py
+            vounit.py
+            __init__.py
+        function/
+            core.py
+            logarithmic.py
+            mixin.py
+            units.py
+            __init__.py
+        quantity_helper/
+            converters.py
+            erfa.py
+            function_helpers.py
+            helpers.py
+            scipy_special.py
+            __init__.py
+    utils/
+        argparse.py
+        codegen.py
+        collections.py
+        console.py
+        data.py
+        data_info.py
+        decorators.py
+        diff.py
+        exceptions.py
+        introspection.py
+        metadata.py
+        misc.py
+        parsing.py
+        setup_package.py
+        shapes.py
+        state.py
+        __init__.py
+        compat/
+            misc.py
+            numpycompat.py
+            optional_deps.py
+            __init__.py
+        iers/
+            iers.py
+            __init__.py
+        masked/
+            core.py
+            function_helpers.py
+            __init__.py
+        xml/
+            check.py
+            iterparser.py
+            setup_package.py
+            unescaper.py
+            validate.py
+            writer.py
+            __init__.py
+    visualization/
+        hist.py
+        interval.py
+        lupton_rgb.py
+        mpl_normalize.py
+        mpl_style.py
+        stretch.py
+        time.py
+        transform.py
+        units.py
+        __init__.py
+        scripts/
+            fits2bitmap.py
+            __init__.py
+        wcsaxes/
+            axislabels.py
+            coordinates_map.py
+            coordinate_helpers.py
+            coordinate_range.py
+            core.py
+            formatter_locator.py
+            frame.py
+            grid_paths.py
+            patches.py
+            ticklabels.py
+            ticks.py
+            transforms.py
+            utils.py
+            wcsapi.py
+            __init__.py
+    wcs/
+        docstrings.py
+        setup_package.py
+        utils.py
+        wcs.py
+        wcslint.py
+        __init__.py
+        wcsapi/
+            conftest.py
+            fitswcs.py
+            high_level_api.py
+            high_level_wcs_wrapper.py
+            low_level_api.py
+            sliced_low_level_wcs.py
+            utils.py
+            __init__.py
+            wrappers/
+                base.py
+                sliced_wcs.py
+                __init__.py
+    _dev/
+        scm_version.py
+        __init__.py
+    _erfa/
+        __init__.py
+.pyinstaller
+    run_astropy_tests.py
+    hooks/
+        hook-skyfield.py
+docs/
+    conf.py
+    conftest.py
+    nddata/
+        examples/
+            cutout2d_tofits.py
+    wcs/
+        examples/
+            cube_wcs.py
+            from_file.py
+            programmatic.py
+examples/
+    coordinates/
+        plot_galactocentric-frame.py
+        plot_obs-planning.py
+        plot_sgr-coordinate-frame.py
+        rv-to-gsr.py
+    io/
+        create-mef.py
+        fits-tables.py
+        modify-fits-header.py
+        plot_fits-image.py
+        skip_create-large-fits.py
+        split-jpeg-to-fits.py
+    template/
+        example-template.py
+
+###
+
+
+
+Please only provide the full path and return at most 5 files.
+The returned files should be separated by new lines ordered by most to least important and wrapped with ```
+For example:
+```
+file1.py
+file2.py
+```
+Only return the files. Do not include any comments or explanations.
+2025-09-24 08:28:39,501 - INFO - ================================================================================
+2025-09-24 08:28:39,522 - INFO - Creating API request
+2025-09-24 08:28:41,546 - INFO - API response ChatCompletion(id='chatcmpl-CJF9ayJOyAvGx551kLTCCy9LuGNZn', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='```\nastropy/modeling/separable.py\nastropy/modeling/core.py\nastropy/modeling/models.py\nastropy/modeling/utils.py\nastropy/modeling/parameters.py\n```', refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None)), Choice(finish_reason='stop', index=1, logprobs=None, message=ChatCompletionMessage(content='```\nastropy/modeling/separable.py\nastropy/modeling/core.py\nastropy/modeling/models.py\nastropy/modeling/utils.py\nastropy/modeling/parameters.py\n```', refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None)), Choice(finish_reason='stop', index=2, logprobs=None, message=ChatCompletionMessage(content='```\nastropy/modeling/separable.py\nastropy/modeling/core.py\nastropy/modeling/models.py\n```', refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None)), Choice(finish_reason='stop', index=3, logprobs=None, message=ChatCompletionMessage(content='```\nastropy/modeling/separable.py\nastropy/modeling/core.py\nastropy/modeling/models.py\n```', refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None))], created=1758702518, model='gpt-4o-2024-08-06', object='chat.completion', service_tier='default', system_fingerprint='fp_cbf1785567', usage=CompletionUsage(completion_tokens=130, prompt_tokens=3194, total_tokens=3324, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0)))
+2025-09-24 08:28:41,554 - INFO - ['```\nastropy/modeling/separable.py\nastropy/modeling/core.py\nastropy/modeling/models.py\nastropy/modeling/utils.py\nastropy/modeling/parameters.py\n```', '```\nastropy/modeling/separable.py\nastropy/modeling/core.py\nastropy/modeling/models.py\nastropy/modeling/utils.py\nastropy/modeling/parameters.py\n```', '```\nastropy/modeling/separable.py\nastropy/modeling/core.py\nastropy/modeling/models.py\n```', '```\nastropy/modeling/separable.py\nastropy/modeling/core.py\nastropy/modeling/models.py\n```']
+2025-09-24 08:29:14,936 - INFO - Creating API request
+2025-09-24 08:29:19,438 - INFO - API response ChatCompletion(id='chatcmpl-CJFAAVIUif3eJdZE0HoGi6otdPHTI', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='```\nastropy/modeling/separable.py\nfunction: _coord_matrix\nline: 189\nline: 190\nline: 191\nline: 192\nline: 193\nline: 194\nline: 195\nline: 196\nline: 197\nline: 198\nline: 199\nline: 200\nline: 201\nline: 202\nline: 203\nline: 204\nline: 205\nline: 206\nline: 207\nline: 208\nline: 209\nline: 210\nline: 211\nline: 212\nline: 213\nline: 214\nline: 215\nline: 216\nline: 217\n```', refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None)), Choice(finish_reason='stop', index=1, logprobs=None, message=ChatCompletionMessage(content='```\nastropy/modeling/separable.py\nfunction: _coord_matrix\nline: 189\nline: 190\nline: 191\nline: 192\nline: 193\nline: 194\nline: 195\nline: 196\nline: 197\nline: 198\nline: 199\nline: 200\nline: 201\nline: 202\nline: 203\nline: 204\nline: 205\nline: 206\nline: 207\nline: 208\nline: 209\nline: 210\nline: 211\nline: 212\nline: 213\nline: 214\nline: 215\nline: 216\nline: 217\n```', refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None)), Choice(finish_reason='stop', index=2, logprobs=None, message=ChatCompletionMessage(content='```\nastropy/modeling/separable.py\nfunction: _coord_matrix\n\nastropy/modeling/separable.py\nfunction: _separable\n\nastropy/modeling/separable.py\nfunction: _cstack\n```', refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None)), Choice(finish_reason='stop', index=3, logprobs=None, message=ChatCompletionMessage(content='```\nastropy/modeling/separable.py\nfunction: _cstack\nline: 244\nline: 245\n\nastropy/modeling/separable.py\nfunction: _coord_matrix\nline: 200\nline: 204\nline: 208\n```', refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None))], created=1758702554, model='gpt-4o-2024-08-06', object='chat.completion', service_tier='default', system_fingerprint='fp_cbf1785567', usage=CompletionUsage(completion_tokens=425, prompt_tokens=4030, total_tokens=4455, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0)))
+2025-09-24 08:30:38,399 - INFO - Creating API request
+2025-09-24 08:30:41,873 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:30:41,874 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:30:46,875 - INFO - Creating API request
+2025-09-24 08:30:50,478 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:30:50,479 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:30:55,480 - INFO - Creating API request
+2025-09-24 08:30:58,868 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:30:58,868 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:31:03,869 - INFO - Creating API request
+2025-09-24 08:31:06,962 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:31:06,962 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:31:11,963 - INFO - Creating API request
+2025-09-24 08:31:15,100 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:31:15,101 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:31:20,103 - INFO - Creating API request
+2025-09-24 08:31:23,466 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:31:23,467 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:31:28,465 - INFO - Creating API request
+2025-09-24 08:31:31,947 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:31:31,949 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:31:36,950 - INFO - Creating API request
+2025-09-24 08:31:39,982 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:31:39,983 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:31:44,984 - INFO - Creating API request
+2025-09-24 08:31:48,536 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:31:48,537 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:31:53,538 - INFO - Creating API request
+2025-09-24 08:31:56,451 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:31:56,451 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:32:01,451 - INFO - Creating API request
+2025-09-24 08:32:04,831 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:32:04,832 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:32:09,833 - INFO - Creating API request
+2025-09-24 08:32:12,815 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:32:12,816 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:32:17,817 - INFO - Creating API request
+2025-09-24 08:32:21,095 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:32:21,095 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:32:26,096 - INFO - Creating API request
+2025-09-24 08:32:29,187 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:32:29,188 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:32:34,188 - INFO - Creating API request
+2025-09-24 08:32:37,276 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:32:37,277 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:32:42,280 - INFO - Creating API request
+2025-09-24 08:32:45,568 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:32:45,568 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:32:50,569 - INFO - Creating API request
+2025-09-24 08:32:53,642 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:32:53,643 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:32:58,641 - INFO - Creating API request
+2025-09-24 08:33:01,854 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:33:01,854 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:33:06,855 - INFO - Creating API request
+2025-09-24 08:33:09,942 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:33:09,943 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:33:14,944 - INFO - Creating API request
+2025-09-24 08:33:18,135 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:33:18,136 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:33:23,136 - INFO - Creating API request
+2025-09-24 08:33:26,534 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:33:26,534 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:33:31,533 - INFO - Creating API request
+2025-09-24 08:33:34,822 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:33:34,823 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:33:39,824 - INFO - Creating API request
+2025-09-24 08:33:43,014 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:33:43,015 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:33:48,016 - INFO - Creating API request
+2025-09-24 08:33:51,217 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:33:51,218 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:33:56,219 - INFO - Creating API request
+2025-09-24 08:34:00,636 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:34:00,637 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:34:05,637 - INFO - Creating API request
+2025-09-24 08:34:09,028 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:34:09,030 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:34:14,031 - INFO - Creating API request
+2025-09-24 08:34:17,320 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:34:17,321 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:34:22,322 - INFO - Creating API request
+2025-09-24 08:34:25,617 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:34:25,617 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:34:30,615 - INFO - Creating API request
+2025-09-24 08:34:33,603 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:34:33,603 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:34:38,604 - INFO - Creating API request
+2025-09-24 08:34:41,998 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:34:41,998 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:34:46,999 - INFO - Creating API request
+2025-09-24 08:34:50,503 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:34:50,503 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:34:55,504 - INFO - Creating API request
+2025-09-24 08:34:58,691 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:34:58,692 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:35:03,692 - INFO - Creating API request
+2025-09-24 08:35:07,073 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:35:07,073 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:35:12,074 - INFO - Creating API request
+2025-09-24 08:35:15,484 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:35:15,485 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:35:20,486 - INFO - Creating API request
+2025-09-24 08:35:23,682 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:35:23,683 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:35:28,683 - INFO - Creating API request
+2025-09-24 08:35:31,974 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:35:31,976 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:35:36,977 - INFO - Creating API request
+2025-09-24 08:35:40,266 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:35:40,266 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:35:45,268 - INFO - Creating API request
+2025-09-24 08:35:48,406 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:35:48,407 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:35:53,409 - INFO - Creating API request
+2025-09-24 08:35:56,655 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:35:56,656 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:36:01,655 - INFO - Creating API request
+2025-09-24 08:36:04,842 - INFO - Rate limit exceeded. Waiting...
+2025-09-24 08:36:04,843 - INFO - Error code: 429 - {'error': {'message': 'Request too large for gpt-4o in organization org-39aJq3tEKf518jwTkRzaBrSP on tokens per min (TPM): Limit 30000, Requested 51307. The input or output tokens must be reduced in order to run successfully. Visit https://platform.openai.com/account/rate-limits to learn more.', 'type': 'tokens', 'param': None, 'code': 'rate_limit_exceeded'}}
+2025-09-24 08:36:09,844 - INFO - API response None
+2025-09-24 08:36:09,919 - INFO - Creating API request
+2025-09-24 08:36:11,084 - INFO - API response ChatCompletion(id='chatcmpl-CJFGrZ1uo0PrI1Kp22BnhquGuaLbd', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='```\nastropy/modeling/separable.py\nfunction: separability_matrix\n```', refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None)), Choice(finish_reason='stop', index=1, logprobs=None, message=ChatCompletionMessage(content='```\nastropy/modeling/models.py\n```\n', refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None)), Choice(finish_reason='stop', index=2, logprobs=None, message=ChatCompletionMessage(content='```\nastropy/modeling/models.py\n```', refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None)), Choice(finish_reason='stop', index=3, logprobs=None, message=ChatCompletionMessage(content='```\nastropy/modeling/models.py\n```\n', refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None))], created=1758702969, model='gpt-4o-2024-08-06', object='chat.completion', service_tier='default', system_fingerprint='fp_cbf1785567', usage=CompletionUsage(completion_tokens=49, prompt_tokens=1787, total_tokens=1836, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0)))
+2025-09-24 08:36:11,949 - INFO - Creating API request
+2025-09-24 08:36:13,336 - INFO - API response ChatCompletion(id='chatcmpl-CJFGtD7dlJkT5r0TBTeJErhwyraS4', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='```\nastropy/modeling/utils.py\nfunction: combine_labels\n```', refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None)), Choice(finish_reason='stop', index=1, logprobs=None, message=ChatCompletionMessage(content='```\nastropy/modeling/utils.py\n```', refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None)), Choice(finish_reason='stop', index=2, logprobs=None, message=ChatCompletionMessage(content='```\nastropy/modeling/utils.py\nfunction: combine_labels\n```', refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None)), Choice(finish_reason='stop', index=3, logprobs=None, message=ChatCompletionMessage(content='```\nastropy/modeling/utils.py\n```', refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None))], created=1758702971, model='gpt-4o-2024-08-06', object='chat.completion', service_tier='default', system_fingerprint='fp_cbf1785567', usage=CompletionUsage(completion_tokens=50, prompt_tokens=5203, total_tokens=5253, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0)))
+2025-09-24 08:36:15,199 - INFO - Creating API request
+2025-09-24 08:36:16,611 - INFO - API response ChatCompletion(id='chatcmpl-CJFGwi8Vj0DTsDLH86t0LomhgKxLJ', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='```\nastropy/modeling/parameters.py\n```', refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None)), Choice(finish_reason='stop', index=1, logprobs=None, message=ChatCompletionMessage(content='```\nastropy/modeling/parameters.py\n```', refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None)), Choice(finish_reason='stop', index=2, logprobs=None, message=ChatCompletionMessage(content='```\nastropy/modeling/parameters.py\n```', refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None)), Choice(finish_reason='stop', index=3, logprobs=None, message=ChatCompletionMessage(content='```\nastropy/modeling/parameters.py\n```', refusal=None, role='assistant', annotations=[], audio=None, function_call=None, tool_calls=None))], created=1758702974, model='gpt-4o-2024-08-06', object='chat.completion', service_tier='default', system_fingerprint='fp_cbf1785567', usage=CompletionUsage(completion_tokens=44, prompt_tokens=7468, total_tokens=7512, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0)))

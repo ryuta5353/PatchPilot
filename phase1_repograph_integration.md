@@ -12,7 +12,7 @@ PatchPilotのLocalizationフェーズに、Repographの**コード構造グラ�
 - **対象**: Repographのみ（KGCompassは含まない）
 - **統合先**: PatchPilotのLocalizationモジュール
 - **期間**: 3-4週間
-- **検証**: 無料LLM（Ollama）を使用
+- **検証**: OpenAI APIを使用（gpt-4o-mini推奨）
 
 ---
 
@@ -23,15 +23,15 @@ PatchPilotのLocalizationフェーズに、Repographの**コード構造グラ�
 ```
 問題文入力
     ↓
-[既存] PatchPilot FL初期処理
+[既存] PatchPilot FL初期処理（ファイルレベル特定）
     ↓
-[新規] Repographグラフ構築/キャッシュ読込
+[新規] Repographグラフ・構造情報の構築/読込
     ↓
-[新規] 疑わしい関数の依存関係探索
+[改良] LLMFL.localize_line_from_files()にグラフコンテキスト追加
     ↓
-[改良] 依存関係を考慮したコンテキスト生成
+[新規] 依存関係を考慮したプロンプト生成
     ↓
-[既存] LLMへのプロンプト送信（Ollama使用）
+[既存] LLMへのプロンプト送信
     ↓
 障害位置特定結果
 ```
@@ -41,16 +41,16 @@ PatchPilotのLocalizationフェーズに、Repographの**コード構造グラ�
 ```
 patchpilot/
 ├── fl/
-│   ├── localize.py           # [修正] Repographオプション追加
-│   ├── FL.py                 # [修正] グラフコンテキスト統合
-│   └── repograph_fl.py       # [新規] Repograph統合ロジック
-├── repograph/                # [新規] Repographモジュール
+│   ├── localize.py           # [修正] --repo_graph オプション追加
+│   ├── FL.py                 # [修正] グラフコンテキスト統合メソッド追加
+│   └── repograph_utils.py    # [新規] Repograph統合ユーティリティ
+├── repograph/                # [新規] Repographモジュール移植
 │   ├── __init__.py
-│   ├── graph_builder.py      # construct_graph.pyから移植
-│   ├── graph_searcher.py     # graph_searcher.pyから移植
-│   └── utils.py              # 必要なユーティリティ
+│   ├── construct_graph.py    # RepoGraph/repograph/から移植
+│   ├── graph_searcher.py     # RepoGraph/repograph/から移植
+│   └── utils.py              # RepoGraph/repograph/から移植
 └── cache/
-    └── repograph/            # グラフキャッシュ保存先
+    └── code_graphs/          # グラフキャッシュ保存先
 ```
 
 ---
@@ -67,6 +67,7 @@ networkx>=3.0
 tree-sitter-languages>=1.8.0
 pygments>=2.15.0
 grep-ast>=0.3.0
+tqdm>=4.64.0
 ```
 
 ```bash
@@ -76,188 +77,241 @@ pip install -r requirements_repograph.txt
 
 #### タスク2: Repographモジュール移植
 
-```python
-# patchpilot/repograph/graph_builder.py
-from pathlib import Path
-import networkx as nx
-from tree_sitter_languages import get_language, get_parser
-import pickle
-import json
+RepoGraph/repographフォルダ全体をpatchpilot/repographに移植：
 
-class CodeGraph:
-    def __init__(self, root_path, cache_dir="cache/repograph"):
-        self.root = Path(root_path)
-        self.cache_dir = Path(cache_dir)
-        self.cache_dir.mkdir(parents=True, exist_ok=True)
-        self.graph = nx.MultiDiGraph()
-        
-    def build_or_load_graph(self, instance_id):
-        """グラフ構築またはキャッシュから読み込み"""
-        cache_file = self.cache_dir / f"{instance_id}.pkl"
-        
-        if cache_file.exists():
-            print(f"Loading cached graph for {instance_id}")
-            with open(cache_file, 'rb') as f:
-                return pickle.load(f)
-        
-        print(f"Building new graph for {instance_id}")
-        graph = self._build_graph()
-        
-        # キャッシュ保存
-        with open(cache_file, 'wb') as f:
-            pickle.dump(graph, f)
-        
-        return graph
-    
-    def _build_graph(self):
-        """実際のグラフ構築処理"""
-        # Repograph/repograph/construct_graph.pyから移植
-        pass
+```bash
+# 移植コマンド
+cp -r RepoGraph/repograph/ patchpilot/
+touch patchpilot/repograph/__init__.py
 ```
+
+移植後の修正点：
+1. `construct_graph.py`の`from utils import create_structure`を`from .utils import create_structure`に修正
+2. `__init__.py`で必要なクラスをエクスポート
 
 ### 3.2 Week 2: PatchPilot統合
 
 #### タスク3: FL.pyの拡張
 
-```python
-# patchpilot/fl/repograph_fl.py
-from patchpilot.repograph.graph_builder import CodeGraph
-from patchpilot.repograph.graph_searcher import RepoSearcher
+Agentlessの実装パターンに従って、既存の`LLMFL`クラスを拡張：
 
-class RepographEnhancedFL:
-    def __init__(self, repo_path, use_cache=True):
-        self.repo_path = repo_path
-        self.code_graph = CodeGraph(repo_path)
-        self.use_cache = use_cache
-        
-    def enhance_context_with_dependencies(self, suspicious_functions, instance_id):
-        """依存関係を使ってコンテキストを拡張"""
-        # グラフ構築/読み込み
-        graph_data = self.code_graph.build_or_load_graph(instance_id)
-        graph = graph_data['graph']
-        tags = graph_data['tags']
-        
-        # 依存関係探索
-        searcher = RepoSearcher(graph)
-        enhanced_context = []
-        
-        for func_name in suspicious_functions:
-            # 1-hop, 2-hop neighborsを取得
-            neighbors_1 = searcher.one_hop_neighbors(func_name)
-            neighbors_2 = searcher.two_hop_neighbors(func_name)
-            
-            context_info = {
-                'function': func_name,
-                'direct_dependencies': neighbors_1,
-                'indirect_dependencies': neighbors_2,
-                'call_chain': self._get_call_chain(graph, func_name)
-            }
-            enhanced_context.append(context_info)
-        
-        return enhanced_context
-    
-    def _get_call_chain(self, graph, func_name, max_depth=3):
-        """関数の呼び出しチェーンを取得"""
-        # 実装
-        pass
+```python
+# patchpilot/fl/repograph_utils.py
+import pickle
+import json
+from copy import deepcopy
+from tqdm import tqdm
+
+def retrieve_graph(code_graph, graph_tags, search_term, structure, max_tags=100):
+    """Agentless localize.py:26-51から移植"""
+    one_hop_tags = []
+    tags = []
+    for tag in graph_tags:
+        if tag['name'] == search_term and tag['kind'] == 'ref':
+            tags.append(tag)
+        if len(tags) >= max_tags:
+            break
+
+    for i, tag in enumerate(tags):
+        print(f"Retrieving graph for {i}/{len(tags)}")
+        path = tag['rel_fname'].split('/')
+        s = deepcopy(structure)
+        for p in path:
+            s = s[p]
+        for txt in s['functions']:
+            if tag['line'] >= txt['start_line'] and tag['line'] <= txt['end_line']:
+                one_hop_tags.append((txt, tag['rel_fname']))
+        for txt in s['classes']:
+            for func in txt['methods']:
+                if tag['line'] >= func['start_line'] and tag['line'] <= func['end_line']:
+                    func['text'].insert(0, txt['text'][0])
+                    one_hop_tags.append((func, tag['rel_fname']))
+    return one_hop_tags
+
+def construct_code_graph_context(found_related_locs, code_graph, graph_tags, structure):
+    """Agentless localize.py:53-100から移植"""
+    graph_context = ""
+
+    graph_item_format = """
+### Dependencies for {func}
+{dependencies}
+"""
+    tag_format = """
+location: {fname} lines {start_line} - {end_line}
+name: {name}
+contents:
+{contents}
+
+"""
+    for item in found_related_locs:
+        code_graph_context = ""
+        item = item[0].splitlines()
+        for loc in tqdm(item):
+            if loc.startswith("class: ") and "." not in loc:
+                loc = loc[len("class: ") :].strip()
+                tags = retrieve_graph(code_graph, graph_tags, loc, structure)
+                for t, fname in tags:
+                    code_graph_context += tag_format.format(
+                        **t,
+                        fname=fname,
+                        contents="\n".join(t['text'])
+                    )
+            elif loc.startswith("function: ") and "." not in loc:
+                loc = loc[len("function: ") :].strip()
+                tags = retrieve_graph(code_graph, graph_tags, loc, structure)
+                for t, fname in tags:
+                    code_graph_context += tag_format.format(
+                        **t,
+                        fname=fname,
+                        contents="\n".join(t['text'])
+                    )
+            elif "." in loc:
+                loc = loc.split(".")[-1].strip()
+                tags = retrieve_graph(code_graph, graph_tags, loc, structure)
+                for t, fname in tags:
+                    code_graph_context += tag_format.format(
+                        **t,
+                        fname=fname,
+                        contents="\n".join(t['text'])
+                    )
+            graph_context += graph_item_format.format(func=loc, dependencies=code_graph_context)
+    return graph_context
 ```
 
 #### タスク4: localize.pyへの統合
 
-```python
-# patchpilot/fl/localize.py の修正
-import argparse
-from patchpilot.fl.repograph_fl import RepographEnhancedFL
+PatchPilotの既存パターンに従った統合：
 
-def main():
-    parser = argparse.ArgumentParser()
-    # 既存の引数...
-    
-    # Repograph関連の引数を追加
-    parser.add_argument("--use_repograph", action="store_true",
-                       help="Enable Repograph code structure analysis")
-    parser.add_argument("--graph_depth", type=int, default=2,
-                       help="Depth of dependency graph exploration")
-    parser.add_argument("--graph_cache_dir", default="cache/repograph",
-                       help="Directory for caching code graphs")
-    
-    args = parser.parse_args()
-    
-    # 既存の処理...
-    
-    if args.use_repograph:
-        # Repographによる拡張
-        repograph_fl = RepographEnhancedFL(repo_path)
-        dependency_context = repograph_fl.enhance_context_with_dependencies(
-            suspicious_functions, instance_id
-        )
-        
-        # プロンプトにコンテキストを追加
-        prompt = add_dependency_context_to_prompt(prompt, dependency_context)
+```python
+# patchpilot/fl/localize.py の修正点
+
+# 1. import追加
+from patchpilot.fl.repograph_utils import construct_code_graph_context
+
+# 2. argparse引数追加
+parser.add_argument("--repo_graph", action="store_true",
+                   help="Enable Repograph code structure analysis")
+parser.add_argument("--code_graph_dir", default="cache/code_graphs",
+                   help="Directory for cached code graphs")
+
+# 3. localize_instance()関数内でグラフ読み込み追加（Line 61-67付近）
+if args.repo_graph:
+    code_graph = pickle.load(
+        open(os.path.join(args.code_graph_dir, f"{instance_id}.pkl"), "rb")
+    )
+    graph_tags = json.load(
+        open(os.path.join(args.code_graph_dir, f"tags_{instance_id}.json"), "r")
+    )
+
+# 4. LLMFL.localize_line_from_files()呼び出し時にグラフ情報を渡す（Line 190-198付近）
+if args.repo_graph:
+    # グラフコンテキストを構築
+    graph_context = construct_code_graph_context(
+        found_edit_locs, code_graph, graph_tags, structure
+    )
+    # FL.pyに渡すパラメータに追加
+    fl.graph_context = graph_context
 ```
 
-### 3.3 Week 3: 無料LLM統合と検証
+### 3.3 Week 3: 検証と評価
 
-#### タスク5: Ollama設定
+#### タスク5: OpenAI API設定確認
 
 ```bash
-# setup_ollama.sh
-#!/bin/bash
+# OpenAI API設定確認
+echo "Checking OpenAI API configuration..."
 
-# Ollamaインストール確認
-if ! command -v ollama &> /dev/null; then
-    echo "Installing Ollama..."
-    curl -fsSL https://ollama.com/install.sh | sh
+# 環境変数確認
+if [ -z "$OPENAI_API_KEY" ]; then
+    echo "Error: OPENAI_API_KEY not set"
+    exit 1
 fi
 
-# CodeLlamaモデルダウンロード
-ollama pull codellama:7b-instruct
+# API接続テスト
+python -c "
+import openai
+import os
+openai.api_key = os.getenv('OPENAI_API_KEY')
+try:
+    response = openai.chat.completions.create(
+        model='gpt-4o-mini',
+        messages=[{'role': 'user', 'content': 'test'}],
+        max_tokens=5
+    )
+    print('✅ OpenAI API connection successful')
+except Exception as e:
+    print(f'❌ OpenAI API connection failed: {e}')
+    exit 1
+"
 
-# サーバー起動
-ollama serve &
-
-echo "Ollama setup complete!"
+echo "OpenAI API setup verified!"
 ```
 
-#### タスク6: 無料モデルアダプター実装
+#### タスク6: FL.pyにグラフプロンプト追加
+
+Agentless FL.py:121-133の`obtain_relevant_code_graph_prompt`を移植：
 
 ```python
-# patchpilot/util/free_model.py
-import requests
-import json
+# patchpilot/fl/FL.py に追加
 
-class OllamaModel:
-    def __init__(self, model_name="codellama:7b-instruct"):
-        self.model = model_name
-        self.base_url = "http://localhost:11434"
-        
-    def generate(self, prompt, max_tokens=2048):
-        """Ollamaを使用した生成"""
-        response = requests.post(
-            f"{self.base_url}/api/generate",
-            json={
-                "model": self.model,
-                "prompt": prompt,
-                "stream": False,
-                "options": {
-                    "temperature": 0.1,
-                    "num_predict": max_tokens
-                }
-            }
-        )
-        
-        if response.status_code == 200:
-            return response.json()["response"]
+class LLMFL:
+    # 既存のプロンプト...
+
+    obtain_relevant_code_graph_prompt = """
+Please review the following GitHub problem description and relevant files, and provide a set of locations that need to be edited to fix the issue.
+You will also be given a list of function/class dependencies to help you understand how functions/classes in relevant files fit into the rest of the codebase.
+The locations can be specified as class names, function or method names, or exact line numbers that require modification.
+
+### GitHub Problem Description ###
+{problem_statement}
+
+### Related Files ###
+{file_contents}
+
+### Function/Class Dependencies ###
+{code_graph}
+
+###
+
+Please provide the class name, function or method name, or the exact line numbers that need to be edited.
+### Examples:
+```
+full_path1/file1.py
+line: 10
+class: MyClass1
+line: 51
+
+full_path2/file2.py
+function: MyClass2.my_method
+line: 12
+
+full_path3/file3.py
+function: my_function
+line: 24
+line: 156
+```
+
+Return just the location(s)
+"""
+
+    def localize_line_from_files(self, pred_files, num_samples=4):
+        # 既存の実装...
+
+        # グラフコンテキストが設定されている場合は拡張プロンプトを使用
+        if hasattr(self, 'graph_context') and self.graph_context:
+            prompt = self.obtain_relevant_code_graph_prompt.format(
+                problem_statement=self.problem_statement,
+                file_contents=file_contents,
+                code_graph=self.graph_context
+            )
         else:
-            raise Exception(f"Ollama error: {response.status_code}")
-    
-    def test_connection(self):
-        """接続テスト"""
-        try:
-            response = requests.get(f"{self.base_url}/api/tags")
-            return response.status_code == 200
-        except:
-            return False
+            # 既存のプロンプトを使用
+            prompt = self.obtain_relevant_code_combine_top_n_prompt.format(
+                problem_statement=self.problem_statement,
+                file_contents=file_contents
+            )
+
+        # 既存の処理続行...
 ```
 
 ---
@@ -282,25 +336,33 @@ django__django-11099
 #!/bin/bash
 # run_repograph_evaluation.sh
 
-# ベースライン（Repographなし）
+# Step 0: グラフ構築
+for instance_id in django__django-11001 django__django-11019 django__django-11039 django__django-11049 django__django-11099; do
+    echo "Building graph for $instance_id"
+    python patchpilot/repograph/construct_graph.py /path/to/repo/$instance_id
+    mv graph.pkl cache/code_graphs/$instance_id.pkl
+    mv tags.json cache/code_graphs/tags_$instance_id.json
+done
+
+# Step 1: ベースライン（Repographなし） - README通りのコマンド
 python patchpilot/fl/localize.py \
-    --file_level \
-    --direct_line_level \
+    --file_level --direct_line_level \
     --output_folder results/baseline \
-    --task_list_file test_instances.txt \
-    --free_model ollama
+    --top_n 5 --compress \
+    --context_window=20 \
+    --num_samples 4 --num_threads 16
 
-# Repograph統合版
+# Step 2: Repograph統合版
 python patchpilot/fl/localize.py \
-    --file_level \
-    --direct_line_level \
-    --use_repograph \
-    --graph_depth 2 \
+    --file_level --direct_line_level \
+    --repo_graph \
+    --code_graph_dir cache/code_graphs \
     --output_folder results/with_repograph \
-    --task_list_file test_instances.txt \
-    --free_model ollama
+    --top_n 5 --compress \
+    --context_window=20 \
+    --num_samples 4 --num_threads 16
 
-# 結果比較
+# Step 3: 結果比較
 python evaluate_results.py \
     --baseline results/baseline \
     --enhanced results/with_repograph
@@ -347,7 +409,7 @@ def evaluate_localization(predictions, ground_truth):
 ### 5.1 技術的成功基準
 - ✅ Repographグラフ構築が30秒以内で完了
 - ✅ キャッシュによる2回目以降の読み込みが1秒以内
-- ✅ Ollamaでの推論が動作
+- ✅ OpenAI API (gpt-4o-mini) での推論が動作
 - ✅ メモリ使用量が8GB以内
 
 ### 5.2 性能的成功基準
@@ -362,7 +424,7 @@ def evaluate_localization(predictions, ground_truth):
 | リスク | 影響 | 対策 |
 |--------|------|------|
 | グラフが大きすぎる | メモリ不足 | 深さ制限、ファイル数制限 |
-| Ollamaが遅い | 検証に時間がかかる | より小さいモデル（phi3）使用 |
+| APIレート制限 | 検証に時間がかかる | バッチサイズ調整、待機時間追加 |
 | 依存関係が複雑 | 精度低下 | 重要度でフィルタリング |
 
 ---
@@ -389,19 +451,19 @@ Phase 1（Repograph統合）が成功した後：
 ## 8. 実装チェックリスト
 
 - [ ] Week 1
-  - [ ] 依存関係インストール
-  - [ ] Repographモジュール移植
-  - [ ] グラフ構築動作確認
-  - [ ] キャッシュ機能実装
+  - [ ] 依存関係インストール (requirements_repograph.txt)
+  - [ ] Repographモジュール移植 (RepoGraph/repograph/ → patchpilot/repograph/)
+  - [ ] import修正とテスト実行
+  - [ ] グラフ構築コマンド動作確認
 
-- [ ] Week 2  
-  - [ ] FL.py拡張
-  - [ ] localize.py統合
-  - [ ] プロンプト生成改良
-  - [ ] 統合テスト
+- [ ] Week 2
+  - [ ] repograph_utils.py実装（Agentlessパターン移植）
+  - [ ] FL.py拡張（グラフプロンプト追加）
+  - [ ] localize.py統合（--repo_graphオプション追加）
+  - [ ] 統合テスト（基本的なグラフ読み込み確認）
 
 - [ ] Week 3
-  - [ ] Ollama設定
-  - [ ] 評価実行
-  - [ ] 結果分析
-  - [ ] レポート作成
+  - [ ] テストインスタンスでのグラフ構築
+  - [ ] ベースラインvs統合版比較実行
+  - [ ] 精度評価とメトリクス分析
+  - [ ] レポート作成とPhase 2準備

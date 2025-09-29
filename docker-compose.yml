@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  patchpilot:
+    # `build:`を削除し、ダウンロード済みの公式イメージを指定
+    image: 3rdn4/patchpilot_verified:v1
+    container_name: patchpilot-dev
+    
+    # READMEの指示通り、Docker-in-Dockerを有効化
+    privileged: true
+    
+    # 2つのvolumesセクションを一つにまとめる
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - .:/opt/PatchPilot
+      - patchpilot-cache:/root/.cache
+
+    # 環境変数設定
+    environment:
+      - PYTHONPATH=/opt/PatchPilot
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+
+    # コンテナの作業ディレクトリと対話モードの設定
+    working_dir: /opt/PatchPilot
+    stdin_open: true
+    tty: true
+    command: /bin/bash
+
+# ボリュームの定義
+volumes:
+  patchpilot-cache:

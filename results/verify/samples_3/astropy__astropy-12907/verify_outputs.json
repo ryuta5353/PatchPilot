@@ -1,0 +1,33 @@
+{
+    "instance_id": "astropy__astropy-12907",
+    "result": {
+        "poc_test_succeed_llm": [],
+        "llm_judgement_reason": [],
+        "poc_test_succeed_rule": [],
+        "poc_is_executed": [],
+        "poc_code": [
+            {
+                "poc_code.py": "from astropy.modeling import models as m\nfrom astropy.modeling.separable import separability_matrix\n\n# Define a simple compound model\ncm = m.Linear1D(10) & m.Linear1D(5)\n\n# Check the separability matrix for the simple compound model\nsimple_result = separability_matrix(cm)\nprint(\"Separability matrix for simple compound model:\")\nprint(simple_result)\n\n# Check the separability matrix for a more complex compound model\ncomplex_result = separability_matrix(m.Pix2Sky_TAN() & m.Linear1D(10) & m.Linear1D(5))\nprint(\"\\nSeparability matrix for more complex compound model:\")\nprint(complex_result)\n\n# Check the separability matrix for a nested compound model\nnested_result = separability_matrix(m.Pix2Sky_TAN() & cm)\nprint(\"\\nSeparability matrix for nested compound model:\")\nprint(nested_result)\n\n# Analyze the results to understand the bug\nprint(\"\\nComparing nested and complex model separability matrices:\")\nprint(\"Nested Result:\")\nprint(nested_result)\nprint(\"Complex Result:\")\nprint(complex_result)\n\n# Check if the nested and complex results are the same\nif (nested_result == complex_result).all():\n    print(\"\\nBUG ABSENT: Nested compound model separability matches the expected complex model separability.\")\nelse:\n    print(\"\\nBUG REPRODUCED: Nested compound model separability does not match the expected complex model separability.\")"
+            }
+        ],
+        "poc_execution_output": [],
+        "functionality_test_command": "pytest --no-header -rA --tb=no -p no:cacheprovider astropy/modeling/tests/test_separable.py astropy/modeling/tests/test_compound.py astropy/modeling/tests/test_core.py",
+        "functionality_test_output_ex": {
+            "stdout": "",
+            "stderr": "/opt/SWE-bench/testbed/astropy__astropy-12907/astropy/version.py:11: UserWarning: could not determine astropy package version; this indicates a broken installation\n  warnings.warn(\nImportError while loading conftest '/opt/SWE-bench/testbed/astropy__astropy-12907/conftest.py'.\nconftest.py:11: in <module>\n    from astropy import __version__\nastropy/__init__.py:174: in <module>\n    log = _init_log()\nastropy/logger.py:108: in _init_log\n    log._set_defaults()\nastropy/logger.py:475: in _set_defaults\n    self.disable_warnings_logging()\nastropy/logger.py:245: in disable_warnings_logging\n    raise LoggingError(\"Cannot disable warnings logging: \"\nE   astropy.logger.LoggingError: Cannot disable warnings logging: warnings.showwarning was not set by this logger, or has been overridden\n"
+        },
+        "functionality_test_output": {
+            "stdout": "",
+            "stderr": "/opt/SWE-bench/testbed/astropy__astropy-12907/astropy/version.py:11: UserWarning: could not determine astropy package version; this indicates a broken installation\n  warnings.warn(\nImportError while loading conftest '/opt/SWE-bench/testbed/astropy__astropy-12907/conftest.py'.\nconftest.py:11: in <module>\n    from astropy import __version__\nastropy/__init__.py:174: in <module>\n    log = _init_log()\nastropy/logger.py:108: in _init_log\n    log._set_defaults()\nastropy/logger.py:475: in _set_defaults\n    self.disable_warnings_logging()\nastropy/logger.py:245: in disable_warnings_logging\n    raise LoggingError(\"Cannot disable warnings logging: \"\nE   astropy.logger.LoggingError: Cannot disable warnings logging: warnings.showwarning was not set by this logger, or has been overridden\n"
+        },
+        "functionality_test_fail_num": {
+            "old_failed_tests_num": 0,
+            "new_failed_tests_num": 0
+        },
+        "functionality_test_fail_diff_only_func": "",
+        "old_failed_tests": "",
+        "new_failed_tests": "",
+        "functionality_test_fail_diff_whole": ""
+    },
+    "patched_diff": ""
+}
