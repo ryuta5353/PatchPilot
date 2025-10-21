@@ -244,10 +244,14 @@ The locations can be specified as class names, function or method names, or exac
 
 ### Related Files ###
 Each file section is introduced by
-### File: path/to/file.py ###  
+### File: path/to/file.py ###
 followed by its contents with line numbers on the left.
 Be sure to associate each line number with the correct file, and only consider the files explicitly listed.
 {file_contents}
+
+### Function/Class Dependencies ###
+{code_graph}
+
 ###
 
 {last_search_results}
@@ -422,7 +426,7 @@ Return just the locations. Do not include any comments or explanations. Do not f
         )
         if self.backend == "openai":
             tool_model = make_model(
-            model="o3-mini",
+            model=self.model_name,
             backend="openai",
             logger=self.logger,
             max_tokens=self.max_tokens,
@@ -436,7 +440,7 @@ Return just the locations. Do not include any comments or explanations. Do not f
         elif self.backend == "deepseek":
             # directly use openai to finish tool_call
             tool_model = make_model(
-            model="o3-mini",
+            model=self.model_name,
             backend="openai",
             logger=self.logger,
             max_tokens=self.max_tokens,
@@ -813,6 +817,7 @@ Return just the locations. Do not include any comments or explanations. Do not f
         sticky_scroll: bool,
         no_line_number: bool,
         code_graph: bool,
+        graph_context: str = "",
         num_samples: int = 1,
         mock=False,
         coverage_info=None,
@@ -843,7 +848,7 @@ Return just the locations. Do not include any comments or explanations. Do not f
         elif code_graph:
             template = self.obtain_relevant_code_graph_prompt
             message = template.format(
-                problem_statement=self.problem_statement, file_contents=topn_content, last_search_results=last_search_results
+                problem_statement=self.problem_statement, file_contents=topn_content, code_graph=graph_context, last_search_results=last_search_results
             )
             if num_tokens_from_messages(message, "gpt-4o-2024-05-13") > 128000:
                 template = self.obtain_relevant_code_combine_top_n_prompt

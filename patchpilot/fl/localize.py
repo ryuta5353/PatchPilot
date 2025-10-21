@@ -10,6 +10,7 @@ from patchpilot.util.preprocess_data import (
 )
 
 from patchpilot.fl.FL import LLMFL
+from patchpilot.fl.repograph_utils import construct_code_graph_context
 from patchpilot.repair.repair import poc_info_prompt
 from patchpilot.reproduce.task import parse_task_list_file
 from patchpilot.util.preprocess_data import (
@@ -242,6 +243,18 @@ def localize_instance(
             args.match_partial_paths,
             args.temperature
         )
+
+        # Generate graph context if repo_graph is enabled (計画書3.2 タスク4より)
+        if args.repo_graph and code_graph is not None and graph_tags is not None:
+            graph_context = construct_code_graph_context(
+                found_related_locs,
+                code_graph,
+                graph_tags,
+                structure
+            )
+        else:
+            graph_context = ""
+
         (
             found_edit_locs,
             additional_artifact_loc_edit_location,
@@ -252,6 +265,7 @@ def localize_instance(
             context_window=args.context_window,
             add_space=args.add_space,
             code_graph=args.repo_graph,
+            graph_context=graph_context,
             no_line_number=args.no_line_number,
             sticky_scroll=args.sticky_scroll,
             mock=args.mock,
@@ -361,6 +375,18 @@ def localize_instance(
             args.match_partial_paths,
             args.temperature
         )
+
+        # Generate graph context if repo_graph is enabled (計画書3.2 タスク4より Review level)
+        if args.repo_graph and code_graph is not None and graph_tags is not None:
+            graph_context = construct_code_graph_context(
+                found_related_locs,
+                code_graph,
+                graph_tags,
+                structure
+            )
+        else:
+            graph_context = ""
+
         (
             found_edit_locs_extra,
             additional_artifact_loc_edit_location_extra,
@@ -371,6 +397,7 @@ def localize_instance(
             context_window=args.context_window,
             add_space=args.add_space,
             code_graph=args.repo_graph,
+            graph_context=graph_context,
             no_line_number=args.no_line_number,
             sticky_scroll=args.sticky_scroll,
             mock=args.mock,
