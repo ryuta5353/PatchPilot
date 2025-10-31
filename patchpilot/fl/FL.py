@@ -236,7 +236,7 @@ Return just the location(s). Do not include any comments or explanations. Do not
 
     obtain_relevant_code_graph_prompt = """
 Please review the following GitHub problem description and relevant files, and provide a set of locations that need to be edited to fix the issue.
-You will also be given a list of function/class dependencies to help you understand how functions/classes in relevant files fit into the rest of the codebase.
+You will also be given a focused list of function/class dependencies to help you understand the immediate context of required changes.
 The locations can be specified as class names, function or method names, or exact line numbers that require modification.
 
 ### GitHub Problem Description ###
@@ -249,7 +249,29 @@ followed by its contents with line numbers on the left.
 Be sure to associate each line number with the correct file, and only consider the files explicitly listed.
 {file_contents}
 
-### Function/Class Dependencies ###
+### Graph Context: Focused Function Dependencies for Target Files ###
+The following shows the most important functions that directly interact with the target functions.
+This is a FOCUSED view - it shows only direct relationships, not the entire codebase.
+
+**Structure of this graph**:
+- Each section shows "### Dependencies for <function_name>"
+- This lists the functions that are most relevant to understanding <function_name>
+- Functions with higher in_degree (called more frequently) appear first
+
+**Critical guidance for using this graph**:
+1. **Primary edit location**: Find the function/line with the core bug logic (mentioned in problem description)
+2. **Secondary locations**: Check functions that CALL the target function - they may:
+   - Need updates if the target function's behavior changes
+   - Have related bugs that stem from the same root cause
+   - Require coordinated error handling changes
+3. **Coordination points**: Check functions CALLED BY the target function:
+   - If you modify how the target function calls them, update the calls
+   - If those functions have expectations about error handling, align with your changes
+4. **Pattern matching**: If multiple related functions appear, they likely interact - fix them together
+
+**Important**: This graph is focused (limited to most critical relationships).
+Use it to guide your search but trust the problem description as the primary source of truth.
+
 {code_graph}
 
 ###
@@ -850,11 +872,22 @@ Return just the locations. Do not include any comments or explanations. Do not f
             message = template.format(
                 problem_statement=self.problem_statement, file_contents=topn_content, code_graph=graph_context, last_search_results=last_search_results
             )
+            # DEBUG: Log graph context information
+            self.logger.info("==== GRAPH CONTEXT DEBUG ====")
+            self.logger.info(f"Graph context enabled: {code_graph}")
+            self.logger.info(f"Graph context size: {len(graph_context)} characters")
+            self.logger.info(f"Graph context items (Dependencies for): {graph_context.count('### Dependencies for')}")
+            self.logger.info(f"Prompt total tokens (with graph): {num_tokens_from_messages(message, 'gpt-4o-2024-05-13')}")
+            self.logger.info(f"Graph context preview (first 500 chars):\n{graph_context[:500]}")
+            self.logger.info("==== END GRAPH CONTEXT DEBUG ====")
+
             if num_tokens_from_messages(message, "gpt-4o-2024-05-13") > 128000:
+                self.logger.warning("⚠️ FALLBACK TRIGGERED: Token count exceeds 128000, switching to non-graph template")
                 template = self.obtain_relevant_code_combine_top_n_prompt
                 message = template.format(
                     problem_statement=self.problem_statement, file_contents=topn_content, last_search_results=last_search_results
                 )
+                self.logger.info(f"Prompt total tokens (without graph, fallback): {num_tokens_from_messages(message, 'gpt-4o-2024-05-13')}")
         else:
             template = self.obtain_relevant_code_combine_top_n_prompt
             message = template.format(
