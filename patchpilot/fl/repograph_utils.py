@@ -9,6 +9,24 @@ from copy import deepcopy
 from tqdm import tqdm
 
 
+def find_target_file(search_term, graph_tags):
+    """
+    Find the file path where search_term is defined.
+    Module-level function for use in both retrieve_graph() and construct_code_graph_context().
+
+    Args:
+        search_term: Function/class name to search for
+        graph_tags: List of tag dictionaries
+
+    Returns:
+        str or None: rel_fname of the file where search_term is defined
+    """
+    for tag in graph_tags:
+        if tag['name'] == search_term and tag['kind'] == 'def':
+            return tag['rel_fname']
+    return None
+
+
 def retrieve_graph(code_graph, graph_tags, search_term, structure, max_tags=50, target_file=None):
     """
     Retrieve one-hop neighbors from the code graph for a given search term.
@@ -136,22 +154,6 @@ def retrieve_graph(code_graph, graph_tags, search_term, structure, max_tags=50, 
 
         return locality_score + neighbor_bonus + in_degree_score
 
-    def find_target_file(search_term, graph_tags):
-        """
-        Find the file path where search_term is defined.
-
-        Args:
-            search_term: Function/class name to search for
-            graph_tags: List of tag dictionaries
-
-        Returns:
-            str or None: rel_fname of the file where search_term is defined
-        """
-        for tag in graph_tags:
-            if tag['name'] == search_term and tag['kind'] == 'def':
-                return tag['rel_fname']
-        return None
-
     # MODIFICATION (段階Composite Score): Replace in_degree sort with composite score
     # Find target file for composite score calculation
     if target_file is None:
@@ -243,7 +245,9 @@ contents:
             # Handle class references
             if loc.startswith("class: ") and "." not in loc:
                 loc = loc[len("class: "):].strip()
-                tags = retrieve_graph(code_graph, graph_tags, loc, structure)
+                # MODIFICATION (段階Composite Score Phase 2-4): Pass target_file explicitly
+                target_file = find_target_file(loc, graph_tags)
+                tags = retrieve_graph(code_graph, graph_tags, loc, structure, target_file=target_file)
                 for t, fname in tags:
                     code_graph_context += tag_format.format(
                         **t,
@@ -254,7 +258,9 @@ contents:
             # Handle function references
             elif loc.startswith("function: ") and "." not in loc:
                 loc = loc[len("function: "):].strip()
-                tags = retrieve_graph(code_graph, graph_tags, loc, structure)
+                # MODIFICATION (段階Composite Score Phase 2-4): Pass target_file explicitly
+                target_file = find_target_file(loc, graph_tags)
+                tags = retrieve_graph(code_graph, graph_tags, loc, structure, target_file=target_file)
                 for t, fname in tags:
                     code_graph_context += tag_format.format(
                         **t,
@@ -265,7 +271,9 @@ contents:
             # Handle qualified names (e.g., Class.method)
             elif "." in loc:
                 loc = loc.split(".")[-1].strip()
-                tags = retrieve_graph(code_graph, graph_tags, loc, structure)
+                # MODIFICATION (段階Composite Score Phase 2-4): Pass target_file explicitly
+                target_file = find_target_file(loc, graph_tags)
+                tags = retrieve_graph(code_graph, graph_tags, loc, structure, target_file=target_file)
                 for t, fname in tags:
                     code_graph_context += tag_format.format(
                         **t,
