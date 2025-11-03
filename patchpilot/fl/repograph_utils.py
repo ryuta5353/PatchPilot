@@ -9,9 +9,13 @@ from copy import deepcopy
 from tqdm import tqdm
 
 
-def retrieve_graph(code_graph, graph_tags, search_term, structure, max_tags=50):
+def retrieve_graph(code_graph, graph_tags, search_term, structure, max_tags=50, target_file=None):
     """
     Retrieve one-hop neighbors from the code graph for a given search term.
+
+    MODIFICATION (段階Composite Score): Use composite score for prioritization
+    Reason: in_degree (call frequency) doesn't correlate with bug-fix relevance.
+    New strategy: Prioritize by file locality (same file/dir) + direct call relationships + in_degree (auxiliary).
 
     MODIFICATION (段階V2): Separate callers and callees, limit each to top-N by in_degree
     Reason: Different ref tags have different semantics:
@@ -25,6 +29,7 @@ def retrieve_graph(code_graph, graph_tags, search_term, structure, max_tags=50):
         search_term: Function or class name to search for
         structure: Repository structure dictionary
         max_tags: Maximum number of tags per category (default changed from 100 to 50)
+        target_file: (Optional) Target file path for composite score. If None, auto-determined.
 
     Returns:
         List of (function/method dict, filename) tuples
@@ -66,14 +71,104 @@ def retrieve_graph(code_graph, graph_tags, search_term, structure, max_tags=50):
         except:
             return 0
 
-    # Separate ref tags into two categories based on context
-    # Since ref_tags don't explicitly distinguish caller/callee,
-    # we use in_degree and out_degree as proxies:
-    # - High in_degree: likely a caller (called by many things, so important as context)
-    # - High out_degree: likely a callee (calls many things, so important for dependencies)
+    # MODIFICATION (段階Composite Score): New helper functions for composite scoring
+    def get_file_locality_score(tag, target_file):
+        """
+        Calculate file locality score for a tag.
+        Prioritizes tags in the same file and directory as target function.
 
-    # Sort by in_degree (importance as caller context)
-    ref_tags_sorted = sorted(ref_tags, key=get_in_degree, reverse=True)
+        Args:
+            tag: Tag dictionary with 'rel_fname' field
+            target_file: Target file path (rel_fname)
+
+        Returns:
+            int: Score (1000=same file, 100=same dir, 1=different)
+        """
+        if tag['rel_fname'] == target_file:
+            return 1000  # Same file: highest priority
+        elif tag['rel_fname'].split('/')[0] == target_file.split('/')[0]:
+            return 100   # Same directory: medium priority
+        else:
+            return 1     # Different file/dir: low priority
+
+    def is_direct_neighbor(tag, search_term, code_graph):
+        """
+        Check if tag is directly connected to search_term in the code graph.
+
+        Args:
+            tag: Tag dictionary with 'name' field
+            search_term: Function/class name to search for
+            code_graph: NetworkX graph object
+
+        Returns:
+            bool: True if tag and search_term have direct edge in either direction
+        """
+        try:
+            tag_name = tag['name']
+            # Check both directions: tag → search_term and search_term → tag
+            return (code_graph.has_edge(tag_name, search_term) or
+                    code_graph.has_edge(search_term, tag_name))
+        except:
+            return False
+
+    def calculate_composite_score(tag, search_term, code_graph, target_file):
+        """
+        Calculate composite score for prioritizing ref_tags.
+
+        Score composition:
+        - File locality (1000/100/1): Prioritize same-file and same-directory functions
+        - Direct neighbor bonus (50): Functions directly calling/called by search_term
+        - In-degree auxiliary (0-10): Call frequency as supplementary factor
+
+        Args:
+            tag: Tag dictionary
+            search_term: Target function/class name
+            code_graph: NetworkX graph object
+            target_file: Target file path (rel_fname)
+
+        Returns:
+            float: Composite score for sorting (higher = more important)
+        """
+        locality_score = get_file_locality_score(tag, target_file)
+        neighbor_bonus = 50 if is_direct_neighbor(tag, search_term, code_graph) else 0
+        in_degree = code_graph.in_degree(tag['name']) if tag['name'] in code_graph else 0
+        in_degree_score = min(in_degree / 10, 10)  # Normalize to max 10 points
+
+        return locality_score + neighbor_bonus + in_degree_score
+
+    def find_target_file(search_term, graph_tags):
+        """
+        Find the file path where search_term is defined.
+
+        Args:
+            search_term: Function/class name to search for
+            graph_tags: List of tag dictionaries
+
+        Returns:
+            str or None: rel_fname of the file where search_term is defined
+        """
+        for tag in graph_tags:
+            if tag['name'] == search_term and tag['kind'] == 'def':
+                return tag['rel_fname']
+        return None
+
+    # MODIFICATION (段階Composite Score): Replace in_degree sort with composite score
+    # Find target file for composite score calculation
+    if target_file is None:
+        target_file = find_target_file(search_term, graph_tags)
+    print(f"[DEBUG retrieve_graph] Target file for {search_term}: {target_file}")
+
+    if target_file:
+        # Sort by composite score (file locality + direct neighbor + in_degree auxiliary)
+        def composite_score_key(tag):
+            return calculate_composite_score(tag, search_term, code_graph, target_file)
+
+        ref_tags_sorted = sorted(ref_tags, key=composite_score_key, reverse=True)
+        print(f"[INFO retrieve_graph] Sorted by composite score (file locality + direct neighbor + in_degree auxiliary)")
+    else:
+        # Fallback to in_degree if target file not found
+        ref_tags_sorted = sorted(ref_tags, key=get_in_degree, reverse=True)
+        print(f"[WARNING retrieve_graph] Target file not found, falling back to in_degree sort")
 
     # Take top N ref tags
     ref_tags_limited = ref_tags_sorted[:max_tags]
@@ -84,7 +179,7 @@ def retrieve_graph(code_graph, graph_tags, search_term, structure, max_tags=50):
     print(f"[DEBUG retrieve_graph] Found {len(def_tags)} 'def' + {len(ref_tags)} 'ref' total tags")
     print(f"[DEBUG retrieve_graph] Using {len(def_tags_limited)} def + {len(ref_tags_limited)} ref = {len(tags)} tags (max_tags per category: {max_tags})")
     if len(ref_tags) > max_tags:
-        print(f"[INFO retrieve_graph] Filtered ref tags: {len(ref_tags)} → {len(ref_tags_limited)} (kept top {max_tags} by in_degree)")
+        print(f"[INFO retrieve_graph] Filtered ref tags: {len(ref_tags)} → {len(ref_tags_limited)} (kept top {max_tags} by composite score)")
 
     # For each tag, find the containing function/class
     for i, tag in enumerate(tags):
