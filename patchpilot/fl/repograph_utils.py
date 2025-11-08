@@ -9,25 +9,51 @@ from copy import deepcopy
 from tqdm import tqdm
 
 
-def find_target_file(search_term, graph_tags):
+def find_target_file(search_term, graph_tags, preferred_files=None):
     """
     Find the file path where search_term is defined.
     Module-level function for use in both retrieve_graph() and construct_code_graph_context().
 
+    MODIFICATION (段階Composite Score Phase 2-5): Accept preferred_files to disambiguate multiple definitions.
+    When multiple definitions exist, prefer definitions from the predicted/selected files.
+
     Args:
         search_term: Function/class name to search for
         graph_tags: List of tag dictionaries
+        preferred_files: (Optional) List of file paths where the search term should be preferred.
+                        If multiple definitions exist, return the one from preferred_files first.
 
     Returns:
         str or None: rel_fname of the file where search_term is defined
     """
-    for tag in graph_tags:
-        if tag['name'] == search_term and tag['kind'] == 'def':
-            return tag['rel_fname']
-    return None
+    # Collect all definitions
+    all_defs = [tag for tag in graph_tags if tag['name'] == search_term and tag['kind'] == 'def']
+
+    if not all_defs:
+        return None
+
+    # If only one definition exists, return it
+    if len(all_defs) == 1:
+        return all_defs[0]['rel_fname']
+
+    # If multiple definitions exist and preferred_files is provided, prefer those
+    if preferred_files:
+        for def_tag in all_defs:
+            if def_tag['rel_fname'] in preferred_files:
+                print(f"[INFO find_target_file] {search_term} has {len(all_defs)} definitions, selected from preferred_files: {def_tag['rel_fname']}")
+                return def_tag['rel_fname']
+        # Log warning if no definition in preferred files
+        print(f"[WARNING find_target_file] {search_term} has {len(all_defs)} definitions, none in preferred_files")
+        print(f"  Definitions found in: {[tag['rel_fname'] for tag in all_defs]}")
+        print(f"  Preferred files: {preferred_files}")
+
+    # Default: return first definition (original behavior)
+    if len(all_defs) > 1:
+        print(f"[INFO find_target_file] {search_term} has {len(all_defs)} definitions, using first: {all_defs[0]['rel_fname']}")
+    return all_defs[0]['rel_fname']
 
 
-def retrieve_graph(code_graph, graph_tags, search_term, structure, max_tags=50, target_file=None):
+def retrieve_graph(code_graph, graph_tags, search_term, structure, max_tags=50, target_file=None, max_tokens_for_section=None):
     """
     Retrieve one-hop neighbors from the code graph for a given search term.
 
@@ -41,6 +67,10 @@ def retrieve_graph(code_graph, graph_tags, search_term, structure, max_tags=50, 
     - Callee tags: functions that this function calls (might need modifications for coordination)
     We retrieve the most important of each type separately to reduce noise and improve focus.
 
+    MODIFICATION (Phase 2-6: Dynamic Token Limiting): Accept max_tokens_for_section parameter
+    When specified, limit tag retrieval based on token budget per section.
+    This enables fine-grained token control within each section of the graph context.
+
     Args:
         code_graph: NetworkX graph object
         graph_tags: List of tag dictionaries
@@ -48,6 +78,8 @@ def retrieve_graph(code_graph, graph_tags, search_term, structure, max_tags=50, 
         structure: Repository structure dictionary
         max_tags: Maximum number of tags per category (default changed from 100 to 50)
         target_file: (Optional) Target file path for composite score. If None, auto-determined.
+        max_tokens_for_section: (Optional) Maximum tokens allowed for this section's tags.
+                               If specified, stop tag retrieval when this limit would be exceeded.
 
     Returns:
         List of (function/method dict, filename) tuples
@@ -172,8 +204,32 @@ def retrieve_graph(code_graph, graph_tags, search_term, structure, max_tags=50, 
         ref_tags_sorted = sorted(ref_tags, key=get_in_degree, reverse=True)
         print(f"[WARNING retrieve_graph] Target file not found, falling back to in_degree sort")
 
-    # Take top N ref tags
-    ref_tags_limited = ref_tags_sorted[:max_tags]
+    # MODIFICATION (Phase 2-6): Implement token-aware tag limiting
+    # If max_tokens_for_section is specified, limit tags based on estimated token budget
+    if max_tokens_for_section is not None:
+        ref_tags_limited = []
+        tokens_used = 0
+
+        for tag in ref_tags_sorted:
+            # Estimate token cost of this tag (conservative: ~100-150 tokens per tag)
+            tag_tokens = len(str(tag.get('text', []))) // 4 if tag.get('text') else 100
+
+            # Check if adding this tag would exceed budget
+            if tokens_used + tag_tokens > max_tokens_for_section:
+                print(f"[INFO retrieve_graph] Token limit reached for {search_term}: {tokens_used}/{max_tokens_for_section} tokens used")
+                break
+
+            ref_tags_limited.append(tag)
+            tokens_used += tag_tokens
+
+            # Also respect max_tags limit
+            if len(ref_tags_limited) >= max_tags:
+                break
+
+        print(f"[DEBUG retrieve_graph] Token-aware limiting: {len(ref_tags)} → {len(ref_tags_limited)} tags ({tokens_used}/{max_tokens_for_section} tokens)")
+    else:
+        # Original behavior: just use max_tags limit
+        ref_tags_limited = ref_tags_sorted[:max_tags]
 
     # Combine: def tag + top ref tags
     tags = def_tags_limited + ref_tags_limited
@@ -209,20 +265,38 @@ def retrieve_graph(code_graph, graph_tags, search_term, structure, max_tags=50, 
     return one_hop_tags
 
 
-def construct_code_graph_context(found_related_locs, code_graph, graph_tags, structure):
+def construct_code_graph_context(found_related_locs, code_graph, graph_tags, structure, preferred_files=None, total_token_budget=30740):
     """
-    Construct code graph context from found related locations.
+    Construct code graph context from found related locations with Greedy dynamic token allocation.
+
+    MODIFICATION (段階Composite Score Phase 2-5): Accept preferred_files to disambiguate multiple definitions.
+    Pass preferred_files to find_target_file() to ensure definitions from selected files are prioritized.
+
+    MODIFICATION (Phase 2-6: Greedy Dynamic Token Allocation): Accept total_token_budget parameter
+    Dynamically allocate token budget to each section based on:
+    - Current budget consumed
+    - Number of remaining sections
+    - Formula: max_tokens_this_section = remaining_budget / sections_remaining
+    This ensures optimal utilization of the global token budget across all sections.
 
     Args:
         found_related_locs: List of related code locations
         code_graph: NetworkX graph object
         graph_tags: List of tag dictionaries
         structure: Repository structure dictionary
+        preferred_files: (Optional) List of file paths to prefer when multiple definitions exist
+        total_token_budget: (Optional) Total token budget for all graph context (default: 30740)
 
     Returns:
         String containing formatted graph context
     """
     graph_context = ""
+
+    # MODIFICATION (Phase 2-6): Greedy allocation tracking
+    tokens_used_global = 0
+    total_sections = len(found_related_locs)
+    items_added = 0
+    items_skipped = 0
 
     graph_item_format = """
 ### Dependencies for {func}
@@ -237,7 +311,24 @@ contents:
 """
 
     # Retrieve the code graph for dependent functions and classes
-    for item in found_related_locs:
+    for section_idx, item in enumerate(found_related_locs):
+        # MODIFICATION (Phase 2-6): Greedy dynamic token allocation
+        sections_remaining = total_sections - section_idx
+        remaining_budget = total_token_budget - tokens_used_global
+
+        # Guard against division by zero
+        if sections_remaining <= 0:
+            sections_remaining = 1
+
+        # Check if we still have budget
+        if remaining_budget < 1000:  # Minimum threshold: 1000 tokens
+            items_skipped += sections_remaining
+            print(f"[INFO construct_code_graph_context] Token budget exhausted: {tokens_used_global:,}/{total_token_budget:,} tokens used")
+            break
+
+        # Greedy allocation: distribute remaining budget across remaining sections
+        max_tokens_this_section = remaining_budget / sections_remaining
+
         code_graph_context = ""
         item = item[0].splitlines()
 
@@ -245,9 +336,10 @@ contents:
             # Handle class references
             if loc.startswith("class: ") and "." not in loc:
                 loc = loc[len("class: "):].strip()
-                # MODIFICATION (段階Composite Score Phase 2-4): Pass target_file explicitly
-                target_file = find_target_file(loc, graph_tags)
-                tags = retrieve_graph(code_graph, graph_tags, loc, structure, target_file=target_file)
+                # MODIFICATION (段階Composite Score Phase 2-5): Pass target_file explicitly with preferred_files
+                target_file = find_target_file(loc, graph_tags, preferred_files=preferred_files)
+                # MODIFICATION (Phase 2-6): Pass max_tokens_for_section for fine-grained token control
+                tags = retrieve_graph(code_graph, graph_tags, loc, structure, target_file=target_file, max_tokens_for_section=max_tokens_this_section)
                 for t, fname in tags:
                     code_graph_context += tag_format.format(
                         **t,
@@ -258,9 +350,10 @@ contents:
             # Handle function references
             elif loc.startswith("function: ") and "." not in loc:
                 loc = loc[len("function: "):].strip()
-                # MODIFICATION (段階Composite Score Phase 2-4): Pass target_file explicitly
-                target_file = find_target_file(loc, graph_tags)
-                tags = retrieve_graph(code_graph, graph_tags, loc, structure, target_file=target_file)
+                # MODIFICATION (段階Composite Score Phase 2-5): Pass target_file explicitly with preferred_files
+                target_file = find_target_file(loc, graph_tags, preferred_files=preferred_files)
+                # MODIFICATION (Phase 2-6): Pass max_tokens_for_section for fine-grained token control
+                tags = retrieve_graph(code_graph, graph_tags, loc, structure, target_file=target_file, max_tokens_for_section=max_tokens_this_section)
                 for t, fname in tags:
                     code_graph_context += tag_format.format(
                         **t,
@@ -271,9 +364,10 @@ contents:
             # Handle qualified names (e.g., Class.method)
             elif "." in loc:
                 loc = loc.split(".")[-1].strip()
-                # MODIFICATION (段階Composite Score Phase 2-4): Pass target_file explicitly
-                target_file = find_target_file(loc, graph_tags)
-                tags = retrieve_graph(code_graph, graph_tags, loc, structure, target_file=target_file)
+                # MODIFICATION (段階Composite Score Phase 2-5): Pass target_file explicitly with preferred_files
+                target_file = find_target_file(loc, graph_tags, preferred_files=preferred_files)
+                # MODIFICATION (Phase 2-6): Pass max_tokens_for_section for fine-grained token control
+                tags = retrieve_graph(code_graph, graph_tags, loc, structure, target_file=target_file, max_tokens_for_section=max_tokens_this_section)
                 for t, fname in tags:
                     code_graph_context += tag_format.format(
                         **t,
@@ -284,6 +378,21 @@ contents:
             # MODIFICATION (段階4): Only add section if code_graph_context is not empty
             # Reason: Skip empty sections to save tokens and improve graph context quality
             if code_graph_context.strip():
-                graph_context += graph_item_format.format(func=loc, dependencies=code_graph_context)
+                section = graph_item_format.format(func=loc, dependencies=code_graph_context)
+                section_tokens = len(section) // 4  # Conservative estimate: 4 chars per token
+
+                # Add section if within budget
+                if tokens_used_global + section_tokens <= total_token_budget:
+                    graph_context += section
+                    tokens_used_global += section_tokens
+                    items_added += 1
+                else:
+                    items_skipped += 1
+                    print(f"[INFO construct_code_graph_context] Section '{loc}' skipped: {section_tokens:,} tokens would exceed budget")
+
+                code_graph_context = ""  # Reset for next section
+
+    # MODIFICATION (Phase 2-6): Log final statistics
+    print(f"[DEBUG construct_code_graph_context] Global graph tokens: {tokens_used_global:,}/{total_token_budget:,} (sections_added={items_added}, sections_skipped={items_skipped})")
 
     return graph_context
