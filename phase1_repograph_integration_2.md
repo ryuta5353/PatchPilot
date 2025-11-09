@@ -4356,29 +4356,63 @@ def construct_code_graph_context(..., total_token_budget=30740):
 
 ### 18.5 検証計画
 
-**Step 1: 単一インスタンステスト**
+**Step 1: Baseline（グラフなし、制御グループ）**
 ```bash
 python patchpilot/fl/localize.py \
-    --file_level --direct_line_level \
-    --repo_graph \
-    --instances sympy__sympy-13043
+    --file_level --related_level --fine_grain_line_level \
+    --task_list_file instances/test_instances_mixed_phase1_v2.txt \
+    --output_folder results/localization_base_10inst_phase2_6_20251109 \
+    --reproduce_folder results/reproduce \
+    --top_n 3 \
+    --compress \
+    --context_window 20 \
+    --num_samples 4 \
+    --num_threads 10 \
+    --model gpt-4o-mini \
+    --temperature 0.7 \
+    --benchmark verified
+```
+
+**Step 2: Repograph with Greedy Dynamic Token Allocation（グラフ統合版）**
+```bash
+python patchpilot/fl/localize.py \
+    --file_level --related_level --fine_grain_line_level \
+    --repo_graph --code_graph_dir cache/code_graphs \
+    --task_list_file instances/test_instances_mixed_phase1_v2.txt \
+    --output_folder results/localization_repo_10inst_phase2_6_20251109 \
+    --reproduce_folder results/reproduce \
+    --top_n 3 \
+    --compress \
+    --context_window 20 \
+    --num_samples 4 \
+    --num_threads 10 \
+    --model gpt-4o-mini \
+    --temperature 0.7 \
+    --benchmark verified
+```
+
+**Step 3: 単一インスタンステスト（デバッグ用）**
+```bash
+python patchpilot/fl/localize.py \
+    --file_level --related_level --fine_grain_line_level \
+    --repo_graph --code_graph_dir cache/code_graphs \
+    --output_folder results/localization_repo_single_phase2_6_debug_20251109 \
+    --reproduce_folder results/reproduce \
+    --instances sympy__sympy-13043 \
+    --top_n 3 \
+    --compress \
+    --context_window 20 \
+    --num_samples 4 \
+    --model gpt-4o-mini \
+    --temperature 0.7
 ```
 
 **期待結果**:
 - ログ: "[DEBUG construct_code_graph_context] Global graph tokens: ~25000/30740 (sections_added=3, sections_skipped=2)"
 - グラフセクション一部スキップ (items_skipped > 0)
 - Fallback なし (グラフコンテキスト部分的に返される)
-- token 효율: 99%+ 予算利用
-
-**Step 2: 複数インスタンス検証**
-```bash
-python patchpilot/fl/localize.py \
-    --file_level --direct_line_level \
-    --repo_graph \
-    --output_folder results/localization_phase2_6_test \
-    --num_threads 10 \
-    --num_samples 4
-```
+- token 効率: 99%+ 予算利用
+- Baseline vs Repograph で Line Recall の改善を確認
 
 ---
 
@@ -4416,11 +4450,57 @@ python patchpilot/fl/localize.py \
 - セクションスキップ率: 90% → <10%
 - 平均改善度: 8,049%
 
-### 19.3 次ステップ
+### 19.3 検証結果【2025-11-09 完了】
 
-1. **Phase 2-6 検証**: sympy__sympy-13043 等でテスト実行
-2. **Phase 1 Reproduction**: 43 個の Django インスタンスで全体検証（Docker 実行）
-3. **ベンチマーク結果**: 修正後の Localization パフォーマンス測定
+**テスト設定**:
+- テストインスタンス: 19個（baseline と repograph 両方実行完了）
+- メトリクス: File Recall@3, Line Recall
+- 期間: 2025-11-09 12:30 - 14:15
+
+**定量的結果**:
+
+| メトリクス | Baseline | Repograph | Delta | 評価 |
+|----------|----------|-----------|-------|------|
+| File Recall@3 | 68.4% | 73.7% | +5.3pp | 改善 |
+| Line Recall | 24.1% | 15.6% | -8.5pp | 悪化 |
+
+**インスタンス別統計**:
+- ファイルレベル: 改善 2/19 (10.5%), 悪化 1/19 (5.3%), 同一 16/19 (84.2%)
+- ラインレベル: 改善 1/19 (5.3%), 悪化 4/19 (21.1%), 同一 14/19 (73.7%)
+
+**グラフコンテキスト生成率**:
+- グラフ有効化: 21/23 インスタンス (91.3%)
+- グラフコンテキスト生成: 21/23 (91.3%)
+- 平均コンテキストサイズ: 88,224 文字
+- 平均セクション数: 11.9 セクション/インスタンス
+
+**トークン予算分析**:
+- 計画予算: 30,740 tokens
+- 実績平均: 34,610 tokens
+- 利用率: 112.6% (オーバー)
+- 最小値: 689 tokens
+- 最大値: 146,536 tokens
+
+**結論**:
+Phase 2-6 の Greedy Dynamic Token Allocation は**部分的に成功**:
+- ファイルレベルで +5.3pp の改善を実現
+- ラインレベルでは -8.5pp の悪化（グラフコンテキストがノイズ化）
+- グラフコンテキストの生成と統合は正常に機能（91.3% カバレッジ）
+- トークン予算が計画値を112.6% 超過（要調整）
+
+**改善方向**:
+ファイル選定は改善するが、ライン選定精度が低下する矛盾が観察された。
+グラフコンテキストが LLM に過度な関数/クラス情報を提供し、細粒度の
+位置特定を混乱させている可能性がある。今後は選別的なグラフ統合や
+ハイブリッドアプローチ（ファイル=グラフ、ラインライン=従来手法）
+の検討が必要。
+
+### 19.4 次ステップ
+
+1. **グラフコンテキスト最適化**: ラインレベル悪化の根本原因調査
+2. **トークン予算調整**: 現在 112.6% → 目標 100% 以下
+3. **Phase 1 Reproduction**: 43 個の Django インスタンスで全体検証（Docker 実行）
+4. **ハイブリッド戦略検討**: ファイル選定のみにグラフを活用
 
 
 ---
@@ -4543,3 +4623,40 @@ python patchpilot/fl/localize.py --file_level --direct_line_level --repo_graph -
 1. **Phase 2-6 実装**: repograph_utils.py と localize.py 修正
 2. **テスト実行**: sympy__sympy-13043 で動作確認
 3. **Phase 1 Reproduction**: 43 個の Django インスタンスで全体検証（Docker 実行）
+
+---
+
+## 20. Output Folder Naming Convention（出力フォルダ命名規則）
+
+**重要: 以下の命名規則は絶対に守ること。計画書に記録済み。**
+
+### 20.1 標準命名規則
+
+```
+results/localization_{type}_{description}_{YYYYMMDD}
+
+type の値:
+  - base   ← Baseline（グラフなし、制御グループ）
+  - repo   ← Repograph統合版（グラフ有り、実験グループ）
+
+YYYYMMDD の形式:
+  - 必須（日付を付ける）
+  - 例: 20251109
+```
+
+### 20.2 例
+
+| 実験内容 | フォルダ名 |
+|--------|----------|
+| Phase 2-6 Baseline（10インスタンス） | `results/localization_base_10inst_phase2_6_20251109` |
+| Phase 2-6 Repograph（10インスタンス） | `results/localization_repo_10inst_phase2_6_20251109` |
+| Phase 2-6 単一インスタンステスト | `results/localization_repo_single_phase2_6_debug_20251109` |
+| Django 43インスタンス Baseline | `results/localization_base_django43_20251109` |
+| Django 43インスタンス Repograph | `results/localization_repo_django43_20251109` |
+
+### 20.3 ルール
+
+1. `--output_folder` パラメータに上記形式で指定する
+2. Baseline と Repograph は常にペアで実行し、比較可能な名前をつける
+3. **日付は必須（YYYYMMDD形式）** ← 実験の時系列を明確にするため
+4. テスト内容（インスタンス数、フェーズ番号）を明示する
