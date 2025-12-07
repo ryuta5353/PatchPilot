@@ -64,10 +64,14 @@ def localize_instance(
     code_graph = None
     graph_tags = None
 
-    if args.repo_graph or args.file_level_caller:
+    # Load code_graph only when repo_graph is enabled (requires .pkl file)
+    if args.repo_graph:
         code_graph = pickle.load(
             open(os.path.join(args.code_graph_dir, f"{instance_id}.pkl"), "rb")
         )
+
+    # Load graph_tags when repo_graph or file_level_caller is enabled
+    if args.repo_graph or args.file_level_caller:
         graph_tags = json.load(
             open(os.path.join(args.code_graph_dir, f"tags_{instance_id}.json"), "r")
         )
