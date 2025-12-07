@@ -265,7 +265,7 @@ def retrieve_graph(code_graph, graph_tags, search_term, structure, max_tags=50, 
     return one_hop_tags
 
 
-def construct_code_graph_context(found_related_locs, code_graph, graph_tags, structure, preferred_files=None, total_token_budget=30740):
+def construct_code_graph_context(found_related_locs, code_graph, graph_tags, structure, preferred_files=None, total_token_budget=30740, logger=None):
     """
     Construct code graph context from found related locations with Greedy dynamic token allocation.
 
@@ -286,6 +286,7 @@ def construct_code_graph_context(found_related_locs, code_graph, graph_tags, str
         structure: Repository structure dictionary
         preferred_files: (Optional) List of file paths to prefer when multiple definitions exist
         total_token_budget: (Optional) Total token budget for all graph context (default: 30740)
+        logger: (Optional) Logger instance for debug output (default: None)
 
     Returns:
         String containing formatted graph context
@@ -331,6 +332,12 @@ contents:
 
         code_graph_context = ""
         item = item[0].splitlines()
+
+        # MODIFICATION (Fix 2): Skip empty related locations before graph generation
+        # Reason: Prevent empty sections from consuming tokens and polluting context
+        if not item or not any(line.strip() for line in item):
+            items_skipped += 1
+            continue
 
         for loc in tqdm(item):
             # Handle class references
@@ -396,3 +403,197 @@ contents:
     print(f"[DEBUG construct_code_graph_context] Global graph tokens: {tokens_used_global:,}/{total_token_budget:,} (sections_added={items_added}, sections_skipped={items_skipped})")
 
     return graph_context
+
+
+# ============================================================================
+# File-Level Caller Expansion Functions (Step 0.5)
+# ============================================================================
+
+def identify_seed_names(search_str_with_file: dict, graph_tags: list) -> list:
+    """
+    検索結果から起点となる関数/クラス名を特定する
+
+    タグベース推論:
+    1. キーワードがタグのnameと一致 → そのまま使用（クラス/関数検索）
+    2. 一致しなければ、infoから検索 → 関数名を特定（文字列検索）
+    3. どちらでも見つからなければスキップ
+
+    Args:
+        search_str_with_file: {"keyword": "file1.py file2.py", ...}
+        graph_tags: tags_json データ
+
+    Returns:
+        list of dict: [{"name": "func_name", "file": "path/to/file.py"}, ...]
+    """
+    seed_names = []
+
+    for keyword, files_str in search_str_with_file.items():
+        result_files = files_str.split()
+        found_as_name = False
+
+        # Step 1: キーワードがタグのnameと一致するか（クラス/関数検索）
+        for tag in graph_tags:
+            if tag["kind"] == "def" and tag["name"] == keyword:
+                if tag["rel_fname"] in result_files:
+                    seed_names.append({"name": keyword, "file": tag["rel_fname"]})
+                    found_as_name = True
+
+        # Step 2: 見つからなければ、infoから探す（文字列検索）
+        if not found_as_name:
+            for tag in graph_tags:
+                if tag["kind"] != "def":
+                    continue
+                if tag["rel_fname"] not in result_files:
+                    continue
+                # infoに検索キーワードが含まれるか
+                if keyword in tag.get("info", ""):
+                    seed_names.append({
+                        "name": tag["name"],
+                        "file": tag["rel_fname"]
+                    })
+
+        # Step 3: それでも見つからなければスキップ（何もしない）
+
+    # 重複除去
+    seen = set()
+    unique_seeds = []
+    for seed in seed_names:
+        key = (seed["name"], seed["file"])
+        if key not in seen:
+            seen.add(key)
+            unique_seeds.append(seed)
+
+    return unique_seeds
+
+
+def get_caller_files(seed_names: list, graph_tags: list,
+                     coverage_dict: dict = None,
+                     max_files: int = 10) -> dict:
+    """
+    起点から呼び出し元ファイルを取得（DEF=1のみ）
+
+    Args:
+        seed_names: [{"name": "xxx", "file": "yyy"}, ...]
+        graph_tags: tags_json データ
+        coverage_dict: カバレッジ情報（オプション）
+        max_files: 最大ファイル数
+
+    Returns:
+        dict: {
+            "caller_files": ["file1.py", "file2.py", ...],
+            "details": [{"file": "...", "calls": [...], "score": N}, ...]
+        }
+    """
+    caller_info = {}  # file -> {"calls": set(), "score": 0}
+
+    for seed in seed_names:
+        name = seed["name"]
+        seed_file = seed["file"]
+
+        # DEF数チェック（一意でなければスキップ）
+        def_count = sum(1 for t in graph_tags
+                        if t["kind"] == "def" and t["name"] == name)
+        if def_count != 1:
+            continue
+
+        # REFタグから呼び出し元を取得
+        for tag in graph_tags:
+            if tag["kind"] == "ref" and tag["name"] == name:
+                caller_file = tag["rel_fname"]
+
+                # 自己ループのみ除外（同じファイル内での呼び出し）
+                if caller_file == seed_file:
+                    continue
+
+                # テストファイルは除外
+                if "test" in caller_file.lower():
+                    continue
+
+                if caller_file not in caller_info:
+                    caller_info[caller_file] = {"calls": set(), "score": 0}
+
+                caller_info[caller_file]["calls"].add(name)
+
+    # スコアリング
+    for file, info in caller_info.items():
+        score = 0
+
+        # 基本点: 呼び出している関数の数
+        score += len(info["calls"])
+
+        # Hub Bonus: 2つ以上の異なるSeedを呼んでいる
+        if len(info["calls"]) >= 2:
+            score += 30
+
+        # Coverage Bonus: カバレッジに含まれている
+        if coverage_dict and file in coverage_dict:
+            score += 50
+
+        # Locality Bonus: Seedと同じディレクトリ
+        for seed in seed_names:
+            seed_dir = "/".join(seed["file"].split("/")[:-1])
+            file_dir = "/".join(file.split("/")[:-1])
+            if file_dir == seed_dir:
+                score += 5
+                break
+
+        info["score"] = score
+
+    # スコア順でソート
+    sorted_files = sorted(caller_info.items(),
+                          key=lambda x: x[1]["score"],
+                          reverse=True)
+
+    # 上位N件を返す
+    result_files = [f for f, _ in sorted_files[:max_files]]
+    result_details = [
+        {"file": f, "calls": list(info["calls"]), "score": info["score"]}
+        for f, info in sorted_files[:max_files]
+    ]
+
+    return {
+        "caller_files": result_files,
+        "details": result_details
+    }
+
+
+def format_caller_prompt(caller_result: dict, coverage_dict: dict = None) -> str:
+    """
+    呼び出し関係ファイルのプロンプトを生成
+
+    Args:
+        caller_result: get_caller_files() の結果
+        coverage_dict: カバレッジ情報
+
+    Returns:
+        str: プロンプトに追加するテキスト
+    """
+    if not caller_result.get("details"):
+        return ""
+
+    lines = [
+        "",
+        "### Structural Analysis (Call Relationship Suggestions) ###",
+        "The following files call the functions/classes found in your keyword search.",
+        "Please consider checking them as potential bug locations.",
+        ""
+    ]
+
+    for i, detail in enumerate(caller_result["details"], 1):
+        file = detail["file"]
+        calls = detail["calls"]
+
+        # Coverageステータス
+        status = ""
+        if coverage_dict and file in coverage_dict:
+            status = " [Executed in PoC]"
+
+        lines.append(f"{i}. {file}{status}")
+        lines.append(f"   - Calls: {', '.join(calls)}")
+
+        if len(calls) >= 2:
+            lines.append(f"   - Note: Hub file (calls multiple search results)")
+
+        lines.append("")
+
+    return "\n".join(lines)

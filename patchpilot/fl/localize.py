@@ -59,7 +59,12 @@ def localize_instance(
         file_json = get_project_structure_from_scratch(
             bug["repo"], bug["base_commit"], bug["instance_id"], "playground"
         )
-    if args.repo_graph:
+
+    # Initialize code_graph and graph_tags to None
+    code_graph = None
+    graph_tags = None
+
+    if args.repo_graph or args.file_level_caller:
         code_graph = pickle.load(
             open(os.path.join(args.code_graph_dir, f"{instance_id}.pkl"), "rb")
         )
@@ -141,6 +146,41 @@ def localize_instance(
     )
     search_str_with_file = fl.search_in_problem_statement(reproduce_info)
 
+    # ★ Step 0.5: 構造的拡張（呼び出し関係ファイルの追加）
+    caller_prompt = ""
+    if args.file_level_caller and graph_tags is not None and search_str_with_file:
+        from patchpilot.fl.repograph_utils import (
+            identify_seed_names,
+            get_caller_files,
+            format_caller_prompt
+        )
+
+        # 起点を特定（タグベース推論）
+        seed_names = identify_seed_names(
+            search_str_with_file,
+            graph_tags
+        )
+        logger.info(f"[Step 0.5] Identified {len(seed_names)} seed names")
+
+        if seed_names:
+            # 呼び出し元ファイルを取得
+            coverage_dict = coverage_info.get("coverage_dict") if coverage_info else None
+            caller_result = get_caller_files(
+                seed_names,
+                graph_tags,
+                coverage_dict=coverage_dict,
+                max_files=10
+            )
+            logger.info(f"[Step 0.5] Found {len(caller_result['caller_files'])} caller files")
+
+            # プロンプト生成
+            if caller_result["caller_files"]:
+                caller_prompt = format_caller_prompt(
+                    caller_result,
+                    coverage_dict=coverage_dict
+                )
+                logger.info(f"[Step 0.5] Generated caller prompt:\n{caller_prompt}")
+
     # file level localization
     if args.file_level:
         fl = LLMFL(
@@ -159,7 +199,8 @@ def localize_instance(
             search_res_files=search_str_with_file,
             num_samples=args.num_samples,
             top_n=args.top_n,
-            coverage_info=coverage_info
+            coverage_info=coverage_info,
+            additional_info=caller_prompt
         )
     else:
         # assume start_file is provided
@@ -246,13 +287,38 @@ def localize_instance(
 
         # Generate graph context if repo_graph is enabled (計画書3.2 タスク4より)
         if args.repo_graph and code_graph is not None and graph_tags is not None:
+            logger.info("==== GRAPH CONTEXT GENERATION DEBUG (Fine-Grain Level) ====")
+            logger.info(f"Repo graph enabled: {args.repo_graph}")
+            logger.info(f"Number of related locations: {len(found_related_locs)}")
+            if found_related_locs:
+                for idx, rel_loc in enumerate(found_related_locs):
+                    if rel_loc:
+                        rel_str = rel_loc[0] if isinstance(rel_loc, list) else rel_loc
+                        logger.info(f"  Related location {idx}: {len(rel_str)} chars, items: {rel_str.count('function:') + rel_str.count('class:')}")
+
+            # MODIFICATION (段階Composite Score Phase 2-5): Pass preferred_files to disambiguate multiple definitions
             graph_context = construct_code_graph_context(
                 found_related_locs,
                 code_graph,
                 graph_tags,
-                structure
+                structure,
+                preferred_files=pred_files,
+                logger=logger
             )
+
+            logger.info(f"Generated graph context: {len(graph_context)} characters")
+            logger.info(f"Graph context sections (### Dependencies for): {graph_context.count('### Dependencies for')}")
+            logger.info(f"Graph context locations: {graph_context.count('location:')}")
+            logger.info(f"Graph context preview (first 500 chars):\n{graph_context[:500]}")
+            logger.info("==== END GRAPH CONTEXT GENERATION DEBUG ====")
         else:
+            logger.info("Graph context disabled or dependencies missing")
+            if not args.repo_graph:
+                logger.info("  Reason: --repo_graph flag not set")
+            if code_graph is None:
+                logger.info("  Reason: code_graph is None")
+            if graph_tags is None:
+                logger.info("  Reason: graph_tags is None")
             graph_context = ""
 
         (
@@ -378,13 +444,27 @@ def localize_instance(
 
         # Generate graph context if repo_graph is enabled (計画書3.2 タスク4より Review level)
         if args.repo_graph and code_graph is not None and graph_tags is not None:
+            logger.info("==== GRAPH CONTEXT GENERATION DEBUG (Review Level) ====")
+            logger.info(f"Repo graph enabled: {args.repo_graph}")
+            logger.info(f"Number of related locations: {len(found_related_locs)}")
+
+            # MODIFICATION (段階Composite Score Phase 2-5): Pass preferred_files to disambiguate multiple definitions
             graph_context = construct_code_graph_context(
                 found_related_locs,
                 code_graph,
                 graph_tags,
-                structure
+                structure,
+                preferred_files=pred_files,
+                logger=logger
             )
+
+            logger.info(f"Generated graph context: {len(graph_context)} characters")
+            logger.info(f"Graph context sections (### Dependencies for): {graph_context.count('### Dependencies for')}")
+            logger.info(f"Graph context locations: {graph_context.count('location:')}")
+            logger.info(f"Graph context preview (first 500 chars):\n{graph_context[:500]}")
+            logger.info("==== END GRAPH CONTEXT GENERATION DEBUG (Review Level) ====")
         else:
+            logger.info("Graph context disabled or dependencies missing (Review Level)")
             graph_context = ""
 
         (
@@ -578,6 +658,8 @@ def main():
     parser.add_argument("--no_line_number", action="store_true")
     parser.add_argument("--sticky_scroll", action="store_true")
     parser.add_argument("--repo_graph", action="store_true")
+    parser.add_argument("--file_level_caller", action="store_true",
+                        help="Add caller files as candidates in file-level localization")
     parser.add_argument("--code_graph_dir", type=str, default=None)
     parser.add_argument("--reproduce_folder", type=str)
     parser.add_argument("--use-coverage", action="store_true")
