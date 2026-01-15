@@ -1,0 +1,182 @@
+{
+  "django__django-10914": {
+    "instance_id": "django__django-10914",
+    "gold_files": [
+      "django/conf/global_settings.py"
+    ],
+    "gold_lines": {
+      "django/conf/global_settings.py": [
+        307
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Set default FILE_UPLOAD_PERMISSION to 0o644."
+  },
+  "django__django-10924": {
+    "instance_id": "django__django-10924",
+    "gold_files": [
+      "django/db/models/fields/__init__.py"
+    ],
+    "gold_lines": {
+      "django/db/models/fields/__init__.py": [
+        1712
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Allow FilePathField path to accept a callable."
+  },
+  "django__django-11001": {
+    "instance_id": "django__django-11001",
+    "gold_files": [
+      "django/db/models/sql/compiler.py"
+    ],
+    "gold_lines": {
+      "django/db/models/sql/compiler.py": [
+        35,
+        36
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Incorrect removal of order_by clause created as multiline RawSQL"
+  },
+  "django__django-11019": {
+    "instance_id": "django__django-11019",
+    "gold_files": [
+      "django/forms/widgets.py"
+    ],
+    "gold_lines": {
+      "django/forms/widgets.py": [
+        9,
+        16,
+        21,
+        22,
+        23,
+        67,
+        68,
+        69,
+        70,
+        71,
+        75,
+        116,
+        118,
+        119,
+        125,
+        126,
+        127,
+        128,
+        129,
+        130,
+        131,
+        132,
+        133,
+        134,
+        135,
+        136,
+        137,
+        138,
+        139,
+        140,
+        141,
+        142,
+        143,
+        144,
+        145,
+        146
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Merging 3 or more media objects can throw unnecessary MediaOrderConflictWarnings"
+  },
+  "django__django-11039": {
+    "instance_id": "django__django-11039",
+    "gold_files": [
+      "django/core/management/commands/sqlmigrate.py"
+    ],
+    "gold_lines": {
+      "django/core/management/commands/sqlmigrate.py": [
+        58,
+        59,
+        60
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "sqlmigrate wraps it's outpout in BEGIN/COMMIT even if the database doesn't support transactional DDL"
+  },
+  "django__django-11049": {
+    "instance_id": "django__django-11049",
+    "gold_files": [
+      "django/db/models/fields/__init__.py"
+    ],
+    "gold_lines": {
+      "django/db/models/fields/__init__.py": [
+        1590
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Correct expected format in invalid DurationField error message"
+  },
+  "django__django-11099": {
+    "instance_id": "django__django-11099",
+    "gold_files": [
+      "django/contrib/auth/validators.py"
+    ],
+    "gold_lines": {
+      "django/contrib/auth/validators.py": [
+        10,
+        20
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "UsernameValidator allows trailing newline in usernames"
+  },
+  "django__django-11179": {
+    "instance_id": "django__django-11179",
+    "gold_files": [
+      "django/db/models/deletion.py"
+    ],
+    "gold_lines": {
+      "django/db/models/deletion.py": [
+        280
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "delete() on instances of models without any dependencies doesn't clear PKs."
+  },
+  "django__django-11283": {
+    "instance_id": "django__django-11283",
+    "gold_files": [
+      "django/contrib/auth/migrations/0011_update_proxy_permissions.py"
+    ],
+    "gold_lines": {
+      "django/contrib/auth/migrations/0011_update_proxy_permissions.py": [
+        1,
+        2,
+        3,
+        4,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        23,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Migration auth.0011_update_proxy_permissions fails for models recreated as a proxy."
+  }
+}

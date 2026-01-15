@@ -1,0 +1,10 @@
+matplotlib__matplotlib-23563
+matplotlib__matplotlib-22835
+matplotlib__matplotlib-23299
+matplotlib__matplotlib-23314
+matplotlib__matplotlib-23476
+matplotlib__matplotlib-23562
+matplotlib__matplotlib-23913
+matplotlib__matplotlib-23964
+matplotlib__matplotlib-23987
+matplotlib__matplotlib-24149

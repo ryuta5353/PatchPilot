@@ -22,6 +22,7 @@ from patchpilot.util.preprocess_data import (
     extract_file_content
 )
 from patchpilot.fl.FL import LLMFL
+from patchpilot.fl.repograph_utils import build_repair_graph_context
 from patchpilot.util.utils import load_jsonl, setup_logger
 from patchpilot.repair.utils import post_process_raw_output, post_process_raw_output_refine, construct_topn_file_context
 from patchpilot.reproduce.reproduce import reproduce, ensure_directory_exists
@@ -42,6 +43,96 @@ num_generated_sample = 0
 round_idx = 0
 last_round = False
 orig_verify_folder = ""
+
+
+# ============================================================================
+# RepoGraph Utility Functions
+# ============================================================================
+
+def load_graph_tags(instance_id, graph_folder, logger=None):
+    """
+    Load graph_tags for a given instance.
+
+    Note: Only loads tags JSON file (pkl file is NOT required)
+
+    Args:
+        instance_id: SWE-bench instance ID (e.g., "django__django-12345")
+        graph_folder: Path to folder containing tags files
+        logger: Optional logger instance
+
+    Returns:
+        List of tag dictionaries, or None if not found
+    """
+    tags_path = os.path.join(graph_folder, f"tags_{instance_id}.json")
+
+    if not os.path.exists(tags_path):
+        if logger:
+            logger.info(f"[RepoGraph] graph_tags not found: {tags_path}")
+        return None
+
+    try:
+        with open(tags_path, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception as e:
+        if logger:
+            logger.warning(f"[RepoGraph] Failed to load graph_tags for {instance_id}: {e}")
+        return None
+
+
+def extract_keywords_from_edit_locs(found_edit_locs):
+    """
+    Extract function and class names from found_edit_locs.
+
+    Converts localization output format to keywords dict format
+    compatible with build_repair_graph_context().
+
+    Args:
+        found_edit_locs: Localization result containing function/class info
+            Formats supported:
+            - Merged format: ['function: Name\\nline: 123', ...]
+            - Nested format: [[["class: Name\\nline: 123"], ...], ...]
+
+    Returns:
+        dict: {'functions': ['func1', ...], 'classes': ['Class1', ...]}
+    """
+    functions = set()
+    classes = set()
+
+    def parse_content(content):
+        """Parse a string content and extract function/class names."""
+        for line in content.splitlines():
+            line = line.strip()
+
+            if line.startswith("function: "):
+                name = line[len("function: "):].strip()
+                # Handle "Class.method" format - extract method name
+                if "." in name:
+                    name = name.split(".")[-1]
+                if name:
+                    functions.add(name)
+
+            elif line.startswith("class: "):
+                name = line[len("class: "):].strip()
+                if name:
+                    classes.add(name)
+
+    for item in found_edit_locs:
+        if isinstance(item, str):
+            # Merged format: direct string
+            parse_content(item)
+        elif isinstance(item, list):
+            # Nested format: [[["content"], ...], ...]
+            for sub_item in item:
+                if isinstance(sub_item, list):
+                    sub_item = sub_item[0] if sub_item else ""
+                if isinstance(sub_item, str) and sub_item:
+                    parse_content(sub_item)
+
+    return {
+        'functions': list(functions),
+        'classes': list(classes)
+    }
+
 
 planning_example_format = """Here is an example of the output format:
 --- BEGIN REASON ---
@@ -243,6 +334,72 @@ Below are some code segments, each from a relevant file. One or more of these fi
 """
 
 
+planning_prompt_random_file_with_deps = """
+We are currently solving the following issue within our repository.
+You are a maintainer of the project. Please analyze the bug as a maintainer, since the issue description might only describe the surface-level problem. Please analyze the bug thoroughly and infer the underlying real problem that needs to be addressed, using your inherit knowledge of the project. For example, if the goal is to fix an error or warning, focus on resolving the logic that causes the error or warning rather than simply suppressing or bypassing it.
+Then, provide an analysis of the reason for the bug, and then provide a step-by-step plan for repairing it.
+Begin each step with the mark <STEP> and end with </STEP>. For each step, provide a clear and concise description of the action to be taken.
+The actions should be wrapped in <Actions to be Taken> and </Actions to be Taken>.
+Only provide the steps of code modifications for repairing the issue in the plan, do not include any testing or verification steps in the plan.
+Do not include any localizations in the plan. You are only required to provide a plan to do code changes based on the issue description and the code provided. You do not have the freedom to open the codebase and look for the bug. You should only rely on the information provided in the issue description and the code snippet.
+You should only modify the file that you have chosen to modify.
+
+Please develop a comprehensive plan that addresses the underlying issue described. The plan should be broad enough to apply to similar cases, not just the specific example provided in the issue description. Focus on creating a solution that can be generally applied to a range of similar scenarios, rather than just solving the specific case mentioned.
+Note that if a file name or argument is provided in the issue description as an example for reproduction, other arguments may also trigger the issue. Therefore, make the fix as general as possible. Don't restrict the fix to a specific set of arguments.
+You should ensure that the proposed plan fixes the code to do the expected behavior.
+Choose the most general way to fix the issue, don't make any assumption of the input.
+You are required to propose a plan to fix the issue with minimal modifications. Follow these guidelines:
+Number of Steps: The number of steps to fix the issue should be at most 3. 
+Modification: Each step should perform exactly one modification at exactly one location in the code.
+Necessity: Do not modify the code unless it is necessary to fix the issue.
+Your plan should outline only the steps that involve code modifications. If a step does not require a code change, do not include it in the plan.
+You should only modify the file that you have chosen to modify.
+In each step, specify the file that need to be modified.
+If the issue text includes a recommended fix, do not apply it directly. You should explicitly reason whether it can fix the issue. Output the reason that the recommended fix can or cannot fix the issue. You should explicitly reason whether the recommended fix keeps the same code style.
+If the issue text includes a recommended fix, do not apply it directly. Instead, adapt it to align with the codebase's style and standards. Ensure that the patch considers interactions across different code sections, including nested structures, function calls, and data dependencies. The patch should maintain overall structural integrity, addressing the issue without unintended effects on other parts. Prefer solutions that are resilient to structural changes or future extensions.
+You always need to adapt the code to the existing codebase's style and standards by considering the context of the code.
+Remember that you should not write any code in the plan.
+
+{example}
+
+#Now the issue is as follows:
+
+Here is the issue text:
+--- BEGIN ISSUE ---
+{problem_statement}
+--- END ISSUE ---
+
+Below are some code segments, each from a relevant file. One or more of these files may contain bugs.
+--- BEGIN FILE ---
+```
+{content}
+```
+--- END FILE ---
+
+### Function Dependencies ###
+
+The code above shows the implementation but not how functions interact with the rest of the codebase.
+Below are caller/callee relationships for functions you may need to modify:
+
+- **Callers**: Functions that call this function.
+  If you change the function's signature, parameters, or return value, these callers may also need updates.
+
+- **Callees**: Functions that this function calls.
+  Understanding what this function depends on helps you avoid breaking existing behavior.
+
+Even though only function names are shown, use these relationships to:
+1. Consider side effects of your changes
+2. Ensure compatibility with calling code
+3. Verify that dependencies remain satisfied
+
+{dependencies}
+
+###
+
+You should only choose to modify files from the following list: {files}
+"""
+
+
 planning_prompt_poc_feedback = """
 We are currently solving the following issue within our repository.
 You are a maintainer of the project. Please analyze the bug as a maintainer, since the issue description might only describe the surface-level problem. Please analyze the bug thoroughly and infer the underlying real problem that needs to be addressed, using your inherit knowledge of the project. For example, if the goal is to fix an error or warning, focus on resolving the logic that causes the error or warning rather than simply suppressing or bypassing it.
@@ -284,6 +441,72 @@ Below are some code segments, each from a relevant file. One or more of these fi
 {content}
 ```
 --- END FILE ---
+
+{feedback}
+"""
+
+
+planning_prompt_poc_feedback_with_deps = """
+We are currently solving the following issue within our repository.
+You are a maintainer of the project. Please analyze the bug as a maintainer, since the issue description might only describe the surface-level problem. Please analyze the bug thoroughly and infer the underlying real problem that needs to be addressed, using your inherit knowledge of the project. For example, if the goal is to fix an error or warning, focus on resolving the logic that causes the error or warning rather than simply suppressing or bypassing it.
+Then, provide an analysis of the reason for the bug, and then provide a step-by-step plan for repairing it.
+Begin each step with the mark <STEP> and end with </STEP>. For each step, provide a clear and concise description of the action to be taken.
+The actions should be wrapped in <Actions to be Taken> and </Actions to be Taken>.
+Only provide the steps of code modifications for repairing the issue in the plan, do not include any testing or verification steps in the plan.
+Do not include any localizations in the plan. You are only required to provide a plan to do code changes based on the issue description and the code provided. You do not have the freedom to open the codebase and look for the bug. You should only rely on the information provided in the issue description and the code snippet.
+
+Generate a detailed plan to address the issue, avoiding overly general solutions. Analyze the scope of the critical variable by reasoning about the specific values that should and should not be affected. 
+Identify the situations the patch should handle and explicitly outline the scenarios it should avoid. Ensure the patch directly targets the issue without impacting unrelated code or values.
+For example:
+    If the issue can be triggered by an empty string, explicitly evaluate whether similar inputs like None, an empty list, or other falsy values can also trigger the issue. The plan should only affect the variable causing the issue. If None does not trigger the issue, the patch should not modify its behavior.
+    If the issue is caused by a specific integer, evaluate whether other integers also cause the problem. Adjust the scope of the variable to match the values capable of triggering the issue while ensuring unrelated cases remain unaffected.
+Infer the logical root cause of the issue and design the patch to fix the problem. Pay attention to conditions to ensure the patch avoids fixing too few situations or unintentionally affecting unrelated ones. 
+
+Please develop a comprehensive plan that addresses the underlying issue described. The plan should be broad enough to apply to similar cases, not just the specific example provided in the issue description. Focus on creating a solution that can be generally applied to a range of similar scenarios, rather than just solving the specific case mentioned.
+Note that if a file name or argument is provided in the issue description as an example for reproduction, other arguments may also trigger the issue. Therefore, make the fix as general as possible. Don't restrict the fix to a specific set of arguments.
+You should ensure that the proposed plan fixes the code to do the expected behavior.
+You are required to propose a plan to fix the issue with minimal modifications. Follow these guidelines:
+Number of Steps: The number of steps to fix the issue should be at most 2. 
+Modification: Each step should perform exactly one modification at exactly one location in the code.
+Necessity: Do not modify the code unless it is necessary to fix the issue.
+Your plan should outline only the steps that involve code modifications. If a step does not require a code change, do not include it in the plan.
+Don't write any code in the plan.
+
+{example}
+
+#Now the issue is as follows:
+
+Here is the issue text:
+--- BEGIN ISSUE ---
+{problem_statement}
+--- END ISSUE ---
+
+Below are some code segments, each from a relevant file. One or more of these files may contain bugs.
+--- BEGIN FILE ---
+```
+{content}
+```
+--- END FILE ---
+
+### Function Dependencies ###
+
+The code above shows the implementation but not how functions interact with the rest of the codebase.
+Below are caller/callee relationships for functions you may need to modify:
+
+- **Callers**: Functions that call this function.
+  If you change the function's signature, parameters, or return value, these callers may also need updates.
+
+- **Callees**: Functions that this function calls.
+  Understanding what this function depends on helps you avoid breaking existing behavior.
+
+Even though only function names are shown, use these relationships to:
+1. Consider side effects of your changes
+2. Ensure compatibility with calling code
+3. Verify that dependencies remain satisfied
+
+{dependencies}
+
+###
 
 {feedback}
 """
@@ -989,6 +1212,48 @@ def process_loc(loc, args, swe_bench_data, prev_generations):
 
     if topn_content.strip() == "":
         return None
+
+    # ========================================
+    # RepoGraph Integration: Build graph context
+    # ========================================
+    graph_context = ""
+    if args.use_repograph:
+        graph_tags = load_graph_tags(instance_id, args.graph_folder, logger)
+
+        if graph_tags is None:
+            logger.warning(f"[RepoGraph] graph_tags not found for {instance_id}, skipping dependencies")
+        else:
+            found_edit_locs = loc.get("found_edit_locs", [])
+
+            if not found_edit_locs:
+                logger.warning(f"[RepoGraph] found_edit_locs is empty for {instance_id}, skipping dependencies")
+            else:
+                # Extract keywords from found_edit_locs
+                keywords = extract_keywords_from_edit_locs(found_edit_locs)
+
+                if not keywords['functions'] and not keywords['classes']:
+                    logger.warning(f"[RepoGraph] No keywords extracted from found_edit_locs for {instance_id}")
+                    logger.debug(f"[RepoGraph] found_edit_locs content: {str(found_edit_locs)[:500]}...")
+                else:
+                    logger.info(f"[RepoGraph] Extracted keywords: functions={keywords['functions']}, classes={keywords['classes']}")
+
+                    # Build graph context using Repair-specific function
+                    # (Callers: no found_files filter, Callees: with found_files filter)
+                    graph_context = build_repair_graph_context(
+                        keywords,
+                        graph_tags,
+                        pred_files,  # Used only for callees
+                        max_callers_per_func=5,
+                        max_callees_per_func=5,
+                        max_keywords=20,
+                        max_functions=30
+                    )
+
+                    if not graph_context:
+                        logger.warning(f"[RepoGraph] No caller/callee relationships found for keywords")
+                    else:
+                        logger.info(f"[RepoGraph] Graph context generated: {len(graph_context)} chars")
+
     if args.diverse:
         # construct the context for function granularity
         file_to_edit_locs_func = copy.deepcopy(file_to_edit_locs)
@@ -1017,27 +1282,49 @@ def process_loc(loc, args, swe_bench_data, prev_generations):
 
     plannings = []
     example = planning_example_format
-    
+
     # with verifier, get batch_size plans and generate batch_size patches, let verifier to find one patch that can pass the verification
     # note that for the last batch, args.batch_size may be modified to be smaller
     if args.sample_mod or base_patch_diff == "":
-        message_get_plan = planning_prompt_random_file.format(
-            problem_statement=problem_statement,
-            content=topn_content.rstrip(),
-            example=example,
-            files=' '.join(file_loc_intervals.keys())
-        ).strip()
+        if graph_context:
+            # Use prompt with dependencies
+            message_get_plan = planning_prompt_random_file_with_deps.format(
+                problem_statement=problem_statement,
+                content=topn_content.rstrip(),
+                example=example,
+                files=' '.join(file_loc_intervals.keys()),
+                dependencies=graph_context,
+            ).strip()
+        else:
+            # Baseline: use original prompt
+            message_get_plan = planning_prompt_random_file.format(
+                problem_statement=problem_statement,
+                content=topn_content.rstrip(),
+                example=example,
+                files=' '.join(file_loc_intervals.keys())
+            ).strip()
     elif args.refine_mod:
         content = topn_content.rstrip()
         if instance_id in reloca_ids or did_relocate:
             feedback_prompt += '\n The previous patch may have targeted incorrect locations, such as the wrong lines, functions, or files. Your need to carefully evaluate and double-check to propose a plan that patches the correct locations to effectively resolve the issue.'
             feedback_prompt += '\n Note that the provided previous patch is just for reference, we will not apply it to the codebase. You need to propose a new patch based on the current code context.'
-        message_get_plan = planning_prompt_poc_feedback.format(
-            problem_statement=problem_statement,
-            content=content,
-            example=example,
-            feedback=feedback_prompt,
-        ).strip()
+        if graph_context:
+            # Use prompt with dependencies
+            message_get_plan = planning_prompt_poc_feedback_with_deps.format(
+                problem_statement=problem_statement,
+                content=content,
+                example=example,
+                feedback=feedback_prompt,
+                dependencies=graph_context,
+            ).strip()
+        else:
+            # Baseline: use original prompt
+            message_get_plan = planning_prompt_poc_feedback.format(
+                problem_statement=problem_statement,
+                content=content,
+                example=example,
+                feedback=feedback_prompt,
+            ).strip()
     else:
         raise ValueError("invalid mode, must be sample_mod or refine_mod")
     
@@ -1353,7 +1640,7 @@ def redo_localization(instance_id, args, logger, loc, additional_prompt, problem
         context_window=20,
         add_space=False,
         code_graph=False,
-        code_graph_context=None,
+        graph_context="",
         no_line_number=False,
         sticky_scroll=False,
         mock=False,
@@ -1781,6 +2068,15 @@ def main():
     )
     parser.add_argument(
         "--diverse", action="store_true", help="extra diverse when doing sampling"
+    )
+    # RepoGraph integration arguments
+    parser.add_argument(
+        "--use_repograph", action="store_true",
+        help="Add RepoGraph dependencies to planning prompt"
+    )
+    parser.add_argument(
+        "--graph_folder", type=str, default="RepoGraph_cache",
+        help="Folder containing tags_*.json files"
     )
 
     args = parser.parse_args()

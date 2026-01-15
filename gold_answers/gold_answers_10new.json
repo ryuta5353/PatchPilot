@@ -1,0 +1,228 @@
+{
+  "django__django-11422": {
+    "instance_id": "django__django-11422",
+    "gold_files": [
+      "django/utils/autoreload.py"
+    ],
+    "gold_lines": {
+      "django/utils/autoreload.py": [
+        117,
+        118,
+        119,
+        120,
+        121,
+        122,
+        123,
+        124,
+        125
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Autoreloader with StatReloader doesn't track changes in manage.py."
+  },
+  "django__django-11564": {
+    "instance_id": "django__django-11564",
+    "gold_files": [
+      "django/conf/__init__.py"
+    ],
+    "gold_lines": {
+      "django/conf/__init__.py": [
+        18,
+        19,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        121,
+        122,
+        123,
+        124,
+        125,
+        126,
+        127,
+        128,
+        129,
+        130,
+        131,
+        132,
+        152,
+        153,
+        154,
+        155,
+        156,
+        157,
+        158,
+        159
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Add support for SCRIPT_NAME in STATIC_URL and MEDIA_URL"
+  },
+  "django__django-11583": {
+    "instance_id": "django__django-11583",
+    "gold_files": [
+      "django/utils/autoreload.py"
+    ],
+    "gold_lines": {
+      "django/utils/autoreload.py": [
+        146,
+        147,
+        148,
+        149
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Auto-reloading with StatReloader very intermittently throws \"ValueError: embedded null byte\"."
+  },
+  "django__django-11620": {
+    "instance_id": "django__django-11620",
+    "gold_files": [
+      "django/views/debug.py"
+    ],
+    "gold_lines": {
+      "django/views/debug.py": [
+        8,
+        11,
+        486
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "When DEBUG is True, raising Http404 in a path converter's to_python method does not result in a tech"
+  },
+  "django__django-11630": {
+    "instance_id": "django__django-11630",
+    "gold_files": [
+      "django/core/checks/model_checks.py"
+    ],
+    "gold_lines": {
+      "django/core/checks/model_checks.py": [
+        7,
+        8,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        50,
+        52,
+        54,
+        56,
+        57
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Django throws error when different apps with different models have the same name table name."
+  },
+  "django__django-11742": {
+    "instance_id": "django__django-11742",
+    "gold_files": [
+      "django/db/models/fields/__init__.py"
+    ],
+    "gold_lines": {
+      "django/db/models/fields/__init__.py": [
+        260,
+        274,
+        275,
+        276,
+        277,
+        278,
+        284,
+        285,
+        291,
+        292,
+        293,
+        294,
+        295,
+        296,
+        297,
+        298,
+        299
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Add check to ensure max_length fits longest choice."
+  },
+  "django__django-11797": {
+    "instance_id": "django__django-11797",
+    "gold_files": [
+      "django/db/models/lookups.py"
+    ],
+    "gold_lines": {
+      "django/db/models/lookups.py": [
+        265,
+        266,
+        267
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Filtering on query result overrides GROUP BY of internal query"
+  },
+  "django__django-11815": {
+    "instance_id": "django__django-11815",
+    "gold_files": [
+      "django/db/migrations/serializer.py"
+    ],
+    "gold_lines": {
+      "django/db/migrations/serializer.py": [
+        123,
+        124,
+        125,
+        126
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Migrations uses value of enum object instead of its name."
+  },
+  "django__django-11848": {
+    "instance_id": "django__django-11848",
+    "gold_files": [
+      "django/utils/http.py"
+    ],
+    "gold_lines": {
+      "django/utils/http.py": [
+        179,
+        180,
+        181,
+        182,
+        183,
+        184,
+        186
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "django.utils.http.parse_http_date two digit year check is incorrect"
+  },
+  "django__django-11905": {
+    "instance_id": "django__django-11905",
+    "gold_files": [
+      "django/db/models/lookups.py"
+    ],
+    "gold_lines": {
+      "django/db/models/lookups.py": [
+        3,
+        13,
+        468,
+        469,
+        470,
+        471,
+        472,
+        473,
+        474,
+        475,
+        476,
+        477,
+        478
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Prevent using __isnull lookup with non-boolean value."
+  }
+}

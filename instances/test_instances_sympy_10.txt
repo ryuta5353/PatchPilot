@@ -1,0 +1,10 @@
+sympy__sympy-12419
+sympy__sympy-12454
+sympy__sympy-13031
+sympy__sympy-12171
+sympy__sympy-12236
+sympy__sympy-12481
+sympy__sympy-13043
+sympy__sympy-11400
+sympy__sympy-11897
+sympy__sympy-13146

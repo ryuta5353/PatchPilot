@@ -10,7 +10,13 @@ from patchpilot.util.preprocess_data import (
 )
 
 from patchpilot.fl.FL import LLMFL
-from patchpilot.fl.repograph_utils import construct_code_graph_context
+from patchpilot.fl.repograph_utils import (
+    construct_code_graph_context,
+    extract_keywords_from_problem,
+    search_tags_by_keywords,
+    build_keyword_graph_context,
+    build_caller_callee_context,
+)
 from patchpilot.repair.repair import poc_info_prompt
 from patchpilot.reproduce.task import parse_task_list_file
 from patchpilot.util.preprocess_data import (
@@ -70,8 +76,8 @@ def localize_instance(
             open(os.path.join(args.code_graph_dir, f"{instance_id}.pkl"), "rb")
         )
 
-    # Load graph_tags when repo_graph or file_level_caller is enabled
-    if args.repo_graph or args.file_level_caller:
+    # Load graph_tags when repo_graph, file_level_caller, or keyword_graph_context is enabled
+    if args.repo_graph or args.file_level_caller or args.keyword_graph_context:
         graph_tags = json.load(
             open(os.path.join(args.code_graph_dir, f"tags_{instance_id}.json"), "r")
         )
@@ -244,6 +250,7 @@ def localize_instance(
         additional_artifact_loc_edit_location = [additional_artifact_loc_edit_location]
 
     # related class, functions, global var localization
+    pred_files = found_files[: args.top_n] if found_files else []  # デフォルト初期化
     if args.related_level and not args.direct_line_level:
         if len(found_files) != 0:
             pred_files = found_files[: args.top_n]
@@ -257,13 +264,28 @@ def localize_instance(
                 args.match_partial_paths,
                 args.temperature
             )
+            # キーワードベース Graph Context を生成（caller/callee関係を含む）
+            keyword_graph_context = ""
+            if args.keyword_graph_context and graph_tags is not None:
+                keywords = extract_keywords_from_problem(problem_statement, graph_tags, pred_files)
+                keyword_graph_context = build_caller_callee_context(
+                    keywords, graph_tags, pred_files,
+                    max_callers_per_func=5, max_callees_per_func=5,
+                    max_keywords=20, max_functions=30
+                )
+                logger.info(f"Keywords extracted: {keywords}")
+                logger.info(f"Caller/callee context length: {len(keyword_graph_context)} chars")
+                if keyword_graph_context:
+                    logger.info(f"Caller/callee context preview: {keyword_graph_context[:300]}...")
+
             if args.compress:
                 (
                     found_related_locs,
                     additional_artifact_loc_related,
                     related_loc_traj,
                 ) = fl.localize_function_from_compressed_files(
-                    pred_files, mock=args.mock, num_samples=args.num_samples, coverage_info=coverage_info
+                    pred_files, mock=args.mock, num_samples=args.num_samples,
+                    coverage_info=coverage_info, additional_info=keyword_graph_context
                 )
                 additional_artifact_loc_related = [additional_artifact_loc_related]
             else:
@@ -664,6 +686,8 @@ def main():
     parser.add_argument("--repo_graph", action="store_true")
     parser.add_argument("--file_level_caller", action="store_true",
                         help="Add caller files as candidates in file-level localization")
+    parser.add_argument("--keyword_graph_context", action="store_true",
+                        help="Add keyword-based graph context to Related Level")
     parser.add_argument("--code_graph_dir", type=str, default=None)
     parser.add_argument("--reproduce_folder", type=str)
     parser.add_argument("--use-coverage", action="store_true")

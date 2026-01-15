@@ -2,6 +2,18 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Critical Instructions
+
+**IMPORTANT: Before providing any response or command, ALWAYS refer to the following files:**
+- `README.md` (PatchPilot main README)
+- `RepoGraph/README.md` (RepoGraph README)
+- `phase1_repograph_integration.md` (Integration plan)
+- `docker-compose.yml` (Docker volume mounts and configuration)
+
+These files contain the authoritative information about commands, workflows, and system behavior. Always verify your responses against these documents to ensure accuracy.
+
+**Docker Volume Mounts**: Check `docker-compose.yml` to understand which directories are mounted from host to container. Files in mounted directories do not need to be transferred via `docker cp`.
+
 ## Project Overview
 
 PatchPilot is a rule-based planning patching framework for automated software bug fixing. It implements a five-component workflow: Reproduction, Localization, Generation, Validation, and Refinement. The system is designed to be stable and cost-efficient while maintaining high performance on SWE-bench benchmarks.

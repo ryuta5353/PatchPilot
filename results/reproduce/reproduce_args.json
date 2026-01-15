@@ -2,9 +2,9 @@
     "reproduce_folder": "results/reproduce",
     "setup_map": "setup_result/verified_setup_map.json",
     "tasks_map": "setup_result/verified_tasks_map.json",
-    "task_list_file": "my_swe_lite_tasks.txt",
+    "task_list_file": "instances/test_instances_mixed_phase1_v2.txt",
     "match_partial_paths": false,
-    "num_threads": 1,
+    "num_threads": 12,
     "target_id": null,
     "model": "gpt-4o-2024-08-06",
     "backend": "openai"

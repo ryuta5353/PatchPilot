@@ -1,0 +1,169 @@
+{
+  "sympy__sympy-12419": {
+    "instance_id": "sympy__sympy-12419",
+    "gold_files": [
+      "sympy/matrices/expressions/matexpr.py"
+    ],
+    "gold_lines": {
+      "sympy/matrices/expressions/matexpr.py": [
+        5,
+        10,
+        379,
+        479,
+        480,
+        482,
+        484
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Sum of the elements of an identity matrix is zero"
+  },
+  "sympy__sympy-12454": {
+    "instance_id": "sympy__sympy-12454",
+    "gold_files": [
+      "sympy/matrices/matrices.py"
+    ],
+    "gold_lines": {
+      "sympy/matrices/matrices.py": [
+        644,
+        1115
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "is_upper() raises IndexError for tall matrices"
+  },
+  "sympy__sympy-13031": {
+    "instance_id": "sympy__sympy-13031",
+    "gold_files": [
+      "sympy/matrices/sparse.py"
+    ],
+    "gold_lines": {
+      "sympy/matrices/sparse.py": [
+        988,
+        989,
+        990,
+        991,
+        1196,
+        1197,
+        1198,
+        1199
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Behavior of Matrix hstack and vstack changed in sympy 1.1"
+  },
+  "sympy__sympy-12171": {
+    "instance_id": "sympy__sympy-12171",
+    "gold_files": [
+      "sympy/printing/mathematica.py"
+    ],
+    "gold_lines": {
+      "sympy/printing/mathematica.py": [
+        112,
+        113,
+        114
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "matematica code printer does not handle floats and derivatives correctly"
+  },
+  "sympy__sympy-12236": {
+    "instance_id": "sympy__sympy-12236",
+    "gold_files": [
+      "sympy/polys/domains/polynomialring.py"
+    ],
+    "gold_lines": {
+      "sympy/polys/domains/polynomialring.py": [
+        107,
+        109,
+        110
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Wrong result with apart"
+  },
+  "sympy__sympy-12481": {
+    "instance_id": "sympy__sympy-12481",
+    "gold_files": [
+      "sympy/combinatorics/permutations.py"
+    ],
+    "gold_lines": {
+      "sympy/combinatorics/permutations.py": [
+        898,
+        899
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "`Permutation` constructor fails with non-disjoint cycles"
+  },
+  "sympy__sympy-13043": {
+    "instance_id": "sympy__sympy-13043",
+    "gold_files": [
+      "sympy/integrals/intpoly.py"
+    ],
+    "gold_lines": {
+      "sympy/integrals/intpoly.py": [
+        559,
+        572,
+        596
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "decompose() function in intpoly returns a list of arbitrary order"
+  },
+  "sympy__sympy-11400": {
+    "instance_id": "sympy__sympy-11400",
+    "gold_files": [
+      "sympy/printing/ccode.py"
+    ],
+    "gold_lines": {
+      "sympy/printing/ccode.py": [
+        234,
+        235,
+        236,
+        237,
+        238,
+        239,
+        240,
+        241,
+        242,
+        243,
+        244,
+        245,
+        246,
+        247
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "ccode(sinc(x)) doesn't work"
+  },
+  "sympy__sympy-11897": {
+    "instance_id": "sympy__sympy-11897",
+    "gold_files": [
+      "sympy/printing/latex.py"
+    ],
+    "gold_lines": {
+      "sympy/printing/latex.py": [
+        238,
+        239,
+        243
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "LaTeX printer inconsistent with pretty printer"
+  },
+  "sympy__sympy-13146": {
+    "instance_id": "sympy__sympy-13146",
+    "gold_files": [
+      "sympy/core/operations.py"
+    ],
+    "gold_lines": {
+      "sympy/core/operations.py": [
+        335,
+        346
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Exponent doesn't fully simplify"
+  }
+}

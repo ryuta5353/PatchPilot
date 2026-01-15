@@ -1,0 +1,1802 @@
+{
+  "astropy__astropy-12907": {
+    "files": [
+      "astropy/modeling/separable.py"
+    ],
+    "problem_statement": "Modeling's `separability_matrix` does not compute separability correctly for nested CompoundModels\nConsider the following model:\r\n\r\n```python\r\nfrom astropy.modeling import models as m\r\nfrom astropy.mo"
+  },
+  "astropy__astropy-14182": {
+    "files": [
+      "astropy/io/ascii/rst.py"
+    ],
+    "problem_statement": "Please support header rows in RestructuredText output\n### Description\r\n\r\nIt would be great if the following would work:\r\n\r\n```Python\r\n>>> from astropy.table import QTable\r\n>>> import astropy.units as "
+  },
+  "astropy__astropy-14365": {
+    "files": [
+      "astropy/io/ascii/qdp.py"
+    ],
+    "problem_statement": "ascii.qdp Table format assumes QDP commands are upper case\n### Description\n\nascii.qdp assumes that commands in a QDP file are upper case, for example, for errors they must be \"READ SERR 1 2\" whereas Q"
+  },
+  "astropy__astropy-14995": {
+    "files": [
+      "astropy/nddata/mixins/ndarithmetic.py"
+    ],
+    "problem_statement": "In v5.3, NDDataRef mask propagation fails when one of the operand does not have a mask\n### Description\n\nThis applies to v5.3. \r\n\r\nIt looks like when one of the operand does not have a mask, the mask p"
+  },
+  "astropy__astropy-6938": {
+    "files": [
+      "astropy/io/fits/fitsrec.py"
+    ],
+    "problem_statement": "Possible bug in io.fits related to D exponents\nI came across the following code in ``fitsrec.py``:\r\n\r\n```python\r\n        # Replace exponent separator in floating point numbers\r\n        if 'D' in forma"
+  },
+  "astropy__astropy-7746": {
+    "files": [
+      "astropy/wcs/wcs.py"
+    ],
+    "problem_statement": "Issue when passing empty lists/arrays to WCS transformations\nThe following should not fail but instead should return empty lists/arrays:\r\n\r\n```\r\nIn [1]: from astropy.wcs import WCS\r\n\r\nIn [2]: wcs = WC"
+  },
+  "django__django-10914": {
+    "files": [
+      "django/conf/global_settings.py"
+    ],
+    "problem_statement": "Set default FILE_UPLOAD_PERMISSION to 0o644.\nDescription\n\t\nHello,\nAs far as I can see, the \u200bFile Uploads documentation page does not mention any permission issues.\nWhat I would like to see is a warnin"
+  },
+  "django__django-10924": {
+    "files": [
+      "django/db/models/fields/__init__.py"
+    ],
+    "problem_statement": "Allow FilePathField path to accept a callable.\nDescription\n\t\nI have a special case where I want to create a model containing the path to some local files on the server/dev machine. Seeing as the place"
+  },
+  "django__django-11001": {
+    "files": [
+      "django/db/models/sql/compiler.py"
+    ],
+    "problem_statement": "Incorrect removal of order_by clause created as multiline RawSQL\nDescription\n\t\nHi.\nThe SQLCompiler is ripping off one of my \"order by\" clause, because he \"thinks\" the clause was already \"seen\" (in SQL"
+  },
+  "django__django-11019": {
+    "files": [
+      "django/forms/widgets.py"
+    ],
+    "problem_statement": "Merging 3 or more media objects can throw unnecessary MediaOrderConflictWarnings\nDescription\n\t\nConsider the following form definition, where text-editor-extras.js depends on text-editor.js but all oth"
+  },
+  "django__django-11039": {
+    "files": [
+      "django/core/management/commands/sqlmigrate.py"
+    ],
+    "problem_statement": "sqlmigrate wraps it's outpout in BEGIN/COMMIT even if the database doesn't support transactional DDL\nDescription\n\t \n\t\t(last modified by Simon Charette)\n\t \nThe migration executor only adds the outer BE"
+  },
+  "django__django-11049": {
+    "files": [
+      "django/db/models/fields/__init__.py"
+    ],
+    "problem_statement": "Correct expected format in invalid DurationField error message\nDescription\n\t\nIf you enter a duration \"14:00\" into a duration field, it translates to \"00:14:00\" which is 14 minutes.\nThe current error m"
+  },
+  "django__django-11099": {
+    "files": [
+      "django/contrib/auth/validators.py"
+    ],
+    "problem_statement": "UsernameValidator allows trailing newline in usernames\nDescription\n\t\nASCIIUsernameValidator and UnicodeUsernameValidator use the regex \nr'^[\\w.@+-]+$'\nThe intent is to only allow alphanumeric characte"
+  },
+  "django__django-11133": {
+    "files": [
+      "django/http/response.py"
+    ],
+    "problem_statement": "HttpResponse doesn't handle memoryview objects\nDescription\n\t\nI am trying to write a BinaryField retrieved from the database into a HttpResponse. When the database is Sqlite this works correctly, but P"
+  },
+  "django__django-11179": {
+    "files": [
+      "django/db/models/deletion.py"
+    ],
+    "problem_statement": "delete() on instances of models without any dependencies doesn't clear PKs.\nDescription\n\t\nDeleting any model with no dependencies not updates the PK on the model. It should be set to None after .delet"
+  },
+  "django__django-11283": {
+    "files": [
+      "django/contrib/auth/migrations/0011_update_proxy_permissions.py"
+    ],
+    "problem_statement": "Migration auth.0011_update_proxy_permissions fails for models recreated as a proxy.\nDescription\n\t \n\t\t(last modified by Mariusz Felisiak)\n\t \nI am trying to update my project to Django 2.2. When I launc"
+  },
+  "django__django-11422": {
+    "files": [
+      "django/utils/autoreload.py"
+    ],
+    "problem_statement": "Autoreloader with StatReloader doesn't track changes in manage.py.\nDescription\n\t \n\t\t(last modified by Mariusz Felisiak)\n\t \nThis is a bit convoluted, but here we go.\nEnvironment (OSX 10.11):\n$ python -"
+  },
+  "django__django-11564": {
+    "files": [
+      "django/conf/__init__.py"
+    ],
+    "problem_statement": "Add support for SCRIPT_NAME in STATIC_URL and MEDIA_URL\nDescription\n\t \n\t\t(last modified by Rostyslav Bryzgunov)\n\t \nBy default, {% static '...' %} tag just appends STATIC_URL in the path. When running "
+  },
+  "django__django-11583": {
+    "files": [
+      "django/utils/autoreload.py"
+    ],
+    "problem_statement": "Auto-reloading with StatReloader very intermittently throws \"ValueError: embedded null byte\".\nDescription\n\t\nRaising this mainly so that it's tracked, as I have no idea how to reproduce it, nor why it'"
+  },
+  "django__django-11620": {
+    "files": [
+      "django/views/debug.py"
+    ],
+    "problem_statement": "When DEBUG is True, raising Http404 in a path converter's to_python method does not result in a technical response\nDescription\n\t\nThis is the response I get (plain text): \nA server error occurred. Plea"
+  },
+  "django__django-11630": {
+    "files": [
+      "django/core/checks/model_checks.py"
+    ],
+    "problem_statement": "Django throws error when different apps with different models have the same name table name.\nDescription\n\t\nError message:\ntable_name: (models.E028) db_table 'table_name' is used by multiple models: ba"
+  },
+  "django__django-11742": {
+    "files": [
+      "django/db/models/fields/__init__.py"
+    ],
+    "problem_statement": "Add check to ensure max_length fits longest choice.\nDescription\n\t\nThere is currently no check to ensure that Field.max_length is large enough to fit the longest value in Field.choices.\nThis would be v"
+  },
+  "django__django-11797": {
+    "files": [
+      "django/db/models/lookups.py"
+    ],
+    "problem_statement": "Filtering on query result overrides GROUP BY of internal query\nDescription\n\t\nfrom django.contrib.auth import models\na = models.User.objects.filter(email__isnull=True).values('email').annotate(m=Max('i"
+  },
+  "django__django-11815": {
+    "files": [
+      "django/db/migrations/serializer.py"
+    ],
+    "problem_statement": "Migrations uses value of enum object instead of its name.\nDescription\n\t \n\t\t(last modified by oasl)\n\t \nWhen using Enum object as a default value for a CharField, the generated migration file uses the v"
+  },
+  "django__django-11848": {
+    "files": [
+      "django/utils/http.py"
+    ],
+    "problem_statement": "django.utils.http.parse_http_date two digit year check is incorrect\nDescription\n\t \n\t\t(last modified by Ad Timmering)\n\t \nRFC 850 does not mention this, but in RFC 7231 (and there's something similar in"
+  },
+  "django__django-11905": {
+    "files": [
+      "django/db/models/lookups.py"
+    ],
+    "problem_statement": "Prevent using __isnull lookup with non-boolean value.\nDescription\n\t \n\t\t(last modified by Mariusz Felisiak)\n\t \n__isnull should not allow for non-boolean values. Using truthy/falsey doesn't promote INNE"
+  },
+  "django__django-11910": {
+    "files": [
+      "django/db/migrations/autodetector.py"
+    ],
+    "problem_statement": "ForeignKey's to_field parameter gets the old field's name when renaming a PrimaryKey.\nDescription\n\t\nHaving these two models \nclass ModelA(models.Model):\n\tfield_wrong = models.CharField('field1', max_l"
+  },
+  "django__django-11964": {
+    "files": [
+      "django/db/models/enums.py"
+    ],
+    "problem_statement": "The value of a TextChoices/IntegerChoices field has a differing type\nDescription\n\t\nIf we create an instance of a model having a CharField or IntegerField with the keyword choices pointing to IntegerCh"
+  },
+  "django__django-11999": {
+    "files": [
+      "django/db/models/fields/__init__.py"
+    ],
+    "problem_statement": "Cannot override get_FOO_display() in Django 2.2+.\nDescription\n\t\nI cannot override the get_FIELD_display function on models since version 2.2. It works in version 2.1.\nExample:\nclass FooBar(models.Mode"
+  },
+  "django__django-12113": {
+    "files": [
+      "django/db/backends/sqlite3/creation.py"
+    ],
+    "problem_statement": "admin_views.test_multidb fails with persistent test SQLite database.\nDescription\n\t \n\t\t(last modified by Mariusz Felisiak)\n\t \nI've tried using persistent SQLite databases for the tests (to make use of\n"
+  },
+  "django__django-12125": {
+    "files": [
+      "django/db/migrations/serializer.py"
+    ],
+    "problem_statement": "makemigrations produces incorrect path for inner classes\nDescription\n\t\nWhen you define a subclass from django.db.models.Field as an inner class of some other class, and use this field inside a django."
+  },
+  "django__django-12184": {
+    "files": [
+      "django/urls/resolvers.py"
+    ],
+    "problem_statement": "Optional URL params crash some view functions.\nDescription\n\t\nMy use case, running fine with Django until 2.2:\nURLConf:\nurlpatterns += [\n\t...\n\tre_path(r'^module/(?P<format>(html|json|xml))?/?$', views."
+  },
+  "django__django-12284": {
+    "files": [
+      "django/db/models/fields/__init__.py"
+    ],
+    "problem_statement": "Model.get_FOO_display() does not work correctly with inherited choices.\nDescription\n\t \n\t\t(last modified by Mariusz Felisiak)\n\t \nGiven a base model with choices A containing 3 tuples\nChild Model inheri"
+  },
+  "django__django-12286": {
+    "files": [
+      "django/core/checks/translation.py"
+    ],
+    "problem_statement": "translation.E004 shouldn't be raised on sublanguages when a base language is available.\nDescription\n\t\nAccording to Django documentation:\nIf a base language is available but the sublanguage specified i"
+  },
+  "django__django-12308": {
+    "files": [
+      "django/contrib/admin/utils.py"
+    ],
+    "problem_statement": "JSONField are not properly displayed in admin when they are readonly.\nDescription\n\t\nJSONField values are displayed as dict when readonly in the admin.\nFor example, {\"foo\": \"bar\"} would be displayed as"
+  },
+  "django__django-12453": {
+    "files": [
+      "django/db/backends/base/creation.py"
+    ],
+    "problem_statement": "`TransactionTestCase.serialized_rollback` fails to restore objects due to ordering constraints\nDescription\n\t\nI hit this problem in a fairly complex projet and haven't had the time to write a minimal r"
+  },
+  "django__django-12470": {
+    "files": [
+      "django/db/models/sql/compiler.py"
+    ],
+    "problem_statement": "Inherited model doesn't correctly order by \"-pk\" when specified on Parent.Meta.ordering\nDescription\n\t\nGiven the following model definition:\nfrom django.db import models\nclass Parent(models.Model):\n\tcl"
+  },
+  "django__django-12497": {
+    "files": [
+      "django/db/models/fields/related.py"
+    ],
+    "problem_statement": "Wrong hint about recursive relationship.\nDescription\n\t \n\t\t(last modified by Matheus Cunha Motta)\n\t \nWhen there's more than 2 ForeignKeys in an intermediary model of a m2m field and no through_fields h"
+  },
+  "django__django-12589": {
+    "files": [
+      "django/db/models/sql/query.py"
+    ],
+    "problem_statement": "Django 3.0: \"GROUP BY\" clauses error with tricky field annotation\nDescription\n\t\nLet's pretend that we have next model structure with next model's relations:\nclass A(models.Model):\n\tbs = models.ManyToM"
+  },
+  "django__django-12700": {
+    "files": [
+      "django/views/debug.py"
+    ],
+    "problem_statement": "Settings are cleaned insufficiently.\nDescription\n\t\nPosting publicly after checking with the rest of the security team.\nI just ran into a case where django.views.debug.SafeExceptionReporterFilter.get_s"
+  },
+  "django__django-12708": {
+    "files": [
+      "django/db/backends/base/schema.py"
+    ],
+    "problem_statement": "Migration crashes deleting an index_together if there is a unique_together on the same fields\nDescription\n\t\nHappens with Django 1.11.10\nSteps to reproduce:\n1) Create models with 2 fields, add 2 same f"
+  },
+  "django__django-12747": {
+    "files": [
+      "django/db/models/deletion.py"
+    ],
+    "problem_statement": "QuerySet.Delete - inconsistent result when zero objects deleted\nDescription\n\t\nThe result format of the QuerySet.Delete method is a tuple: (X, Y) \nX - is the total amount of deleted objects (including "
+  },
+  "django__django-12856": {
+    "files": [
+      "django/db/models/base.py"
+    ],
+    "problem_statement": "Add check for fields of UniqueConstraints.\nDescription\n\t \n\t\t(last modified by Marnanel Thurman)\n\t \nWhen a model gains a UniqueConstraint, makemigrations doesn't check that the fields named therein act"
+  },
+  "django__django-12908": {
+    "files": [
+      "django/db/models/query.py"
+    ],
+    "problem_statement": "Union queryset should raise on distinct().\nDescription\n\t \n\t\t(last modified by Sielc Technologies)\n\t \nAfter using\n.annotate() on 2 different querysets\nand then .union()\n.distinct() will not affect the "
+  },
+  "django__django-12915": {
+    "files": [
+      "django/contrib/staticfiles/handlers.py"
+    ],
+    "problem_statement": "Add get_response_async for ASGIStaticFilesHandler\nDescription\n\t\nIt looks like the StaticFilesHandlerMixin is missing the the async response function.\nWithout this, when trying to use the ASGIStaticFil"
+  },
+  "django__django-12983": {
+    "files": [
+      "django/utils/text.py"
+    ],
+    "problem_statement": "Make django.utils.text.slugify() strip dashes and underscores\nDescription\n\t \n\t\t(last modified by Elinaldo do Nascimento Monteiro)\n\t \nBug generation slug\nExample:\nfrom django.utils import text\ntext.slu"
+  },
+  "django__django-13028": {
+    "files": [
+      "django/db/models/sql/query.py"
+    ],
+    "problem_statement": "Queryset raises NotSupportedError when RHS has filterable=False attribute.\nDescription\n\t \n\t\t(last modified by Nicolas Baccelli)\n\t \nI'm migrating my app to django 3.0.7 and I hit a strange behavior usi"
+  },
+  "django__django-13033": {
+    "files": [
+      "django/db/models/sql/compiler.py"
+    ],
+    "problem_statement": "Self referencing foreign key doesn't correctly order by a relation \"_id\" field.\nDescription\n\t\nInitially discovered on 2.2.10 but verified still happens on 3.0.6. Given the following models:\nclass OneM"
+  },
+  "django__django-13158": {
+    "files": [
+      "django/db/models/sql/query.py"
+    ],
+    "problem_statement": "QuerySet.none() on combined queries returns all results.\nDescription\n\t\nI came across this issue on Stack Overflow. I'm not 100% sure it's a bug, but it does seem strange. With this code (excuse the bi"
+  },
+  "django__django-13220": {
+    "files": [
+      "django/core/exceptions.py"
+    ],
+    "problem_statement": "Allow ValidationErrors to equal each other when created identically\nDescription\n\t \n\t\t(last modified by kamni)\n\t \nCurrently ValidationErrors (django.core.exceptions.ValidationError) that have identical"
+  },
+  "django__django-13230": {
+    "files": [
+      "django/contrib/syndication/views.py"
+    ],
+    "problem_statement": "Add support for item_comments to syndication framework\nDescription\n\t\nAdd comments argument to feed.add_item() in syndication.views so that item_comments can be defined directly without having to take "
+  },
+  "django__django-13265": {
+    "files": [
+      "django/db/migrations/autodetector.py"
+    ],
+    "problem_statement": "AlterOrderWithRespectTo() with ForeignKey crash when _order is included in Index().\nDescription\n\t\n\tclass Meta:\n\t\tdb_table = 'look_image'\n\t\torder_with_respect_to = 'look'\n\t\tindexes = [\n\t\t\tmodels.Index("
+  },
+  "django__django-13315": {
+    "files": [
+      "django/forms/models.py"
+    ],
+    "problem_statement": "limit_choices_to on a ForeignKey can render duplicate options in formfield\nDescription\n\t\nIf you pass a Q object as limit_choices_to on a ForeignKey field involving a join, you may end up with duplicat"
+  },
+  "django__django-13321": {
+    "files": [
+      "django/contrib/sessions/backends/base.py"
+    ],
+    "problem_statement": "Decoding an invalid session data crashes.\nDescription\n\t \n\t\t(last modified by Matt Hegarty)\n\t \nHi\nI recently upgraded my staging server to 3.1. I think that there was an old session which was still act"
+  },
+  "django__django-13401": {
+    "files": [
+      "django/db/models/fields/__init__.py"
+    ],
+    "problem_statement": "Abstract model field should not be equal across models\nDescription\n\t\nConsider the following models:\nclass A(models.Model):\n\tclass Meta:\n\t\tabstract = True\n\tmyfield = IntegerField()\nclass B(A):\n\tpass\ncl"
+  },
+  "django__django-13447": {
+    "files": [
+      "django/contrib/admin/sites.py"
+    ],
+    "problem_statement": "Added model class to app_list context\nDescription\n\t \n\t\t(last modified by Raffaele Salmaso)\n\t \nI need to manipulate the app_list in my custom admin view, and the easiest way to get the result is to hav"
+  },
+  "django__django-13448": {
+    "files": [
+      "django/db/backends/base/creation.py"
+    ],
+    "problem_statement": "Test runner setup_databases crashes with \"TEST\": {\"MIGRATE\": False}.\nDescription\n\t\nI'm trying to upgrade a project from Django 3.0 to Django 3.1 and wanted to try out the new \"TEST\": {\"MIGRATE\": False"
+  },
+  "django__django-13551": {
+    "files": [
+      "django/contrib/auth/tokens.py"
+    ],
+    "problem_statement": "Changing user's email could invalidate password reset tokens\nDescription\n\t\nSequence:\nHave account with email address foo@\u2026\nPassword reset request for that email (unused)\nfoo@\u2026 account changes their em"
+  },
+  "django__django-13590": {
+    "files": [
+      "django/db/models/sql/query.py"
+    ],
+    "problem_statement": "Upgrading 2.2>3.0 causes named tuples used as arguments to __range to error.\nDescription\n\t\nI noticed this while upgrading a project from 2.2 to 3.0.\nThis project passes named 2-tuples as arguments to "
+  },
+  "django__django-13658": {
+    "files": [
+      "django/core/management/__init__.py"
+    ],
+    "problem_statement": "ManagementUtility instantiates CommandParser without passing already-computed prog argument\nDescription\n\t\nManagementUtility \u200bgoes to the trouble to parse the program name from the argv it's passed rat"
+  },
+  "django__django-13660": {
+    "files": [
+      "django/core/management/commands/shell.py"
+    ],
+    "problem_statement": "shell command crashes when passing (with -c) the python code with functions.\nDescription\n\t\nThe examples below use Python 3.7 and Django 2.2.16, but I checked that the code is the same on master and wo"
+  },
+  "django__django-13710": {
+    "files": [
+      "django/contrib/admin/options.py"
+    ],
+    "problem_statement": "Use Admin Inline verbose_name as default for Inline verbose_name_plural\nDescription\n\t\nDjango allows specification of a verbose_name and a verbose_name_plural for Inline classes in admin views. However"
+  },
+  "django__django-13757": {
+    "files": [
+      "django/db/models/fields/json.py"
+    ],
+    "problem_statement": "Using __isnull=True on a KeyTransform should not match JSON null on SQLite and Oracle\nDescription\n\t\nThe KeyTransformIsNull lookup borrows the logic from HasKey for isnull=False, which is correct. If i"
+  },
+  "django__django-13768": {
+    "files": [
+      "django/dispatch/dispatcher.py"
+    ],
+    "problem_statement": "Log exceptions handled in Signal.send_robust()\nDescription\n\t\nAs pointed out by \u200bHaki Benita on Twitter, by default Signal.send_robust() doesn't have any log messages for exceptions raised in receivers"
+  },
+  "django__django-13925": {
+    "files": [
+      "django/db/models/base.py"
+    ],
+    "problem_statement": "models.W042 is raised on inherited manually specified primary key.\nDescription\n\t\nI have models which inherit from other models, and they should inherit the primary key. This works fine with Django 3.1"
+  },
+  "django__django-13933": {
+    "files": [
+      "django/forms/models.py"
+    ],
+    "problem_statement": "ModelChoiceField does not provide value of invalid choice when raising ValidationError\nDescription\n\t \n\t\t(last modified by Aaron Wiegel)\n\t \nCompared with ChoiceField and others, ModelChoiceField does n"
+  },
+  "django__django-13964": {
+    "files": [
+      "django/db/models/base.py"
+    ],
+    "problem_statement": "Saving parent object after setting on child leads to data loss for parents with non-numeric primary key.\nDescription\n\t \n\t\t(last modified by Charlie DeTar)\n\t \nGiven a model with a foreign key relation "
+  },
+  "django__django-14016": {
+    "files": [
+      "django/db/models/query_utils.py"
+    ],
+    "problem_statement": "\"TypeError: cannot pickle\" when applying | operator to a Q object\nDescription\n\t \n\t\t(last modified by Daniel Izquierdo)\n\t \nUsing a reference to a non-pickleable type of object such as dict_keys in a Q "
+  },
+  "django__django-14017": {
+    "files": [
+      "django/db/models/query_utils.py"
+    ],
+    "problem_statement": "Q(...) & Exists(...) raises a TypeError\nDescription\n\t\nExists(...) & Q(...) works, but Q(...) & Exists(...) raise a TypeError\nHere's a minimal example:\nIn [3]: Exists(Product.objects.all()) & Q()\nOut[3"
+  },
+  "django__django-14155": {
+    "files": [
+      "django/urls/resolvers.py"
+    ],
+    "problem_statement": "ResolverMatch.__repr__() doesn't handle functools.partial() nicely.\nDescription\n\t \n\t\t(last modified by Nick Pope)\n\t \nWhen a partial function is passed as the view, the __repr__ shows the func argument"
+  },
+  "django__django-14238": {
+    "files": [
+      "django/db/models/fields/__init__.py"
+    ],
+    "problem_statement": "DEFAULT_AUTO_FIELD subclass check fails for subclasses of BigAutoField and SmallAutoField.\nDescription\n\t\nSet DEFAULT_AUTO_FIELD = \"example.core.models.MyBigAutoField\" , with contents of example.core.m"
+  },
+  "django__django-14382": {
+    "files": [
+      "django/core/management/templates.py"
+    ],
+    "problem_statement": "django-admin startapp with trailing slash in directory name results in error\nDescription\n\t\nBash tab-completion appends trailing slashes to directory names. django-admin startapp name directory/ result"
+  },
+  "django__django-14411": {
+    "files": [
+      "django/contrib/auth/forms.py"
+    ],
+    "problem_statement": "Label for ReadOnlyPasswordHashWidget points to non-labelable element.\nDescription\n\t \n\t\t(last modified by David Sanders)\n\t \nIn the admin, the label element for the ReadOnlyPasswordHashWidget widget has"
+  },
+  "django__django-14534": {
+    "files": [
+      "django/forms/boundfield.py"
+    ],
+    "problem_statement": "BoundWidget.id_for_label ignores id set by ChoiceWidget.options\nDescription\n\t\nIf you look at the implementation of BoundField.subwidgets\nclass BoundField:\n\t...\n\tdef subwidgets(self):\n\t\tid_ = self.fiel"
+  },
+  "django__django-14580": {
+    "files": [
+      "django/db/migrations/serializer.py"
+    ],
+    "problem_statement": "Missing import statement in generated migration (NameError: name 'models' is not defined)\nDescription\n\t\nI found a bug in Django's latest release: 3.2.4. \nGiven the following contents of models.py:\nfro"
+  },
+  "django__django-14608": {
+    "files": [
+      "django/forms/formsets.py"
+    ],
+    "problem_statement": "Add `nonform` CSS class for non form errors in FormSets\nDescription\n\t \n\t\t(last modified by Ties Jan Hefting)\n\t \nForms add the nonfield CSS class for non field errors in ErrorList instances. This is do"
+  },
+  "django__django-14667": {
+    "files": [
+      "django/db/models/sql/query.py"
+    ],
+    "problem_statement": "QuerySet.defer() doesn't clear deferred field when chaining with only().\nDescription\n\t\nConsidering a simple Company model with four fields: id, name, trade_number and country. If we evaluate a queryse"
+  },
+  "django__django-14672": {
+    "files": [
+      "django/db/models/fields/reverse_related.py"
+    ],
+    "problem_statement": "Missing call `make_hashable` on `through_fields` in `ManyToManyRel`\nDescription\n\t\nIn 3.2 identity property has been added to all ForeignObjectRel to make it possible to compare them. A hash is derived"
+  },
+  "django__django-14730": {
+    "files": [
+      "django/db/models/fields/related.py"
+    ],
+    "problem_statement": "Prevent developers from defining a related_name on symmetrical ManyToManyFields\nDescription\n\t\nIn ManyToManyField, if the symmetrical argument is passed, or if it's a self-referential ManyToMany relati"
+  },
+  "django__django-14752": {
+    "files": [
+      "django/contrib/admin/views/autocomplete.py"
+    ],
+    "problem_statement": "Refactor AutocompleteJsonView to support extra fields in autocomplete response\nDescription\n\t \n\t\t(last modified by mrts)\n\t \nAdding data attributes to items in ordinary non-autocomplete foreign key fiel"
+  },
+  "django__django-14787": {
+    "files": [
+      "django/utils/decorators.py"
+    ],
+    "problem_statement": "method_decorator() should preserve wrapper assignments\nDescription\n\t\nthe function that is passed to the decorator is a partial object and does not have any of the attributes expected from a function i"
+  },
+  "django__django-14855": {
+    "files": [
+      "django/contrib/admin/helpers.py"
+    ],
+    "problem_statement": "Wrong URL generated by get_admin_url for readonly field in custom Admin Site\nDescription\n\t\nWhen a model containing a ForeignKey field is viewed (or edited) in a custom Admin Site, and that ForeignKey "
+  },
+  "django__django-14915": {
+    "files": [
+      "django/forms/models.py"
+    ],
+    "problem_statement": "ModelChoiceIteratorValue is not hashable.\nDescription\n\t\nRecently I migrated from Django 3.0 to Django 3.1. In my code, I add custom data-* attributes to the select widget options. After the upgrade so"
+  },
+  "django__django-14997": {
+    "files": [
+      "django/db/backends/ddl_references.py"
+    ],
+    "problem_statement": "Remaking table with unique constraint crashes on SQLite.\nDescription\n\t\nIn Django 4.0a1, this model:\nclass Tag(models.Model):\n\tname = models.SlugField(help_text=\"The tag key.\")\n\tvalue = models.CharFiel"
+  },
+  "django__django-14999": {
+    "files": [
+      "django/db/migrations/operations/models.py"
+    ],
+    "problem_statement": "RenameModel with db_table should be a noop.\nDescription\n\t\nA RenameModel operation that already has db_table defined must be a noop.\nIn Postgres, it drops and recreates foreign key constraints. In sqli"
+  },
+  "django__django-15061": {
+    "files": [
+      "django/forms/widgets.py"
+    ],
+    "problem_statement": "Remove \"for = ...\" from MultiWidget's <label>.\nDescription\n\t\nThe instance from Raw MultiWidget class generate id_for_label like f'{id_}0'\nIt has not sense.\nFor example ChoiceWidget has self.add_id_ind"
+  },
+  "django__django-15202": {
+    "files": [
+      "django/core/validators.py"
+    ],
+    "problem_statement": "URLField throws ValueError instead of ValidationError on clean\nDescription\n\t\nforms.URLField( ).clean('////]@N.AN')\nresults in:\n\tValueError: Invalid IPv6 URL\n\tTraceback (most recent call last):\n\t File "
+  },
+  "django__django-15213": {
+    "files": [
+      "django/db/models/fields/__init__.py"
+    ],
+    "problem_statement": "ExpressionWrapper for ~Q(pk__in=[]) crashes.\nDescription\n\t \n\t\t(last modified by Stefan Brand)\n\t \nProblem Description\nI'm reducing some Q objects (similar to what is described in ticket:32554. Everythi"
+  },
+  "django__django-15252": {
+    "files": [
+      "django/db/migrations/executor.py"
+    ],
+    "problem_statement": "MigrationRecorder does not obey db_router allow_migrate rules\nDescription\n\t\nHi,\nWe have a multi-db setup. We have one connection that is for the django project, and several connections that talk to ot"
+  },
+  "django__django-15320": {
+    "files": [
+      "django/db/models/expressions.py"
+    ],
+    "problem_statement": "Subquery.as_sql() generates invalid SQL.\nDescription\n\t \n\t\t(last modified by M1ha Shvn)\n\t \nSince \u200bthis commit Subquery.as_sql(...) method returns incorrect SQL removing first and last symbols instead o"
+  },
+  "django__django-15347": {
+    "files": [
+      "django/contrib/messages/storage/cookie.py"
+    ],
+    "problem_statement": "Messages framework incorrectly serializes/deserializes extra_tags when it's an empty string\nDescription\n\t\nWhen a message is serialised and then deserialised with any of the built in storage backends, "
+  },
+  "django__django-15388": {
+    "files": [
+      "django/template/autoreload.py"
+    ],
+    "problem_statement": "Dev Server fails to restart after adding BASE_DIR to TEMPLATES[0]['DIRS'] in settings\nDescription\n\t\nRepro steps:\n$ pip install -U django\n$ django-admin startproject <name>\nOpen settings.py, copy the B"
+  },
+  "django__django-15400": {
+    "files": [
+      "django/utils/functional.py"
+    ],
+    "problem_statement": "SimpleLazyObject doesn't implement __radd__\nDescription\n\t\nTechnically, there's a whole bunch of magic methods it doesn't implement, compared to a complete proxy implementation, like that of wrapt.Obje"
+  },
+  "django__django-15498": {
+    "files": [
+      "django/views/static.py"
+    ],
+    "problem_statement": "Fix handling empty string for If-Modified-Since header\nDescription\n\t\nEmpty string used to be ignored for If-Modified-Since header, but now raises exception since d6aff369ad3.\nFix handling empty string"
+  },
+  "django__django-15695": {
+    "files": [
+      "django/db/migrations/operations/models.py"
+    ],
+    "problem_statement": "RenameIndex() crashes when unnamed index is moving backward and forward.\nDescription\n\t\nRenameIndex() should restore the old auto-generated name when an unnamed index for unique_together is moving back"
+  },
+  "django__django-15738": {
+    "files": [
+      "django/db/migrations/autodetector.py"
+    ],
+    "problem_statement": "Models migration with change field foreign to many and deleting unique together.\nDescription\n\t \n\t\t(last modified by Simon Charette)\n\t \nI have models like\nclass Authors(models.Model):\n\tproject_data_set"
+  },
+  "django__django-15781": {
+    "files": [
+      "django/core/management/base.py"
+    ],
+    "problem_statement": "Customizable management command formatters.\nDescription\n\t\nWith code like:\nclass Command(BaseCommand):\n\thelp = '''\n\tImport a contract from tzkt.\n\tExample usage:\n\t\t./manage.py tzkt_import 'Tezos Mainnet"
+  },
+  "django__django-15789": {
+    "files": [
+      "django/utils/html.py"
+    ],
+    "problem_statement": "Add an encoder parameter to django.utils.html.json_script().\nDescription\n\t\nI have a use case where I want to customize the JSON encoding of some values to output to the template layer. It looks like d"
+  },
+  "django__django-15790": {
+    "files": [
+      "django/core/checks/templates.py"
+    ],
+    "problem_statement": "check_for_template_tags_with_the_same_name with libraries in TEMPLATES\nDescription\n\t\nI didn't explore this thoroughly, but I think there might be an issue with the check_for_template_tags_with_the_sam"
+  },
+  "django__django-15814": {
+    "files": [
+      "django/db/models/sql/query.py"
+    ],
+    "problem_statement": "QuerySet.only() after select_related() crash on proxy models.\nDescription\n\t\nWhen I optimize a query using select_related() and only() methods from the proxy model I encounter an error:\nWindows 10; Pyt"
+  },
+  "django__django-15819": {
+    "files": [
+      "django/core/management/commands/inspectdb.py"
+    ],
+    "problem_statement": "inspectdb should generate related_name on same relation links.\nDescription\n\t\nHi!\nAfter models generation with inspectdb command we have issue with relations to same enities\nmodule.Model.field1: (field"
+  },
+  "django__django-15851": {
+    "files": [
+      "django/db/backends/postgresql/client.py"
+    ],
+    "problem_statement": "dbshell additional parameters should be passed before dbname on PostgreSQL.\nDescription\n\t\npsql expects all options to proceed the database name, if provided. So, if doing something like `./manage.py d"
+  },
+  "django__django-15902": {
+    "files": [
+      "django/forms/formsets.py"
+    ],
+    "problem_statement": "\"default.html\" deprecation warning raised for ManagementForm's\nDescription\n\t\nI have a project where I never render forms with the {{ form }} expression. However, I'm still getting the new template dep"
+  },
+  "django__django-15996": {
+    "files": [
+      "django/db/migrations/serializer.py"
+    ],
+    "problem_statement": "Support for serialization of combination of Enum flags.\nDescription\n\t \n\t\t(last modified by Willem Van Onsem)\n\t \nIf we work with a field:\nregex_flags = models.IntegerField(default=re.UNICODE | re.IGNOR"
+  },
+  "django__django-16041": {
+    "files": [
+      "django/forms/formsets.py"
+    ],
+    "problem_statement": "Rendering empty_form crashes when empty_permitted is passed to form_kwargs\nDescription\n\t\nIssue\nWhen explicitly setting form_kwargs = {'empty_permitted':True} or form_kwargs = {'empty_permitted':False}"
+  },
+  "django__django-16046": {
+    "files": [
+      "django/utils/numberformat.py"
+    ],
+    "problem_statement": "Fix numberformat.py \"string index out of range\" when null\nDescription\n\t\nWhen:\nif str_number[0] == \"-\"\nencounters a number field that's null when formatting for the admin list_display this causes an \nI"
+  },
+  "django__django-16139": {
+    "files": [
+      "django/contrib/auth/forms.py"
+    ],
+    "problem_statement": "Accessing UserAdmin via to_field leads to link to PasswordResetForm being broken (404)\nDescription\n\t \n\t\t(last modified by Simon Kern)\n\t \nAccessing the UserAdmin via another model's Admin that has a re"
+  },
+  "django__django-16229": {
+    "files": [
+      "django/forms/boundfield.py"
+    ],
+    "problem_statement": "ModelForm fields with callable defaults don't correctly propagate default values\nDescription\n\t\nWhen creating an object via the admin, if an inline contains an ArrayField in error, the validation will "
+  },
+  "django__django-16255": {
+    "files": [
+      "django/contrib/sitemaps/__init__.py"
+    ],
+    "problem_statement": "Sitemaps without items raise ValueError on callable lastmod.\nDescription\n\t\nWhen sitemap contains not items, but supports returning lastmod for an item, it fails with a ValueError:\nTraceback (most rece"
+  },
+  "django__django-16379": {
+    "files": [
+      "django/core/cache/backends/filebased.py"
+    ],
+    "problem_statement": "FileBasedCache has_key is susceptible to race conditions\nDescription\n\t \n\t\t(last modified by Marti Raudsepp)\n\t \nI received the exception from Django's cache framework:\nFileNotFoundError: [Errno 2] No s"
+  },
+  "django__django-16400": {
+    "files": [
+      "django/contrib/auth/management/__init__.py"
+    ],
+    "problem_statement": "migrate management command does not respect database parameter when adding Permissions.\nDescription\n\t \n\t\t(last modified by Vasanth)\n\t \nWhen invoking migrate with a database parameter, the migration ru"
+  },
+  "django__django-16408": {
+    "files": [
+      "django/db/models/sql/compiler.py"
+    ],
+    "problem_statement": "Multi-level FilteredRelation with select_related() may set wrong related object.\nDescription\n\t\ntest case:\n# add to known_related_objects.tests.ExistingRelatedInstancesTests\n\tdef test_wrong_select_rela"
+  },
+  "django__django-16527": {
+    "files": [
+      "django/contrib/admin/templatetags/admin_modify.py"
+    ],
+    "problem_statement": "\"show_save_as_new\" in admin can add without this permission\nDescription\n\t \n\t\t(last modified by Mariusz Felisiak)\n\t \nAt \"django/contrib/admin/templatetags/admin_modify.py\" file, line 102, I think you m"
+  },
+  "django__django-16595": {
+    "files": [
+      "django/db/migrations/operations/fields.py"
+    ],
+    "problem_statement": "Migration optimizer does not reduce multiple AlterField\nDescription\n\t\nLet's consider the following operations: \noperations = [\n\tmigrations.AddField(\n\t\tmodel_name=\"book\",\n\t\tname=\"title\",\n\t\tfield=models"
+  },
+  "django__django-16816": {
+    "files": [
+      "django/contrib/admin/checks.py"
+    ],
+    "problem_statement": "Error E108 does not cover some cases\nDescription\n\t \n\t\t(last modified by Baha Sdtbekov)\n\t \nI have two models, Question and Choice. And if I write list_display = [\"choice\"] in QuestionAdmin, I get no er"
+  },
+  "django__django-16820": {
+    "files": [
+      "django/db/migrations/operations/models.py"
+    ],
+    "problem_statement": "Squashing migrations with Meta.index_together -> indexes transition should remove deprecation warnings.\nDescription\n\t\nSquashing migrations with Meta.index_together -> Meta.indexes transition should re"
+  },
+  "django__django-16873": {
+    "files": [
+      "django/template/defaultfilters.py"
+    ],
+    "problem_statement": "Template filter `join` should not escape the joining string if `autoescape` is `off`\nDescription\n\t\nConsider the following template code snippet:\n{% autoescape off %}\n{{ some_list|join:some_var }}\n{% e"
+  },
+  "django__django-16910": {
+    "files": [
+      "django/db/models/sql/query.py"
+    ],
+    "problem_statement": "QuerySet.only() doesn't work with select_related() on a reverse OneToOneField relation.\nDescription\n\t\nOn Django 4.2 calling only() with select_related() on a query using the reverse lookup for a OneTo"
+  },
+  "django__django-17051": {
+    "files": [
+      "django/db/models/query.py"
+    ],
+    "problem_statement": "Allow returning IDs in QuerySet.bulk_create() when updating conflicts.\nDescription\n\t\nCurrently, when using bulk_create with a conflict handling flag turned on (e.g. ignore_conflicts or update_conflict"
+  },
+  "django__django-17087": {
+    "files": [
+      "django/db/migrations/serializer.py"
+    ],
+    "problem_statement": "Class methods from nested classes cannot be used as Field.default.\nDescription\n\t \n\t\t(last modified by Mariusz Felisiak)\n\t \nGiven the following model:\n \nclass Profile(models.Model):\n\tclass Capability(m"
+  },
+  "matplotlib__matplotlib-18869": {
+    "files": [
+      "lib/matplotlib/__init__.py"
+    ],
+    "problem_statement": "Add easily comparable version info to toplevel\n<!--\r\nWelcome! Thanks for thinking of a way to improve Matplotlib.\r\n\r\n\r\nBefore creating a new feature request please search the issues for relevant featu"
+  },
+  "matplotlib__matplotlib-22711": {
+    "files": [
+      "lib/matplotlib/widgets.py"
+    ],
+    "problem_statement": "[Bug]: cannot give init value for RangeSlider widget\n### Bug summary\r\n\r\nI think `xy[4] = .25, val[0]` should be commented in /matplotlib/widgets. py\", line 915, in set_val\r\nas it prevents to initializ"
+  },
+  "matplotlib__matplotlib-22835": {
+    "files": [
+      "lib/matplotlib/artist.py"
+    ],
+    "problem_statement": "[Bug]: scalar mappable format_cursor_data crashes on BoundarNorm\n### Bug summary\r\n\r\nIn 3.5.0 if you do:\r\n\r\n```python\r\nimport matplotlib.pyplot as plt\r\nimport numpy as np\r\nimport matplotlib as mpl\r\n\r\nf"
+  },
+  "matplotlib__matplotlib-23299": {
+    "files": [
+      "lib/matplotlib/__init__.py"
+    ],
+    "problem_statement": "[Bug]: get_backend() clears figures from Gcf.figs if they were created under rc_context\n### Bug summary\r\n\r\ncalling `matplotlib.get_backend()` removes all figures from `Gcf` if the *first* figure in `G"
+  },
+  "matplotlib__matplotlib-23314": {
+    "files": [
+      "lib/mpl_toolkits/mplot3d/axes3d.py"
+    ],
+    "problem_statement": "[Bug]: set_visible() not working for 3d projection \n### Bug summary\r\n\r\nin the subplot projection=\"3d\" the set_visible function doesn't work even if the value is set to False\r\n\r\n### Code for reproducti"
+  },
+  "matplotlib__matplotlib-23476": {
+    "files": [
+      "lib/matplotlib/figure.py"
+    ],
+    "problem_statement": "[Bug]: DPI of a figure is doubled after unpickling on M1 Mac\n### Bug summary\r\n\r\nWhen a figure is unpickled, it's dpi is doubled. This behaviour happens every time and if done in a loop it can cause an"
+  },
+  "matplotlib__matplotlib-23562": {
+    "files": [
+      "lib/mpl_toolkits/mplot3d/art3d.py"
+    ],
+    "problem_statement": "'Poly3DCollection' object has no attribute '_facecolors2d'\nThe following minimal example demonstrates the issue:\n\n```\nimport numpy as np\nimport matplotlib.tri as mtri\nimport matplotlib.pyplot as plt\nf"
+  },
+  "matplotlib__matplotlib-23563": {
+    "files": [
+      "lib/mpl_toolkits/mplot3d/art3d.py"
+    ],
+    "problem_statement": "[Bug]: 'Line3D' object has no attribute '_verts3d'\n### Bug summary\n\nI use matplotlib 3D to visualize some lines in 3D. When I first run the following code, the code can run right. But, if I give `x_s_"
+  },
+  "matplotlib__matplotlib-23913": {
+    "files": [
+      "lib/matplotlib/legend.py"
+    ],
+    "problem_statement": "legend draggable as keyword\n<!--To help us understand and resolve your issue, please fill out the form to the best of your ability.-->\r\n<!--You can feel free to delete the sections that do not apply.-"
+  },
+  "matplotlib__matplotlib-23964": {
+    "files": [
+      "lib/matplotlib/backends/backend_ps.py"
+    ],
+    "problem_statement": "[Bug]: Text label with empty line causes a \"TypeError: cannot unpack non-iterable NoneType object\" in PostScript backend\n### Bug summary\n\nWhen saving a figure with the PostScript backend, a\r\n> TypeErr"
+  },
+  "matplotlib__matplotlib-23987": {
+    "files": [
+      "lib/matplotlib/figure.py"
+    ],
+    "problem_statement": "[Bug]: Constrained layout UserWarning even when False\n### Bug summary\r\n\r\nWhen using layout settings such as `plt.subplots_adjust` or `bbox_inches='tight`, a UserWarning is produced due to incompatibil"
+  },
+  "matplotlib__matplotlib-24149": {
+    "files": [
+      "lib/matplotlib/axes/_axes.py"
+    ],
+    "problem_statement": "[Bug]: ax.bar raises for all-nan data on matplotlib 3.6.1 \n### Bug summary\n\n`ax.bar` raises an exception in 3.6.1 when passed only nan data. This irrevocably breaks seaborn's histogram function (which"
+  },
+  "matplotlib__matplotlib-24265": {
+    "files": [
+      "lib/matplotlib/style/core.py"
+    ],
+    "problem_statement": "[Bug]: Setting matplotlib.pyplot.style.library['seaborn-colorblind'] result in key error on matplotlib v3.6.1\n### Bug summary\n\nI have code that executes:\r\n```\r\nimport matplotlib.pyplot as plt\r\nthe_rc "
+  },
+  "matplotlib__matplotlib-24334": {
+    "files": [
+      "lib/matplotlib/axis.py"
+    ],
+    "problem_statement": "[ENH]: Axes.set_xticks/Axis.set_ticks only validates kwargs if ticklabels are set, but they should\n### Problem\n\nPer the doc of `Axis.set_ticks`:\r\n```\r\n        **kwargs\r\n            `.Text` properties "
+  },
+  "matplotlib__matplotlib-24970": {
+    "files": [
+      "lib/matplotlib/colors.py"
+    ],
+    "problem_statement": "[Bug]: NumPy 1.24 deprecation warnings\n### Bug summary\r\n\r\nStarting NumPy 1.24 I observe several deprecation warnings.\r\n\r\n\r\n### Code for reproduction\r\n\r\n```python\r\nimport matplotlib.pyplot as plt\r\nimpo"
+  },
+  "matplotlib__matplotlib-25079": {
+    "files": [
+      "lib/matplotlib/colors.py"
+    ],
+    "problem_statement": "[Bug]: Setting norm with existing colorbar fails with 3.6.3\n### Bug summary\r\n\r\nSetting the norm to a `LogNorm` after the colorbar has been created (e.g. in interactive code) fails with an `Invalid vmi"
+  },
+  "matplotlib__matplotlib-25311": {
+    "files": [
+      "lib/matplotlib/offsetbox.py"
+    ],
+    "problem_statement": "[Bug]: Unable to pickle figure with draggable legend\n### Bug summary\r\n\r\nI am unable to pickle figure with draggable legend. Same error comes for draggable annotations.\r\n\r\n\r\n\r\n\r\n\r\n### Code for reproduc"
+  },
+  "matplotlib__matplotlib-25332": {
+    "files": [
+      "lib/matplotlib/cbook.py"
+    ],
+    "problem_statement": "[Bug]: Unable to pickle figure with aligned labels\n### Bug summary\r\n\r\n Unable to pickle figure after calling `align_labels()`\r\n\r\n### Code for reproduction\r\n\r\n```python\r\nimport matplotlib.pyplot as plt"
+  },
+  "matplotlib__matplotlib-25433": {
+    "files": [
+      "lib/matplotlib/figure.py"
+    ],
+    "problem_statement": "[Bug]: using clf and pyplot.draw in range slider on_changed callback blocks input to widgets\n### Bug summary\n\nWhen using clear figure, adding new widgets and then redrawing the current figure in the o"
+  },
+  "matplotlib__matplotlib-25442": {
+    "files": [
+      "lib/matplotlib/offsetbox.py"
+    ],
+    "problem_statement": "[Bug]: Attribute Error combining matplotlib 3.7.1 and mplcursor on data selection\n### Bug summary\r\n\r\nIf you combine mplcursor and matplotlib 3.7.1, you'll get an `AttributeError: 'NoneType' object has"
+  },
+  "matplotlib__matplotlib-25498": {
+    "files": [
+      "lib/matplotlib/colorbar.py"
+    ],
+    "problem_statement": "Update colorbar after changing mappable.norm\nHow can I update a colorbar, after I changed the norm instance of the colorbar?\n\n`colorbar.update_normal(mappable)` has now effect and `colorbar.update_bru"
+  },
+  "matplotlib__matplotlib-26011": {
+    "files": [
+      "lib/matplotlib/axis.py"
+    ],
+    "problem_statement": "xlim_changed not emitted on shared axis\n<!--To help us understand and resolve your issue, please fill out the form to the best of your ability.-->\r\n<!--You can feel free to delete the sections that do"
+  },
+  "matplotlib__matplotlib-26020": {
+    "files": [
+      "lib/mpl_toolkits/axes_grid1/axes_grid.py"
+    ],
+    "problem_statement": "Error creating AxisGrid with non-default axis class\n<!--To help us understand and resolve your issue, please fill out the form to the best of your ability.-->\r\n<!--You can feel free to delete the sect"
+  },
+  "mwaskom__seaborn-2848": {
+    "files": [
+      "seaborn/_oldcore.py"
+    ],
+    "problem_statement": "pairplot fails with hue_order not containing all hue values in seaborn 0.11.1\nIn seaborn < 0.11, one could plot only a subset of the values in the hue column, by passing a hue_order list containing on"
+  },
+  "mwaskom__seaborn-3010": {
+    "files": [
+      "seaborn/_stats/regression.py"
+    ],
+    "problem_statement": "PolyFit is not robust to missing data\n```python\r\nso.Plot([1, 2, 3, None, 4], [1, 2, 3, 4, 5]).add(so.Line(), so.PolyFit())\r\n```\r\n\r\n<details><summary>Traceback</summary>\r\n\r\n```python-traceback\r\n-------"
+  },
+  "mwaskom__seaborn-3190": {
+    "files": [
+      "seaborn/_core/scales.py"
+    ],
+    "problem_statement": "Color mapping fails with boolean data\n```python\r\nso.Plot([\"a\", \"b\"], [1, 2], color=[True, False]).add(so.Bar())\r\n```\r\n```python-traceback\r\n-------------------------------------------------------------"
+  },
+  "mwaskom__seaborn-3407": {
+    "files": [
+      "seaborn/axisgrid.py"
+    ],
+    "problem_statement": "pairplot raises KeyError with MultiIndex DataFrame\nWhen trying to pairplot a MultiIndex DataFrame, `pairplot` raises a `KeyError`:\r\n\r\nMRE:\r\n\r\n```python\r\nimport numpy as np\r\nimport pandas as pd\r\nimport"
+  },
+  "pallets__flask-4045": {
+    "files": [
+      "src/flask/blueprints.py"
+    ],
+    "problem_statement": "Raise error when blueprint name contains a dot\nThis is required since every dot is now significant since blueprints can be nested. An error was already added for endpoint names in 1.0, but should have"
+  },
+  "pallets__flask-4992": {
+    "files": [
+      "src/flask/config.py"
+    ],
+    "problem_statement": "Add a file mode parameter to flask.Config.from_file()\nPython 3.11 introduced native TOML support with the `tomllib` package. This could work nicely with the `flask.Config.from_file()` method as an eas"
+  },
+  "pallets__flask-5063": {
+    "files": [
+      "src/flask/cli.py"
+    ],
+    "problem_statement": "Flask routes to return domain/sub-domains information\nCurrently when checking **flask routes** it provides all routes but **it is no way to see which routes are assigned to which subdomain**.\r\n\r\n**Def"
+  },
+  "psf__requests-1963": {
+    "files": [
+      "requests/sessions.py"
+    ],
+    "problem_statement": "`Session.resolve_redirects` copies the original request for all subsequent requests, can cause incorrect method selection\nConsider the following redirection chain:\n\n```\nPOST /do_something HTTP/1.1\nHos"
+  },
+  "psf__requests-2148": {
+    "files": [
+      "requests/models.py"
+    ],
+    "problem_statement": "socket.error exception not caught/wrapped in a requests exception (ConnectionError perhaps?)\nI just noticed a case where I had a socket reset on me, and was raised to me as a raw socket error as oppos"
+  },
+  "psf__requests-2317": {
+    "files": [
+      "requests/sessions.py"
+    ],
+    "problem_statement": "method = builtin_str(method) problem\nIn requests/sessions.py is a command:\n\nmethod = builtin_str(method)\nConverts method from\nb\u2019GET\u2019\nto\n\"b'GET\u2019\"\n\nWhich is the literal string, no longer a binary string"
+  },
+  "psf__requests-2674": {
+    "files": [
+      "requests/adapters.py"
+    ],
+    "problem_statement": "urllib3 exceptions passing through requests API\nI don't know if it's a design goal of requests to hide urllib3's exceptions and wrap them around requests.exceptions types.\n\n(If it's not IMHO it should"
+  },
+  "psf__requests-3362": {
+    "files": [
+      "requests/utils.py"
+    ],
+    "problem_statement": "Uncertain about content/text vs iter_content(decode_unicode=True/False)\nWhen requesting an application/json document, I'm seeing `next(r.iter_content(16*1024, decode_unicode=True))` returning bytes, w"
+  },
+  "psf__requests-863": {
+    "files": [
+      "requests/models.py"
+    ],
+    "problem_statement": "Allow lists in the dict values of the hooks argument\nCurrently the Request class has a .register_hook() method but it parses the dictionary it expects from it's hooks argument weirdly: the argument ca"
+  },
+  "pydata__xarray-3364": {
+    "files": [
+      "xarray/core/concat.py"
+    ],
+    "problem_statement": "Ignore missing variables when concatenating datasets?\nSeveral users (@raj-kesavan, @richardotis, now myself) have wondered about how to concatenate xray Datasets with different variables.\n\nWith the cu"
+  },
+  "pydata__xarray-4094": {
+    "files": [
+      "xarray/core/dataarray.py"
+    ],
+    "problem_statement": "to_unstacked_dataset broken for single-dim variables\n<!-- A short summary of the issue, if appropriate -->\r\n\r\n\r\n#### MCVE Code Sample\r\n\r\n```python\r\narr = xr.DataArray(\r\n     np.arange(3),\r\n     coords"
+  },
+  "pydata__xarray-4248": {
+    "files": [
+      "xarray/core/formatting.py"
+    ],
+    "problem_statement": "Feature request: show units in dataset overview\nHere's a hypothetical dataset:\r\n\r\n```\r\n<xarray.Dataset>\r\nDimensions:  (time: 3, x: 988, y: 822)\r\nCoordinates:\r\n  * x         (x) float64 ...\r\n  * y     "
+  },
+  "pydata__xarray-4493": {
+    "files": [
+      "xarray/core/variable.py"
+    ],
+    "problem_statement": "DataSet.update causes chunked dask DataArray to evalute its values eagerly \n**What happened**:\r\nUsed `DataSet.update` to update a chunked dask DataArray, but the DataArray is no longer chunked after t"
+  },
+  "pydata__xarray-5131": {
+    "files": [
+      "xarray/core/groupby.py"
+    ],
+    "problem_statement": "Trailing whitespace in DatasetGroupBy text representation\nWhen displaying a DatasetGroupBy in an interactive Python session, the first line of output contains a trailing whitespace. The first example "
+  },
+  "pylint-dev__pylint-5859": {
+    "files": [
+      "pylint/checkers/misc.py"
+    ],
+    "problem_statement": "\"--notes\" option ignores note tags that are entirely punctuation\n### Bug description\n\nIf a note tag specified with the `--notes` option is entirely punctuation, pylint won't report a fixme warning (W0"
+  },
+  "pylint-dev__pylint-6506": {
+    "files": [
+      "pylint/config/config_initialization.py"
+    ],
+    "problem_statement": "Traceback printed for unrecognized option\n### Bug description\n\nA traceback is printed when an unrecognized option is passed to pylint.\n\n### Configuration\n\n_No response_\n\n### Command used\n\n```shell\npyl"
+  },
+  "pylint-dev__pylint-7080": {
+    "files": [
+      "pylint/lint/expand_modules.py"
+    ],
+    "problem_statement": "`--recursive=y` ignores `ignore-paths`\n### Bug description\r\n\r\nWhen running recursively, it seems `ignore-paths` in my settings in pyproject.toml is completely ignored\r\n\r\n### Configuration\r\n\r\n```ini\r\n["
+  },
+  "pylint-dev__pylint-7114": {
+    "files": [
+      "pylint/lint/expand_modules.py"
+    ],
+    "problem_statement": "Linting fails if module contains module of the same name\n### Steps to reproduce\r\n\r\nGiven multiple files:\r\n```\r\n.\r\n`-- a/\r\n    |-- a.py\r\n    `-- b.py\r\n```\r\nWhich are all empty, running `pylint a` fails"
+  },
+  "pylint-dev__pylint-7228": {
+    "files": [
+      "pylint/config/argument.py"
+    ],
+    "problem_statement": "rxg include '\\p{Han}' will throw error\n### Bug description\r\n\r\nconfig rxg in pylintrc with \\p{Han} will throw err\r\n\r\n### Configuration\r\n.pylintrc:\r\n\r\n```ini\r\nfunction-rgx=[\\p{Han}a-z_][\\p{Han}a-z0-9_]{"
+  },
+  "pylint-dev__pylint-7993": {
+    "files": [
+      "pylint/reporters/text.py"
+    ],
+    "problem_statement": "Using custom braces in message template does not work\n### Bug description\n\nHave any list of errors:\r\n\r\nOn pylint 1.7 w/ python3.6 - I am able to use this as my message template\r\n```\r\n$ pylint test.py "
+  },
+  "pytest-dev__pytest-11143": {
+    "files": [
+      "src/_pytest/assertion/rewrite.py"
+    ],
+    "problem_statement": "Rewrite fails when first expression of file is a number and mistaken as docstring \n<!--\r\nThanks for submitting an issue!\r\n\r\nQuick check-list while reporting bugs:\r\n-->\r\n\r\n- [x] a detailed description "
+  },
+  "pytest-dev__pytest-11148": {
+    "files": [
+      "src/_pytest/pathlib.py"
+    ],
+    "problem_statement": "Module imported twice under import-mode=importlib\nIn pmxbot/pmxbot@7f189ad, I'm attempting to switch pmxbot off of pkg_resources style namespace packaging to PEP 420 namespace packages. To do so, I've"
+  },
+  "pytest-dev__pytest-5103": {
+    "files": [
+      "src/_pytest/assertion/rewrite.py"
+    ],
+    "problem_statement": "Unroll the iterable for all/any calls to get better reports\nSometime I need to assert some predicate on all of an iterable, and for that the builtin functions `all`/`any` are great - but the failure m"
+  },
+  "pytest-dev__pytest-5221": {
+    "files": [
+      "src/_pytest/python.py"
+    ],
+    "problem_statement": "Display fixture scope with `pytest --fixtures`\nIt would be useful to show fixture scopes with `pytest --fixtures`; currently the only way to learn the scope of a fixture is look at the docs (when that"
+  },
+  "pytest-dev__pytest-5227": {
+    "files": [
+      "src/_pytest/logging.py"
+    ],
+    "problem_statement": "Improve default logging format\nCurrently it is:\r\n\r\n> DEFAULT_LOG_FORMAT = \"%(filename)-25s %(lineno)4d %(levelname)-8s %(message)s\"\r\n\r\nI think `name` (module name) would be very useful here, instead o"
+  },
+  "pytest-dev__pytest-5413": {
+    "files": [
+      "src/_pytest/_code/code.py"
+    ],
+    "problem_statement": "str() on the pytest.raises context variable doesn't behave same as normal exception catch\nPytest 4.6.2, macOS 10.14.5\r\n\r\n```Python\r\ntry:\r\n    raise LookupError(\r\n        f\"A\\n\"\r\n        f\"B\\n\"\r\n      "
+  },
+  "pytest-dev__pytest-5495": {
+    "files": [
+      "src/_pytest/assertion/util.py"
+    ],
+    "problem_statement": "Confusing assertion rewriting message with byte strings\nThe comparison with assertion rewriting for byte strings is confusing: \r\n```\r\n    def test_b():\r\n>       assert b\"\" == b\"42\"\r\nE       AssertionE"
+  },
+  "pytest-dev__pytest-5692": {
+    "files": [
+      "src/_pytest/junitxml.py"
+    ],
+    "problem_statement": "Hostname and timestamp properties in generated JUnit XML reports\nPytest enables generating JUnit XML reports of the tests.\r\n\r\nHowever, there are some properties missing, specifically `hostname` and `t"
+  },
+  "pytest-dev__pytest-6116": {
+    "files": [
+      "src/_pytest/main.py"
+    ],
+    "problem_statement": "pytest --collect-only needs a one char shortcut command\nI find myself needing to run `--collect-only` very often and that cli argument is a very long to type one. \r\n\r\nI do think that it would be great"
+  },
+  "pytest-dev__pytest-7168": {
+    "files": [
+      "src/_pytest/_io/saferepr.py"
+    ],
+    "problem_statement": "INTERNALERROR when exception in __repr__\nMinimal code to reproduce the issue: \r\n```python\r\nclass SomeClass:\r\n    def __getattribute__(self, attr):\r\n        raise\r\n    def __repr__(self):\r\n        rais"
+  },
+  "pytest-dev__pytest-7220": {
+    "files": [
+      "src/_pytest/nodes.py"
+    ],
+    "problem_statement": "Wrong path to test file when directory changed in fixture\nFiles are shown as relative to new directory when working directory is changed in a fixture. This makes it impossible to jump to the error as "
+  },
+  "pytest-dev__pytest-7373": {
+    "files": [
+      "src/_pytest/mark/evaluate.py"
+    ],
+    "problem_statement": "Incorrect caching of skipif/xfail string condition evaluation\nVersion: pytest 5.4.3, current master\r\n\r\npytest caches the evaluation of the string in e.g. `@pytest.mark.skipif(\"sys.platform == 'win32'\""
+  },
+  "pytest-dev__pytest-7432": {
+    "files": [
+      "src/_pytest/skipping.py"
+    ],
+    "problem_statement": "skipping: --runxfail breaks pytest.mark.skip location reporting\npytest versions: 5.4.x, current master\r\n\r\nWhen `@pytest.mark.skip`/`skipif` marks are used to skip a test, for example\r\n\r\n```py\r\nimport "
+  },
+  "pytest-dev__pytest-7490": {
+    "files": [
+      "src/_pytest/skipping.py"
+    ],
+    "problem_statement": "Pytest 6: Dynamically adding xfail marker in test no longer ignores failure\n<!--\r\nThanks for submitting an issue!\r\n\r\nHere's a quick checklist for what to provide:\r\n-->\r\n\r\n## Description\r\n\r\nWith pytest"
+  },
+  "pytest-dev__pytest-8365": {
+    "files": [
+      "src/_pytest/tmpdir.py"
+    ],
+    "problem_statement": "tmpdir creation fails when the username contains illegal characters for directory names\n`tmpdir`, `tmpdir_factory` and `tmp_path_factory` rely on `getpass.getuser()` for determining the `basetemp` dir"
+  },
+  "pytest-dev__pytest-8906": {
+    "files": [
+      "src/_pytest/python.py"
+    ],
+    "problem_statement": "Improve handling of skip for module level\nThis is potentially about updating docs, updating error messages or introducing a new API.\r\n\r\nConsider the following scenario:\r\n\r\n`pos_only.py` is using Pytho"
+  },
+  "pytest-dev__pytest-9359": {
+    "files": [
+      "src/_pytest/_code/source.py"
+    ],
+    "problem_statement": "Error message prints extra code line when using assert in python3.9\n<!--\r\nThanks for submitting an issue!\r\n\r\nQuick check-list while reporting bugs:\r\n-->\r\n\r\n- [x] a detailed description of the bug or p"
+  },
+  "scikit-learn__scikit-learn-10297": {
+    "files": [
+      "sklearn/linear_model/ridge.py"
+    ],
+    "problem_statement": "linear_model.RidgeClassifierCV's Parameter store_cv_values issue\n#### Description\r\nParameter store_cv_values error on sklearn.linear_model.RidgeClassifierCV\r\n\r\n#### Steps/Code to Reproduce\r\nimport num"
+  },
+  "scikit-learn__scikit-learn-10508": {
+    "files": [
+      "sklearn/preprocessing/label.py"
+    ],
+    "problem_statement": "LabelEncoder transform fails for empty lists (for certain inputs)\nPython 3.6.3, scikit_learn 0.19.1\r\n\r\nDepending on which datatypes were used to fit the LabelEncoder, transforming empty lists works or"
+  },
+  "scikit-learn__scikit-learn-10949": {
+    "files": [
+      "sklearn/utils/validation.py"
+    ],
+    "problem_statement": "warn_on_dtype with DataFrame\n#### Description\r\n\r\n``warn_on_dtype`` has no effect when input is a pandas ``DataFrame``\r\n\r\n#### Steps/Code to Reproduce\r\n```python\r\nfrom sklearn.utils.validation import c"
+  },
+  "scikit-learn__scikit-learn-11040": {
+    "files": [
+      "sklearn/neighbors/base.py"
+    ],
+    "problem_statement": "Missing parameter validation in Neighbors estimator for float n_neighbors\n```python\r\nfrom sklearn.neighbors import NearestNeighbors\r\nfrom sklearn.datasets import make_blobs\r\nX, y = make_blobs()\r\nneigh"
+  },
+  "scikit-learn__scikit-learn-11281": {
+    "files": [
+      "sklearn/mixture/base.py"
+    ],
+    "problem_statement": "Should mixture models have a clusterer-compatible interface\nMixture models are currently a bit different. They are basically clusterers, except they are probabilistic, and are applied to inductive pro"
+  },
+  "scikit-learn__scikit-learn-12471": {
+    "files": [
+      "sklearn/preprocessing/_encoders.py"
+    ],
+    "problem_statement": "OneHotEncoder ignore unknown error when categories are strings \n#### Description\r\n\r\nThis bug is very specific, but it happens when you set OneHotEncoder to ignore unknown entries.\r\nand your labels are"
+  },
+  "scikit-learn__scikit-learn-13142": {
+    "files": [
+      "sklearn/mixture/base.py"
+    ],
+    "problem_statement": "GaussianMixture predict and fit_predict disagree when n_init>1\n#### Description\r\nWhen `n_init` is specified in GaussianMixture, the results of fit_predict(X) and predict(X) are often different.  The `"
+  },
+  "scikit-learn__scikit-learn-13241": {
+    "files": [
+      "sklearn/decomposition/kernel_pca.py"
+    ],
+    "problem_statement": "Differences among the results of KernelPCA with rbf kernel\nHi there,\r\nI met with a problem:\r\n\r\n#### Description\r\nWhen I run KernelPCA for dimension reduction for the same datasets, the results are dif"
+  },
+  "scikit-learn__scikit-learn-13439": {
+    "files": [
+      "sklearn/pipeline.py"
+    ],
+    "problem_statement": "Pipeline should implement __len__\n#### Description\r\n\r\nWith the new indexing support `pipe[:len(pipe)]` raises an error.\r\n\r\n#### Steps/Code to Reproduce\r\n\r\n```python\r\nfrom sklearn import svm\r\nfrom skle"
+  },
+  "scikit-learn__scikit-learn-13496": {
+    "files": [
+      "sklearn/ensemble/iforest.py"
+    ],
+    "problem_statement": "Expose warm_start in Isolation forest\nIt seems to me that `sklearn.ensemble.IsolationForest` supports incremental addition of new trees with the `warm_start` parameter of its parent class, `sklearn.en"
+  },
+  "scikit-learn__scikit-learn-13497": {
+    "files": [
+      "sklearn/feature_selection/mutual_info_.py"
+    ],
+    "problem_statement": "Comparing string to array in _estimate_mi\nIn ``_estimate_mi`` there is ``discrete_features == 'auto'`` but discrete features can be an array of indices or a boolean mask.\r\nThis will error in future ve"
+  },
+  "scikit-learn__scikit-learn-13584": {
+    "files": [
+      "sklearn/utils/_pprint.py"
+    ],
+    "problem_statement": "bug in print_changed_only in new repr: vector values\n```python\r\nimport sklearn\r\nimport numpy as np\r\nfrom sklearn.linear_model import LogisticRegressionCV\r\nsklearn.set_config(print_changed_only=True)\r\n"
+  },
+  "scikit-learn__scikit-learn-13779": {
+    "files": [
+      "sklearn/ensemble/voting.py"
+    ],
+    "problem_statement": "Voting estimator will fail at fit if weights are passed and an estimator is None\nBecause we don't check for an estimator to be `None` in `sample_weight` support, `fit` is failing`.\r\n\r\n```python\r\n    X"
+  },
+  "scikit-learn__scikit-learn-14087": {
+    "files": [
+      "sklearn/linear_model/logistic.py"
+    ],
+    "problem_statement": "IndexError thrown with LogisticRegressionCV and refit=False\n#### Description\r\nThe following error is thrown when trying to estimate a regularization parameter via cross-validation, *without* refitting"
+  },
+  "scikit-learn__scikit-learn-14092": {
+    "files": [
+      "sklearn/neighbors/nca.py"
+    ],
+    "problem_statement": "NCA fails in GridSearch due to too strict parameter checks\nNCA checks its parameters to have a specific type, which can easily fail in a GridSearch due to how param grid is made.\r\n\r\nHere is an example"
+  },
+  "scikit-learn__scikit-learn-14894": {
+    "files": [
+      "sklearn/svm/base.py"
+    ],
+    "problem_statement": "ZeroDivisionError in _sparse_fit for SVM with empty support_vectors_\n#### Description\r\nWhen using sparse data, in the case where the support_vectors_ attribute is be empty, _fit_sparse gives a ZeroDiv"
+  },
+  "scikit-learn__scikit-learn-14983": {
+    "files": [
+      "sklearn/model_selection/_split.py"
+    ],
+    "problem_statement": "RepeatedKFold and RepeatedStratifiedKFold do not show correct __repr__ string\n#### Description\r\n\r\n`RepeatedKFold` and `RepeatedStratifiedKFold` do not show correct \\_\\_repr\\_\\_ string.\r\n\r\n#### Steps/C"
+  },
+  "scikit-learn__scikit-learn-15512": {
+    "files": [
+      "sklearn/cluster/_affinity_propagation.py"
+    ],
+    "problem_statement": "Return values of non converged affinity propagation clustering\nThe affinity propagation Documentation states: \r\n\"When the algorithm does not converge, it returns an empty array as cluster_center_indic"
+  },
+  "scikit-learn__scikit-learn-15535": {
+    "files": [
+      "sklearn/metrics/cluster/_supervised.py"
+    ],
+    "problem_statement": "regression in input validation of clustering metrics\n```python\r\nfrom sklearn.metrics.cluster import mutual_info_score\r\nimport numpy as np\r\n\r\nx = np.random.choice(['a', 'b'], size=20).astype(object)\r\nm"
+  },
+  "scikit-learn__scikit-learn-25500": {
+    "files": [
+      "sklearn/isotonic.py"
+    ],
+    "problem_statement": "CalibratedClassifierCV doesn't work with `set_config(transform_output=\"pandas\")`\n### Describe the bug\r\n\r\nCalibratedClassifierCV with isotonic regression doesn't work when we previously set `set_config"
+  },
+  "scikit-learn__scikit-learn-25570": {
+    "files": [
+      "sklearn/compose/_column_transformer.py"
+    ],
+    "problem_statement": "ColumnTransformer with pandas output can't handle transformers with no features\n### Describe the bug\r\n\r\nHi,\r\n\r\nColumnTransformer doesn't deal well with transformers that apply to 0 features (categoric"
+  },
+  "scikit-learn__scikit-learn-25638": {
+    "files": [
+      "sklearn/utils/multiclass.py"
+    ],
+    "problem_statement": "Support nullable pandas dtypes in `unique_labels`\n### Describe the workflow you want to enable\n\nI would like to be able to pass the nullable pandas dtypes (\"Int64\", \"Float64\", \"boolean\") into sklearn'"
+  },
+  "scikit-learn__scikit-learn-25747": {
+    "files": [
+      "sklearn/utils/_set_output.py"
+    ],
+    "problem_statement": "FeatureUnion not working when aggregating data and pandas transform output selected\n### Describe the bug\n\nI would like to use `pandas` transform output and use a custom transformer in a feature union "
+  },
+  "sphinx-doc__sphinx-10325": {
+    "files": [
+      "sphinx/ext/autodoc/__init__.py"
+    ],
+    "problem_statement": "inherited-members should support more than one class\n**Is your feature request related to a problem? Please describe.**\r\nI have two situations:\r\n- A class inherits from multiple other classes. I want "
+  },
+  "sphinx-doc__sphinx-10451": {
+    "files": [
+      "sphinx/ext/autodoc/typehints.py"
+    ],
+    "problem_statement": "Fix duplicated *args and **kwargs with autodoc_typehints\nFix duplicated *args and **kwargs with autodoc_typehints\r\n\r\n### Bugfix\r\n- Bugfix\r\n\r\n### Detail\r\nConsider this\r\n```python\r\nclass _ClassWithDocum"
+  },
+  "sphinx-doc__sphinx-11445": {
+    "files": [
+      "sphinx/util/rst.py"
+    ],
+    "problem_statement": "Using rst_prolog removes top level headings containing a domain directive\n### Describe the bug\r\n\r\nIf `rst_prolog` is set, then any documents that contain a domain directive as the first heading (eg `:"
+  },
+  "sphinx-doc__sphinx-7686": {
+    "files": [
+      "sphinx/ext/autosummary/generate.py"
+    ],
+    "problem_statement": "autosummary: The members variable for module template contains imported members\n**Describe the bug**\r\nautosummary: The members variable for module template contains imported members even if autosummar"
+  },
+  "sphinx-doc__sphinx-7738": {
+    "files": [
+      "sphinx/ext/napoleon/docstring.py"
+    ],
+    "problem_statement": "overescaped trailing underscore on attribute with napoleon\n**Describe the bug**\r\nAttribute name `hello_` shows up as `hello\\_` in the html (visible backslash) with napoleon.\r\n\r\n**To Reproduce**\r\nSteps"
+  },
+  "sphinx-doc__sphinx-7975": {
+    "files": [
+      "sphinx/environment/adapters/indexentries.py"
+    ],
+    "problem_statement": "Two sections called Symbols in index\nWhen using index entries with the following leading characters: _@_, _\u00a3_, and _\u2190_ I get two sections called _Symbols_ in the HTML output, the first containing all "
+  },
+  "sphinx-doc__sphinx-8273": {
+    "files": [
+      "sphinx/builders/manpage.py"
+    ],
+    "problem_statement": "Generate man page section directories\n**Current man page generation does not conform to `MANPATH` search functionality**\r\nCurrently, all generated man pages are placed in to a single-level directory: "
+  },
+  "sphinx-doc__sphinx-8282": {
+    "files": [
+      "sphinx/ext/autodoc/__init__.py"
+    ],
+    "problem_statement": "autodoc_typehints does not effect to overloaded callables\n**Describe the bug**\r\nautodoc_typehints does not effect to overloaded callables.\r\n\r\n**To Reproduce**\r\n\r\n```\r\n# in conf.py\r\nautodoc_typehints ="
+  },
+  "sphinx-doc__sphinx-8435": {
+    "files": [
+      "sphinx/ext/autodoc/__init__.py"
+    ],
+    "problem_statement": "autodoc_type_aliases does not effect to variables and attributes\n**Describe the bug**\r\nautodoc_type_aliases does not effect to variables and attributes\r\n\r\n**To Reproduce**\r\n\r\n```\r\n# example.py\r\nfrom _"
+  },
+  "sphinx-doc__sphinx-8474": {
+    "files": [
+      "sphinx/domains/std.py"
+    ],
+    "problem_statement": "v3.3 upgrade started generating \"WARNING: no number is assigned for table\" warnings\nWe've updated to Sphinx 3.3 in our documentation, and suddenly the following warning started popping up in our build"
+  },
+  "sphinx-doc__sphinx-8506": {
+    "files": [
+      "sphinx/domains/std.py"
+    ],
+    "problem_statement": "Sphinx 3.2 complains about option:: syntax that earlier versions accepted\nSphinx 3.2 complains about use of the option:: directive that earlier versions accepted without complaint.\r\n\r\nThe QEMU documen"
+  },
+  "sphinx-doc__sphinx-8595": {
+    "files": [
+      "sphinx/ext/autodoc/__init__.py"
+    ],
+    "problem_statement": "autodoc: empty __all__ attribute is ignored\n**Describe the bug**\r\nautodoc: empty `__all__` attribute is ignored\r\n\r\n**To Reproduce**\r\n```\r\n# example.py\r\n__all__ = []\r\n\r\n\r\ndef foo():\r\n    \"docstring\"\r\n\r"
+  },
+  "sphinx-doc__sphinx-8627": {
+    "files": [
+      "sphinx/util/typing.py"
+    ],
+    "problem_statement": "autodoc isn't able to resolve struct.Struct type annotations\n**Describe the bug**\r\nIf `struct.Struct` is declared in any type annotations, I get `class reference target not found: Struct`\r\n\r\n**To Repr"
+  },
+  "sphinx-doc__sphinx-8713": {
+    "files": [
+      "sphinx/ext/napoleon/docstring.py"
+    ],
+    "problem_statement": "napoleon_use_param should also affect \"other parameters\" section\nSubject: napoleon_use_param should also affect \"other parameters\" section\r\n\r\n### Problem\r\nCurrently, napoleon always renders the Other "
+  },
+  "sphinx-doc__sphinx-8721": {
+    "files": [
+      "sphinx/ext/viewcode.py"
+    ],
+    "problem_statement": "viewcode creates pages for epub even if `viewcode_enable_epub=False` on `make html epub`\n**Describe the bug**\r\nviewcode creates pages for epub even if `viewcode_enable_epub=False` on `make html epub`\r"
+  },
+  "sphinx-doc__sphinx-8801": {
+    "files": [
+      "sphinx/ext/autodoc/importer.py"
+    ],
+    "problem_statement": "autodoc: The annotation only member in superclass is treated as \"undocumented\"\n**Describe the bug**\r\nautodoc: The annotation only member in superclass is treated as \"undocumented\".\r\n\r\n**To Reproduce**"
+  },
+  "sympy__sympy-11400": {
+    "files": [
+      "sympy/printing/ccode.py"
+    ],
+    "problem_statement": "ccode(sinc(x)) doesn't work\n```\nIn [30]: ccode(sinc(x))\nOut[30]: '// Not supported in C:\\n// sinc\\nsinc(x)'\n```\n\nI don't think `math.h` has `sinc`, but it could print\n\n```\nIn [38]: ccode(Piecewise((si"
+  },
+  "sympy__sympy-11870": {
+    "files": [
+      "sympy/functions/elementary/trigonometric.py"
+    ],
+    "problem_statement": "simplifying exponential -> trig identities\n```\r\nf = 1 / 2 * (-I*exp(I*k) + I*exp(-I*k))\r\ntrigsimp(f)\r\n```\r\n\r\nIdeally, this would yield `sin(k)`. Is there a way to do this?\r\n\r\nAs a corollary, it would "
+  },
+  "sympy__sympy-11897": {
+    "files": [
+      "sympy/printing/latex.py"
+    ],
+    "problem_statement": "LaTeX printer inconsistent with pretty printer\nThe LaTeX printer should always give the same output as the pretty printer, unless better output is possible from LaTeX. In some cases it is inconsistent"
+  },
+  "sympy__sympy-12171": {
+    "files": [
+      "sympy/printing/mathematica.py"
+    ],
+    "problem_statement": "matematica code printer does not handle floats and derivatives correctly\nIn its current state the mathematica code printer does not handle Derivative(func(vars), deriver) \r\ne.g. Derivative(f(t), t) yi"
+  },
+  "sympy__sympy-12236": {
+    "files": [
+      "sympy/polys/domains/polynomialring.py"
+    ],
+    "problem_statement": "Wrong result with apart\n```\r\nPython 3.6.0 |Continuum Analytics, Inc.| (default, Dec 23 2016, 12:22:00) \r\nType \"copyright\", \"credits\" or \"license\" for more information.\r\n\r\nIPython 5.1.0 -- An enhanced "
+  },
+  "sympy__sympy-12419": {
+    "files": [
+      "sympy/matrices/expressions/matexpr.py"
+    ],
+    "problem_statement": "Sum of the elements of an identity matrix is zero\nI think this is a bug.\r\n\r\nI created a matrix by M.T * M under an assumption that M is orthogonal.  SymPy successfully recognized that the result is an"
+  },
+  "sympy__sympy-12454": {
+    "files": [
+      "sympy/matrices/matrices.py"
+    ],
+    "problem_statement": "is_upper() raises IndexError for tall matrices\nThe function Matrix.is_upper raises an IndexError for a 4x2 matrix of zeros.\r\n```\r\n>>> sympy.zeros(4,2).is_upper\r\nTraceback (most recent call last):\r\n  F"
+  },
+  "sympy__sympy-12481": {
+    "files": [
+      "sympy/combinatorics/permutations.py"
+    ],
+    "problem_statement": "`Permutation` constructor fails with non-disjoint cycles\nCalling `Permutation([[0,1],[0,1]])` raises a `ValueError` instead of constructing the identity permutation.  If the cycles passed in are non-d"
+  },
+  "sympy__sympy-13031": {
+    "files": [
+      "sympy/matrices/sparse.py"
+    ],
+    "problem_statement": "Behavior of Matrix hstack and vstack changed in sympy 1.1\nIn sympy 1.0:\r\n```\r\nimport sympy as sy\r\nM1 = sy.Matrix.zeros(0, 0)\r\nM2 = sy.Matrix.zeros(0, 1)\r\nM3 = sy.Matrix.zeros(0, 2)\r\nM4 = sy.Matrix.zer"
+  },
+  "sympy__sympy-13043": {
+    "files": [
+      "sympy/integrals/intpoly.py"
+    ],
+    "problem_statement": "decompose() function in intpoly returns a list of arbitrary order\nThe decompose() function, with separate=True, returns `list(poly_dict.values())`, which is ordered arbitrarily.  \r\n\r\nWhat is this used"
+  },
+  "sympy__sympy-13146": {
+    "files": [
+      "sympy/core/operations.py"
+    ],
+    "problem_statement": "Exponent doesn't fully simplify\nSay I have code like this:\n\n```\nimport sympy\nfrom sympy import *\nx=Symbol('x')\nexpr1 = S(1)/2*x**2.5\nexpr2 = S(1)*x**(S(5)/2)/2\nres = expr1-expr2\nres= simplify(res.eval"
+  },
+  "sympy__sympy-13177": {
+    "files": [
+      "sympy/core/mod.py"
+    ],
+    "problem_statement": "Mod(x**2, x) is not (always) 0\nWhen the base is not an integer, `x**2 % x` is not 0. The base is not tested to be an integer in Mod's eval logic:\r\n\r\n```\r\nif (p == q or p == -q or\r\n        p.is_Pow and"
+  },
+  "sympy__sympy-13437": {
+    "files": [
+      "sympy/functions/combinatorial/numbers.py"
+    ],
+    "problem_statement": "bell(n).limit(n, oo) should be oo rather than bell(oo)\n`bell(n).limit(n,oo)` should take the value infinity, but the current output is `bell(oo)`. As the Bell numbers represent the number of partition"
+  },
+  "sympy__sympy-13471": {
+    "files": [
+      "sympy/core/numbers.py"
+    ],
+    "problem_statement": "Python 2->3 pickle fails with float-containing expressions\nDumping a pickled sympy expression containing a float in Python 2, then loading it in Python 3 generates an error.\r\n\r\nHere is a minimum worki"
+  },
+  "sympy__sympy-13480": {
+    "files": [
+      "sympy/functions/elementary/hyperbolic.py"
+    ],
+    "problem_statement": ".subs on coth(log(tan(x))) errors for certain integral values\n    >>> from sympy import *\r\n    >>> x = Symbol('x')\r\n    >>> e = coth(log(tan(x)))\r\n    >>> print(e.subs(x, 2))\r\n    ...\r\n    File \"C:\\Us"
+  },
+  "sympy__sympy-13647": {
+    "files": [
+      "sympy/matrices/common.py"
+    ],
+    "problem_statement": "Matrix.col_insert() no longer seems to work correctly.\nExample:\r\n\r\n```\r\nIn [28]: import sympy as sm\r\n\r\nIn [29]: M = sm.eye(6)\r\n\r\nIn [30]: M\r\nOut[30]: \r\n\u23a11  0  0  0  0  0\u23a4\r\n\u23a2                \u23a5\r\n\u23a20  1  0"
+  },
+  "sympy__sympy-13773": {
+    "files": [
+      "sympy/matrices/common.py"
+    ],
+    "problem_statement": "@ (__matmul__) should fail if one argument is not a matrix\n```\r\n>>> A = Matrix([[1, 2], [3, 4]])\r\n>>> B = Matrix([[2, 3], [1, 2]])\r\n>>> A@B\r\nMatrix([\r\n[ 4,  7],\r\n[10, 17]])\r\n>>> 2@B\r\nMatrix([\r\n[4, 6],"
+  },
+  "sympy__sympy-13895": {
+    "files": [
+      "sympy/core/numbers.py"
+    ],
+    "problem_statement": "(-x/4 - S(1)/12)**x - 1 simplifies to an inequivalent expression\n    >>> from sympy import *\r\n    >>> x = Symbol('x')\r\n    >>> e = (-x/4 - S(1)/12)**x - 1\r\n    >>> e\r\n    (-x/4 - 1/12)**x - 1\r\n    >>>"
+  },
+  "sympy__sympy-13915": {
+    "files": [
+      "sympy/core/mul.py"
+    ],
+    "problem_statement": "Issue with a substitution that leads to an undefined expression\n```\r\nPython 3.6.4 |Anaconda custom (64-bit)| (default, Dec 21 2017, 15:39:08) \r\nType 'copyright', 'credits' or 'license' for more inform"
+  },
+  "sympy__sympy-13971": {
+    "files": [
+      "sympy/printing/latex.py"
+    ],
+    "problem_statement": "Display of SeqFormula()\n```\r\nimport sympy as sp\r\nk, m, n = sp.symbols('k m n', integer=True)\r\nsp.init_printing()\r\n\r\nsp.SeqFormula(n**2, (n,0,sp.oo))\r\n```\r\n\r\nThe Jupyter rendering of this command backs"
+  },
+  "sympy__sympy-14024": {
+    "files": [
+      "sympy/core/numbers.py"
+    ],
+    "problem_statement": "Inconsistency when simplifying (-a)**x * a**(-x), a a positive integer\nCompare:\r\n\r\n```\r\n>>> a = Symbol('a', integer=True, positive=True)\r\n>>> e = (-a)**x * a**(-x)\r\n>>> f = simplify(e)\r\n>>> print(e)\r\n"
+  },
+  "sympy__sympy-14308": {
+    "files": [
+      "sympy/printing/pretty/pretty.py"
+    ],
+    "problem_statement": "vectors break pretty printing\n```py\r\nIn [1]: from sympy.vector import *\r\n\r\nIn [2]: e = CoordSysCartesian('e')\r\n\r\nIn [3]: (x/y)**t*e.j\r\nOut[3]:\r\n\u239b   t\u239e e_j\r\n\u239c\u239bx\u239e e_j \u239f\r\n\u239c\u239c\u2500\u239f \u239f\r\n\u239d\u239dy\u23a0 \u23a0\r\n```\r\n\r\nAlso, whe"
+  },
+  "sympy__sympy-14317": {
+    "files": [
+      "sympy/printing/latex.py"
+    ],
+    "problem_statement": "LaTeX printer does not use the same order of monomials as pretty and str \nWhen printing a Poly, the str and pretty printers use the logical order of monomials, from highest to lowest degrees. But late"
+  },
+  "sympy__sympy-14396": {
+    "files": [
+      "sympy/polys/polyoptions.py"
+    ],
+    "problem_statement": "Poly(domain='RR[y,z]') doesn't work\n``` py\nIn [14]: Poly(1.2*x*y*z, x)\nOut[14]: Poly(1.2*y*z*x, x, domain='RR[y,z]')\n\nIn [15]: Poly(1.2*x*y*z, x, domain='RR[y,z]')\n------------------------------------"
+  },
+  "sympy__sympy-14774": {
+    "files": [
+      "sympy/printing/latex.py"
+    ],
+    "problem_statement": "Latex printer does not support full inverse trig function names for acsc and asec\nFor example\r\n`latex(asin(x), inv_trig_style=\"full\")` works as expected returning `'\\\\arcsin{\\\\left (x \\\\right )}'`\r\nBu"
+  },
+  "sympy__sympy-14817": {
+    "files": [
+      "sympy/printing/pretty/pretty.py"
+    ],
+    "problem_statement": "Error pretty printing MatAdd\n```py\r\n>>> pprint(MatrixSymbol('x', n, n) + MatrixSymbol('y*', n, n))\r\nTraceback (most recent call last):\r\n  File \"./sympy/core/sympify.py\", line 368, in sympify\r\n    expr"
+  },
+  "sympy__sympy-15011": {
+    "files": [
+      "sympy/utilities/lambdify.py"
+    ],
+    "problem_statement": "lambdify does not work with certain MatrixSymbol names even with dummify=True\n`lambdify` is happy with curly braces in a symbol name and with `MatrixSymbol`s, but not with both at the same time, even "
+  },
+  "sympy__sympy-15308": {
+    "files": [
+      "sympy/printing/latex.py"
+    ],
+    "problem_statement": "LaTeX printing for Matrix Expression\n```py\r\n>>> A = MatrixSymbol(\"A\", n, n)\r\n>>> latex(trace(A**2))\r\n'Trace(A**2)'\r\n```\r\n\r\nThe bad part is not only is Trace not recognized, but whatever printer is bei"
+  },
+  "sympy__sympy-15345": {
+    "files": [
+      "sympy/printing/mathematica.py"
+    ],
+    "problem_statement": "mathematica_code gives wrong output with Max\nIf I run the code\r\n\r\n```\r\nx = symbols('x')\r\nmathematica_code(Max(x,2))\r\n```\r\n\r\nthen I would expect the output `'Max[x,2]'` which is valid Mathematica code "
+  },
+  "sympy__sympy-15346": {
+    "files": [
+      "sympy/simplify/trigsimp.py"
+    ],
+    "problem_statement": "can't simplify sin/cos with Rational?\nlatest cloned sympy, python 3 on windows\r\nfirstly, cos, sin with symbols can be simplified; rational number can be simplified\r\n```python\r\nfrom sympy import *\r\n\r\nx"
+  },
+  "sympy__sympy-15609": {
+    "files": [
+      "sympy/printing/latex.py"
+    ],
+    "problem_statement": "Indexed matrix-expression LaTeX printer is not compilable\n```python\r\ni, j, k = symbols(\"i j k\")\r\nM = MatrixSymbol(\"M\", k, k)\r\nN = MatrixSymbol(\"N\", k, k)\r\nlatex((M*N)[i, j])\r\n```\r\n\r\nThe LaTeX string p"
+  },
+  "sympy__sympy-15678": {
+    "files": [
+      "sympy/geometry/util.py"
+    ],
+    "problem_statement": "Some issues with idiff\nidiff doesn't support Eq, and it also doesn't support f(x) instead of y. Both should be easy to correct.\r\n\r\n```\r\n>>> idiff(Eq(y*exp(y), x*exp(x)), y, x)\r\nTraceback (most recent "
+  },
+  "sympy__sympy-16106": {
+    "files": [
+      "sympy/printing/mathml.py"
+    ],
+    "problem_statement": "mathml printer for IndexedBase required\nWriting an `Indexed` object to MathML fails with a `TypeError` exception: `TypeError: 'Indexed' object is not iterable`:\r\n\r\n```\r\nIn [340]: sympy.__version__\r\nOu"
+  },
+  "sympy__sympy-16281": {
+    "files": [
+      "sympy/printing/pretty/pretty.py"
+    ],
+    "problem_statement": "Product pretty print could be improved\nThis is what the pretty printing for `Product` looks like:\r\n\r\n```\r\n>>> pprint(Product(1, (n, 1, oo)))\r\n  \u221e\r\n\u252c\u2500\u2500\u2500\u252c\r\n\u2502   \u2502 1\r\n\u2502   \u2502\r\nn = 1\r\n>>> pprint(Product(1/n,"
+  },
+  "sympy__sympy-16503": {
+    "files": [
+      "sympy/printing/pretty/pretty.py"
+    ],
+    "problem_statement": "Bad centering for Sum pretty print\n```\r\n>>> pprint(Sum(x, (x, 1, oo)) + 3)\r\n  \u221e\r\n ___\r\n \u2572\r\n  \u2572   x\r\n  \u2571     + 3\r\n \u2571\r\n \u203e\u203e\u203e\r\nx = 1\r\n```\r\n\r\nThe `x` and the `+ 3` should be aligned. I'm not sure if the `x"
+  },
+  "sympy__sympy-16792": {
+    "files": [
+      "sympy/utilities/codegen.py"
+    ],
+    "problem_statement": "autowrap with cython backend fails when array arguments do not appear in wrapped expr\nWhen using the cython backend for autowrap, it appears that the code is not correctly generated when the function "
+  },
+  "sympy__sympy-16988": {
+    "files": [
+      "sympy/sets/sets.py"
+    ],
+    "problem_statement": "Intersection should remove duplicates\n```python\r\n>>> Intersection({1},{1},{x})\r\nEmptySet()\r\n>>> Intersection({1},{x})\r\n{1}\r\n```\r\nThe answer should be `Piecewise(({1}, Eq(x, 1)), (S.EmptySet, True))` o"
+  },
+  "sympy__sympy-17022": {
+    "files": [
+      "sympy/printing/pycode.py"
+    ],
+    "problem_statement": "Lambdify misinterprets some matrix expressions\nUsing lambdify on an expression containing an identity matrix gives us an unexpected result:\r\n\r\n```python\r\n>>> import numpy as np\r\n>>> n = symbols('n', i"
+  },
+  "sympy__sympy-17139": {
+    "files": [
+      "sympy/simplify/fu.py"
+    ],
+    "problem_statement": "simplify(cos(x)**I): Invalid comparison of complex I (fu.py)\n```\r\n>>> from sympy import *\r\n>>> x = Symbol('x')\r\n>>> print(simplify(cos(x)**I))\r\nTraceback (most recent call last):\r\n  File \"<stdin>\", li"
+  },
+  "sympy__sympy-17630": {
+    "files": [
+      "sympy/matrices/expressions/matexpr.py"
+    ],
+    "problem_statement": "Exception when multiplying BlockMatrix containing ZeroMatrix blocks\nWhen a block matrix with zero blocks is defined\r\n\r\n```\r\n>>> from sympy import *\r\n>>> a = MatrixSymbol(\"a\", 2, 2)\r\n>>> z = ZeroMatrix"
+  },
+  "sympy__sympy-17655": {
+    "files": [
+      "sympy/geometry/point.py"
+    ],
+    "problem_statement": "Unexpected exception when multiplying geometry.Point and number\n```python\r\nfrom sympy import geometry as ge\r\nimport sympy\r\n\r\npoint1 = ge.Point(0,0)\r\npoint2 = ge.Point(1,1)\r\n```\r\n\r\nThis line works fine"
+  },
+  "sympy__sympy-18057": {
+    "files": [
+      "sympy/core/expr.py"
+    ],
+    "problem_statement": "Sympy incorrectly attempts to eval reprs in its __eq__ method\nPassing strings produced by unknown objects into eval is **very bad**. It is especially surprising for an equality check to trigger that k"
+  },
+  "sympy__sympy-18087": {
+    "files": [
+      "sympy/core/exprtools.py"
+    ],
+    "problem_statement": "Simplify of simple trig expression fails\ntrigsimp in various versions, including 1.5, incorrectly simplifies cos(x)+sqrt(sin(x)**2) as though it were cos(x)+sin(x) for general complex x. (Oddly it get"
+  },
+  "sympy__sympy-18189": {
+    "files": [
+      "sympy/solvers/diophantine.py"
+    ],
+    "problem_statement": "diophantine: incomplete results depending on syms order with permute=True\n```\r\nIn [10]: diophantine(n**4 + m**4 - 2**4 - 3**4, syms=(m,n), permute=True)\r\nOut[10]: {(-3, -2), (-3, 2), (-2, -3), (-2, 3)"
+  },
+  "sympy__sympy-18199": {
+    "files": [
+      "sympy/ntheory/residue_ntheory.py"
+    ],
+    "problem_statement": "nthroot_mod function misses one root of x = 0 mod p.\nWhen in the equation x**n = a mod p , when a % p == 0. Then x = 0 mod p is also a root of this equation. But right now `nthroot_mod` does not check"
+  },
+  "sympy__sympy-18532": {
+    "files": [
+      "sympy/core/basic.py"
+    ],
+    "problem_statement": "expr.atoms() should return objects with no args instead of subclasses of Atom\n`expr.atoms()` with no arguments returns subclasses of `Atom` in `expr`. But the correct definition of a leaf node should "
+  },
+  "sympy__sympy-18621": {
+    "files": [
+      "sympy/matrices/expressions/blockmatrix.py"
+    ],
+    "problem_statement": "BlockDiagMatrix with one element cannot be converted to regular Matrix\nCreating a BlockDiagMatrix with one Matrix element will raise if trying to convert it back to a regular Matrix:\r\n\r\n```python\r\nM ="
+  },
+  "sympy__sympy-18698": {
+    "files": [
+      "sympy/polys/polytools.py"
+    ],
+    "problem_statement": "sqf and sqf_list output is not consistant\nThe example below is wrong in the sense that we should have (x*_2 - 5_x + 6, 3) and not 2 factors of multiplicity 3.\n\n```\n>  sqf_list(  (x**2 + 1)  * (x - 1)*"
+  },
+  "sympy__sympy-18835": {
+    "files": [
+      "sympy/utilities/iterables.py"
+    ],
+    "problem_statement": "uniq modifies list argument\nWhen you iterate over a dictionary or set and try to modify it while doing so you get an error from Python:\r\n```python\r\n>>> multiset('THISTLE')\r\n{'T': 2, 'H': 1, 'I': 1, 'S"
+  },
+  "sympy__sympy-19007": {
+    "files": [
+      "sympy/matrices/expressions/blockmatrix.py"
+    ],
+    "problem_statement": "Wrong matrix element fetched from BlockMatrix\nGiven this code:\r\n```\r\nfrom sympy import *\r\nn, i = symbols('n, i', integer=True)\r\nA = MatrixSymbol('A', 1, 1)\r\nB = MatrixSymbol('B', n, 1)\r\nC = BlockMatri"
+  },
+  "sympy__sympy-19254": {
+    "files": [
+      "sympy/polys/factortools.py"
+    ],
+    "problem_statement": "sympy.polys.factortools.dmp_zz_mignotte_bound improvement\nThe method `dup_zz_mignotte_bound(f, K)` can be significantly improved by using the **Knuth-Cohen bound** instead. After our research with Pro"
+  },
+  "sympy__sympy-19487": {
+    "files": [
+      "sympy/functions/elementary/complexes.py"
+    ],
+    "problem_statement": "Rewrite sign as abs\nIn sympy the `sign` function is defined as\r\n```\r\n    sign(z)  :=  z / Abs(z)\r\n```\r\nfor all complex non-zero `z`. There should be a way to rewrite the sign in terms of `Abs` e.g.:\r\n"
+  },
+  "sympy__sympy-20049": {
+    "files": [
+      "sympy/physics/vector/point.py"
+    ],
+    "problem_statement": "Point.vel() should calculate the velocity if possible\nIf you specify the orientation of two reference frames and then ask for the angular velocity between the two reference frames the angular velocity"
+  },
+  "sympy__sympy-20154": {
+    "files": [
+      "sympy/utilities/iterables.py"
+    ],
+    "problem_statement": "partitions() reusing the output dictionaries\nThe partitions() iterator in sympy.utilities.iterables reuses the output dictionaries. There is a caveat about it in the docstring. \r\n\r\nI'm wondering if it"
+  },
+  "sympy__sympy-20212": {
+    "files": [
+      "sympy/core/power.py"
+    ],
+    "problem_statement": "0**-oo produces 0, the documentation says it should produce zoo\nUsing SymPy 1.5.1, evaluate `0**-oo` produces `0`.\r\n\r\nThe documentation for the Pow class states that it should return `ComplexInfinity`"
+  },
+  "sympy__sympy-20322": {
+    "files": [
+      "sympy/core/mul.py"
+    ],
+    "problem_statement": "Inconsistent behavior for sympify/simplify with ceiling\nIn sympy v1.5.1:\r\n```python\r\nIn [16]: sympy.sympify('4*ceiling(x/4 - 3/4)', evaluate=False).simplify()\r\nOut[16]: 4*ceiling(x/4 - 3/4)\r\n\r\nIn [17]"
+  },
+  "sympy__sympy-20442": {
+    "files": [
+      "sympy/physics/units/util.py"
+    ],
+    "problem_statement": "convert_to seems to combine orthogonal units\nTested in sympy 1.4, not presently in a position to install 1.5+.\r\nSimple example. Consider `J = kg*m**2/s**2 => J*s = kg*m**2/s`. The convert_to behavior "
+  },
+  "sympy__sympy-20590": {
+    "files": [
+      "sympy/core/_print_helpers.py"
+    ],
+    "problem_statement": "Symbol instances have __dict__ since 1.7?\nIn version 1.6.2 Symbol instances had no `__dict__` attribute\r\n```python\r\n>>> sympy.Symbol('s').__dict__\r\n----------------------------------------------------"
+  },
+  "sympy__sympy-20639": {
+    "files": [
+      "sympy/printing/pretty/pretty.py"
+    ],
+    "problem_statement": "inaccurate rendering of pi**(1/E)\nThis claims to be version 1.5.dev; I just merged from the project master, so I hope this is current.  I didn't notice this bug among others in printing.pretty.\r\n\r\n```"
+  },
+  "sympy__sympy-21055": {
+    "files": [
+      "sympy/assumptions/refine.py"
+    ],
+    "problem_statement": "`refine()` does not understand how to simplify complex arguments\nJust learned about the refine-function, which would come in handy frequently for me.  But\r\n`refine()` does not recognize that argument "
+  },
+  "sympy__sympy-21171": {
+    "files": [
+      "sympy/printing/latex.py"
+    ],
+    "problem_statement": "_print_SingularityFunction() got an unexpected keyword argument 'exp'\nOn a Jupyter Notebook cell, type the following:\r\n\r\n```python\r\nfrom sympy import *\r\nfrom sympy.physics.continuum_mechanics import B"
+  },
+  "sympy__sympy-21379": {
+    "files": [
+      "sympy/core/mod.py"
+    ],
+    "problem_statement": "Unexpected `PolynomialError` when using simple `subs()` for particular expressions\nI am seeing weird behavior with `subs` for particular expressions with hyperbolic sinusoids with piecewise arguments."
+  },
+  "sympy__sympy-21612": {
+    "files": [
+      "sympy/printing/str.py"
+    ],
+    "problem_statement": "Latex parsing of fractions yields wrong expression due to missing brackets\nProblematic latex expression: `\"\\\\frac{\\\\frac{a^3+b}{c}}{\\\\frac{1}{c^2}}\"`\r\n\r\nis parsed to: `((a**3 + b)/c)/1/(c**2)`.\r\n\r\nExp"
+  },
+  "sympy__sympy-21614": {
+    "files": [
+      "sympy/core/function.py"
+    ],
+    "problem_statement": "Wrong Derivative kind attribute\nI'm playing around with the `kind` attribute.\r\n\r\nThe following is correct:\r\n\r\n```\r\nfrom sympy import Integral, Derivative\r\nfrom sympy import MatrixSymbol\r\nfrom sympy.ab"
+  },
+  "sympy__sympy-21627": {
+    "files": [
+      "sympy/functions/elementary/complexes.py"
+    ],
+    "problem_statement": "Bug: maximum recusion depth error when checking is_zero of cosh expression\nThe following code causes a `RecursionError: maximum recursion depth exceeded while calling a Python object` error when check"
+  },
+  "sympy__sympy-21847": {
+    "files": [
+      "sympy/polys/monomials.py"
+    ],
+    "problem_statement": "itermonomials returns incorrect monomials when using min_degrees argument\n`itermonomials` returns incorrect monomials when using optional `min_degrees` argument\r\n\r\nFor example, the following code intr"
+  },
+  "sympy__sympy-22005": {
+    "files": [
+      "sympy/solvers/polysys.py"
+    ],
+    "problem_statement": "detection of infinite solution request\n```python\r\n>>> solve_poly_system((x - 1,), x, y)\r\nTraceback (most recent call last):\r\n...\r\nNotImplementedError:\r\nonly zero-dimensional systems supported (finite "
+  },
+  "sympy__sympy-22714": {
+    "files": [
+      "sympy/geometry/point.py"
+    ],
+    "problem_statement": "simpify gives `Imaginary coordinates are not permitted.` with evaluate(False)\n## Issue\r\n`with evaluate(False)` crashes unexpectedly with `Point2D`\r\n\r\n## Code\r\n```python\r\nimport sympy as sp\r\nwith sp.ev"
+  },
+  "sympy__sympy-22840": {
+    "files": [
+      "sympy/simplify/cse_main.py"
+    ],
+    "problem_statement": "cse() has strange behaviour for MatrixSymbol indexing\nExample: \r\n```python\r\nimport sympy as sp\r\nfrom pprint import pprint\r\n\r\n\r\ndef sub_in_matrixsymbols(exp, matrices):\r\n    for matrix in matrices:\r\n  "
+  },
+  "sympy__sympy-23117": {
+    "files": [
+      "sympy/tensor/array/ndim_array.py"
+    ],
+    "problem_statement": "sympy.Array([]) fails, while sympy.Matrix([]) works\nSymPy 1.4 does not allow to construct empty Array (see code below). Is this the intended behavior?\r\n\r\n```\r\n>>> import sympy\r\nKeyboardInterrupt\r\n>>> "
+  },
+  "sympy__sympy-23191": {
+    "files": [
+      "sympy/printing/pretty/pretty.py"
+    ],
+    "problem_statement": "display bug while using pretty_print with sympy.vector object in the terminal\nThe following code jumbles some of the outputs in the terminal, essentially by inserting the unit vector in the middle -\r\n"
+  },
+  "sympy__sympy-23262": {
+    "files": [
+      "sympy/utilities/lambdify.py"
+    ],
+    "problem_statement": "Python code printer not respecting tuple with one element\nHi,\r\n\r\nThanks for the recent updates in SymPy! I'm trying to update my code to use SymPy 1.10 but ran into an issue with the Python code print"
+  },
+  "sympy__sympy-24066": {
+    "files": [
+      "sympy/physics/units/unitsystem.py"
+    ],
+    "problem_statement": "SI._collect_factor_and_dimension() cannot properly detect that exponent is dimensionless\nHow to reproduce:\r\n\r\n```python\r\nfrom sympy import exp\r\nfrom sympy.physics import units\r\nfrom sympy.physics.unit"
+  },
+  "sympy__sympy-24102": {
+    "files": [
+      "sympy/parsing/mathematica.py"
+    ],
+    "problem_statement": "Cannot parse Greek characters (and possibly others) in parse_mathematica\nThe old Mathematica parser `mathematica` in the package `sympy.parsing.mathematica` was able to parse e.g. Greek characters. He"
+  },
+  "sympy__sympy-24152": {
+    "files": [
+      "sympy/physics/quantum/tensorproduct.py"
+    ],
+    "problem_statement": "Bug in expand of TensorProduct + Workaround + Fix\n### Error description\r\nThe expansion of a TensorProduct object stops incomplete if summands in the tensor product factors have (scalar) factors, e.g.\r"
+  },
+  "sympy__sympy-24213": {
+    "files": [
+      "sympy/physics/units/unitsystem.py"
+    ],
+    "problem_statement": "collect_factor_and_dimension does not detect equivalent dimensions in addition\nCode to reproduce:\r\n```python\r\nfrom sympy.physics import units\r\nfrom sympy.physics.units.systems.si import SI\r\n\r\nv1 = uni"
+  },
+  "sympy__sympy-24909": {
+    "files": [
+      "sympy/physics/units/prefixes.py"
+    ],
+    "problem_statement": "Bug with milli prefix\nWhat happened:\r\n```\r\nIn [1]: from sympy.physics.units import milli, W\r\nIn [2]: milli*W == 1\r\nOut[2]: True\r\nIn [3]: W*milli\r\nOut[3]: watt*Prefix(milli, m, -3, 10)\r\n```\r\nWhat I exp"
+  }
+}

@@ -1,0 +1,303 @@
+{
+  "file_recall_at_3_avg": 65.0,
+  "line_recall_avg": 22.893115942028984,
+  "total_instances": 20,
+  "instances_with_file_recall": 20,
+  "instances_with_line_recall": 20,
+  "details": [
+    {
+      "instance_id": "astropy__astropy-12907",
+      "file_recall_at_3": 1.0,
+      "line_recall": 0.0,
+      "gold_files": [
+        "astropy/modeling/separable.py"
+      ],
+      "gold_lines_count": 1,
+      "found_lines_count": 0,
+      "predicted_files": [
+        "astropy/modeling/separable.py",
+        "astropy/modeling/core.py"
+      ]
+    },
+    {
+      "instance_id": "astropy__astropy-14182",
+      "file_recall_at_3": 1.0,
+      "line_recall": 0.125,
+      "gold_files": [
+        "astropy/io/ascii/rst.py"
+      ],
+      "gold_lines_count": 32,
+      "found_lines_count": 4,
+      "predicted_files": [
+        "astropy/io/ascii/rst.py",
+        "astropy/io/ascii/connect.py",
+        "astropy/io/ascii/ui.py"
+      ]
+    },
+    {
+      "instance_id": "django__django-10914",
+      "file_recall_at_3": 1.0,
+      "line_recall": 1.0,
+      "gold_files": [
+        "django/conf/global_settings.py"
+      ],
+      "gold_lines_count": 1,
+      "found_lines_count": 1,
+      "predicted_files": [
+        "django/core/files/uploadedfile.py",
+        "django/core/files/storage.py",
+        "django/conf/global_settings.py"
+      ]
+    },
+    {
+      "instance_id": "django__django-11999",
+      "file_recall_at_3": 0.0,
+      "line_recall": 0.0,
+      "gold_files": [
+        "django/db/models/fields/__init__.py"
+      ],
+      "gold_lines_count": 6,
+      "found_lines_count": 0,
+      "predicted_files": [
+        "django/db/models/base.py",
+        "django/contrib/admin/models.py",
+        "django/contrib/auth/models.py"
+      ]
+    },
+    {
+      "instance_id": "django__django-13401",
+      "file_recall_at_3": 1.0,
+      "line_recall": 0.08695652173913043,
+      "gold_files": [
+        "django/db/models/fields/__init__.py"
+      ],
+      "gold_lines_count": 23,
+      "found_lines_count": 2,
+      "predicted_files": [
+        "django/db/models/fields/__init__.py",
+        "django/db/models/fields/related.py",
+        "django/db/models/options.py"
+      ]
+    },
+    {
+      "instance_id": "django__django-13933",
+      "file_recall_at_3": 1.0,
+      "line_recall": 0.2,
+      "gold_files": [
+        "django/forms/models.py"
+      ],
+      "gold_lines_count": 5,
+      "found_lines_count": 1,
+      "predicted_files": [
+        "django/forms/models.py"
+      ]
+    },
+    {
+      "instance_id": "django__django-14534",
+      "file_recall_at_3": 1.0,
+      "line_recall": 1.0,
+      "gold_files": [
+        "django/forms/boundfield.py"
+      ],
+      "gold_lines_count": 1,
+      "found_lines_count": 1,
+      "predicted_files": [
+        "django/forms/boundfield.py",
+        "django/forms/widgets.py"
+      ]
+    },
+    {
+      "instance_id": "django__django-15695",
+      "file_recall_at_3": 0.0,
+      "line_recall": 0.0,
+      "gold_files": [
+        "django/db/migrations/operations/models.py"
+      ],
+      "gold_lines_count": 3,
+      "found_lines_count": 0,
+      "predicted_files": [
+        "django/db/backends/base/creation.py",
+        "django/db/migrations/migration.py",
+        "django/db/backends/postgresql/operations.py"
+      ]
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-23314",
+      "file_recall_at_3": 0.0,
+      "line_recall": 0.0,
+      "gold_files": [
+        "lib/mpl_toolkits/mplot3d/axes3d.py"
+      ],
+      "gold_lines_count": 2,
+      "found_lines_count": 0,
+      "predicted_files": [
+        "lib/matplotlib/axes/_axes.py",
+        "lib/matplotlib/artist.py",
+        "lib/matplotlib/figure.py"
+      ]
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-23476",
+      "file_recall_at_3": 1.0,
+      "line_recall": 0.0,
+      "gold_files": [
+        "lib/matplotlib/figure.py"
+      ],
+      "gold_lines_count": 3,
+      "found_lines_count": 0,
+      "predicted_files": [
+        "lib/matplotlib/figure.py",
+        "lib/matplotlib/backends/backend_macosx.py",
+        "lib/matplotlib/backend_bases.py"
+      ]
+    },
+    {
+      "instance_id": "psf__requests-2317",
+      "file_recall_at_3": 1.0,
+      "line_recall": 0.5,
+      "gold_files": [
+        "requests/sessions.py"
+      ],
+      "gold_lines_count": 2,
+      "found_lines_count": 1,
+      "predicted_files": [
+        "requests/sessions.py",
+        "requests/utils.py",
+        "requests/adapters.py"
+      ]
+    },
+    {
+      "instance_id": "pydata__xarray-4094",
+      "file_recall_at_3": 0.0,
+      "line_recall": 0.0,
+      "gold_files": [
+        "xarray/core/dataarray.py"
+      ],
+      "gold_lines_count": 1,
+      "found_lines_count": 0,
+      "predicted_files": [
+        "xarray/core/merge.py",
+        "xarray/core/dataset.py",
+        "xarray/core/variable.py"
+      ]
+    },
+    {
+      "instance_id": "pylint-dev__pylint-7080",
+      "file_recall_at_3": 0.0,
+      "line_recall": 0.0,
+      "gold_files": [
+        "pylint/lint/expand_modules.py"
+      ],
+      "gold_lines_count": 1,
+      "found_lines_count": 0,
+      "predicted_files": [
+        "pylint/config/config_file_parser.py",
+        "pylint/lint/pylinter.py",
+        "pylint/config/option.py"
+      ]
+    },
+    {
+      "instance_id": "pytest-dev__pytest-7432",
+      "file_recall_at_3": 1.0,
+      "line_recall": 0.5,
+      "gold_files": [
+        "src/_pytest/skipping.py"
+      ],
+      "gold_lines_count": 2,
+      "found_lines_count": 1,
+      "predicted_files": [
+        "src/_pytest/skipping.py",
+        "src/_pytest/runner.py",
+        "src/_pytest/hookspec.py"
+      ]
+    },
+    {
+      "instance_id": "pytest-dev__pytest-7490",
+      "file_recall_at_3": 0.0,
+      "line_recall": 0.0,
+      "gold_files": [
+        "src/_pytest/skipping.py"
+      ],
+      "gold_lines_count": 13,
+      "found_lines_count": 0,
+      "predicted_files": [
+        "src/_pytest/mark/structures.py",
+        "src/_pytest/mark/expression.py",
+        "src/_pytest/nodes.py"
+      ]
+    },
+    {
+      "instance_id": "scikit-learn__scikit-learn-13496",
+      "file_recall_at_3": 1.0,
+      "line_recall": 0.0,
+      "gold_files": [
+        "sklearn/ensemble/iforest.py"
+      ],
+      "gold_lines_count": 9,
+      "found_lines_count": 0,
+      "predicted_files": [
+        "sklearn/ensemble/iforest.py",
+        "sklearn/ensemble/bagging.py",
+        "sklearn/ensemble/forest.py"
+      ]
+    },
+    {
+      "instance_id": "scikit-learn__scikit-learn-14983",
+      "file_recall_at_3": 1.0,
+      "line_recall": 0.0,
+      "gold_files": [
+        "sklearn/model_selection/_split.py"
+      ],
+      "gold_lines_count": 5,
+      "found_lines_count": 0,
+      "predicted_files": [
+        "sklearn/model_selection/_split.py"
+      ]
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-11445",
+      "file_recall_at_3": 1.0,
+      "line_recall": 0.16666666666666666,
+      "gold_files": [
+        "sphinx/util/rst.py"
+      ],
+      "gold_lines_count": 6,
+      "found_lines_count": 1,
+      "predicted_files": [
+        "sphinx/domains/rst.py",
+        "sphinx/writers/html.py",
+        "sphinx/util/rst.py"
+      ]
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-8595",
+      "file_recall_at_3": 1.0,
+      "line_recall": 1.0,
+      "gold_files": [
+        "sphinx/ext/autodoc/__init__.py"
+      ],
+      "gold_lines_count": 1,
+      "found_lines_count": 1,
+      "predicted_files": [
+        "sphinx/ext/autodoc/__init__.py",
+        "sphinx/ext/autodoc/directive.py",
+        "sphinx/ext/autodoc/importer.py"
+      ]
+    },
+    {
+      "instance_id": "sympy__sympy-13031",
+      "file_recall_at_3": 0.0,
+      "line_recall": 0.0,
+      "gold_files": [
+        "sympy/matrices/sparse.py"
+      ],
+      "gold_lines_count": 8,
+      "found_lines_count": 0,
+      "predicted_files": [
+        "sympy/matrices/matrices.py",
+        "sympy/matrices/dense.py",
+        "sympy/matrices/densearith.py"
+      ]
+    }
+  ]
+}

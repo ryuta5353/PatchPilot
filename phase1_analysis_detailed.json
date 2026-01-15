@@ -1,0 +1,34 @@
+{
+  "file_level": {
+    "baseline": {
+      "total": 0,
+      "hits": 0,
+      "ranks": [],
+      "instances": {}
+    },
+    "composite": {
+      "total": 0,
+      "hits": 0,
+      "ranks": [],
+      "instances": {}
+    },
+    "baseline_hit": 0,
+    "composite_hit": 0,
+    "improvement": 0
+  },
+  "line_level": {
+    "baseline": {
+      "total": 0,
+      "hits": 0,
+      "instances": {}
+    },
+    "composite": {
+      "total": 0,
+      "hits": 0,
+      "instances": {}
+    },
+    "baseline_hit": 0,
+    "composite_hit": 0,
+    "improvement": 0
+  }
+}

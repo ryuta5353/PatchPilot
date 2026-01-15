@@ -5,6 +5,7 @@ Adapted from RepoGraph/agentless/fl/localize.py
 
 import pickle
 import json
+import re
 from copy import deepcopy
 from tqdm import tqdm
 
@@ -595,5 +596,666 @@ def format_caller_prompt(caller_result: dict, coverage_dict: dict = None) -> str
             lines.append(f"   - Note: Hub file (calls multiple search results)")
 
         lines.append("")
+
+    return "\n".join(lines)
+
+
+# ============================================================================
+# Keyword-based Graph Context Functions (Related Level Enhancement)
+# ============================================================================
+
+def extract_keywords_from_problem(problem_statement: str,
+                                   graph_tags: list,
+                                   found_files: list) -> dict:
+    """
+    問題記述からキーワードを抽出し、タグに存在するもののみ返す
+
+    Args:
+        problem_statement: GitHub Issue の問題記述
+        graph_tags: tags_*.json のデータ
+        found_files: File Level で特定したファイルリスト
+
+    Returns:
+        {
+            'functions': ['serialize', 'handle', ...],  # 関数+メソッド
+            'classes': ['TypeSerializer', ...]          # クラス
+        }
+    """
+    # Step 1: 正規表現でキーワード候補を抽出
+    # snake_case パターン (3文字以上)
+    snake_case_pattern = r'\b([a-z_][a-z0-9_]{2,})\b'
+    snake_candidates = set(re.findall(snake_case_pattern, problem_statement))
+
+    # CamelCase パターン (2文字以上)
+    camel_case_pattern = r'\b([A-Z][a-zA-Z0-9]+)\b'
+    camel_candidates = set(re.findall(camel_case_pattern, problem_statement))
+
+    # Step 2: found_files 内のタグ名を収集
+    tag_names_in_files = {'functions': set(), 'classes': set()}
+
+    for tag in graph_tags:
+        if tag.get('kind') != 'def':
+            continue
+        if tag.get('rel_fname') not in found_files:
+            continue
+
+        name = tag.get('name', '')
+        category = tag.get('category', '')
+
+        if category == 'function':
+            tag_names_in_files['functions'].add(name)
+        elif category == 'class':
+            tag_names_in_files['classes'].add(name)
+
+    # Step 3: フィルタリング（タグに存在するもののみ）
+    # 部分一致: キーワードがタグ名に含まれるか（3文字以上のキーワードのみ）
+    def keyword_matches_any_tag(keyword, tag_names):
+        """キーワードがいずれかのタグ名に部分一致するか"""
+        keyword_lower = keyword.lower()
+
+        # 短いキーワード（3文字未満）は完全一致のみ
+        if len(keyword) < 3:
+            return keyword_lower in {t.lower() for t in tag_names}
+
+        # 3文字以上は部分一致
+        for tag_name in tag_names:
+            if keyword_lower in tag_name.lower():
+                return True
+        return False
+
+    all_tags = tag_names_in_files['functions'] | tag_names_in_files['classes']
+
+    filtered_functions = [kw for kw in snake_candidates
+                          if keyword_matches_any_tag(kw, all_tags)]
+    filtered_classes = [kw for kw in camel_candidates
+                        if keyword_matches_any_tag(kw, all_tags)]
+
+    return {
+        'functions': sorted(set(filtered_functions)),
+        'classes': sorted(set(filtered_classes))
+    }
+
+
+def keyword_matches_tag(keyword: str, tag_name: str) -> bool:
+    """
+    キーワードとタグ名のマッチングを判定
+
+    マッチングルール:
+    - 3文字未満: 完全一致のみ（id が valid にマッチしないように）
+    - 3文字以上: 部分一致（キーワードがタグ名に含まれる）
+
+    Args:
+        keyword: 検索キーワード
+        tag_name: タグの名前
+
+    Returns:
+        bool: マッチするかどうか
+    """
+    keyword_lower = keyword.lower()
+    tag_name_lower = tag_name.lower()
+
+    # 短いキーワード（3文字未満）は完全一致のみ
+    if len(keyword) < 3:
+        return keyword_lower == tag_name_lower
+
+    # 3文字以上は部分一致（キーワードがタグ名に含まれる）
+    return keyword_lower in tag_name_lower
+
+
+def search_tags_by_keywords(graph_tags: list,
+                            keywords: dict,
+                            found_files: list) -> dict:
+    """
+    キーワードにマッチするタグを検索（部分一致対応）
+
+    Args:
+        graph_tags: tags_*.json のデータ
+        keywords: extract_keywords_from_problem の結果
+        found_files: File Level で特定したファイルリスト
+
+    Returns:
+        {
+            'def': [tag1, tag2, ...],  # 定義タグ
+            'ref': [tag3, tag4, ...]   # 参照タグ
+        }
+    """
+    matched_tags = {'def': [], 'ref': []}
+
+    # 全キーワードを収集
+    all_keywords = keywords.get('functions', []) + keywords.get('classes', [])
+
+    if not all_keywords:
+        return matched_tags
+
+    # タグをループしてマッチング
+    seen_defs = set()  # 重複防止
+    seen_refs = set()
+
+    for tag in graph_tags:
+        # found_files 内のタグのみ対象
+        if tag.get('rel_fname') not in found_files:
+            continue
+
+        tag_name = tag.get('name', '')
+        kind = tag.get('kind', '')
+        line = tag.get('line', 0)
+
+        # いずれかのキーワードにマッチするか
+        for keyword in all_keywords:
+            if keyword_matches_tag(keyword, tag_name):
+                if kind == 'def':
+                    key = (tag_name, tag.get('rel_fname'), line)
+                    if key not in seen_defs:
+                        seen_defs.add(key)
+                        matched_tags['def'].append(tag)
+                elif kind == 'ref':
+                    key = (tag_name, tag.get('rel_fname'), line)
+                    if key not in seen_refs:
+                        seen_refs.add(key)
+                        matched_tags['ref'].append(tag)
+                break  # 一つのキーワードでマッチしたら次のタグへ
+
+    return matched_tags
+
+
+def build_keyword_graph_context(matched_tags: dict,
+                                 keywords: dict) -> str:
+    """
+    マッチしたタグから Graph Context 文字列を構築
+
+    Args:
+        matched_tags: search_tags_by_keywords の結果
+        keywords: extract_keywords_from_problem の結果
+
+    Returns:
+        フォーマット済みの Graph Context 文字列
+    """
+    if not matched_tags['def'] and not matched_tags['ref']:
+        return ""
+
+    lines = [
+        "",
+        "### Supplementary Reference ###",
+        "Note: Use this only if the skeleton above is insufficient.",
+        ""
+    ]
+
+    # Keywords セクション
+    func_kws = keywords.get('functions', [])
+    class_kws = keywords.get('classes', [])
+
+    if func_kws or class_kws:
+        lines.append("Keywords found in codebase:")
+        if func_kws:
+            lines.append(f"- functions: {', '.join(func_kws[:10])}")
+        if class_kws:
+            lines.append(f"- classes: {', '.join(class_kws[:10])}")
+        lines.append("")
+
+    # Definitions セクション
+    if matched_tags['def']:
+        lines.append("Definitions:")
+        seen = set()
+        for tag in matched_tags['def'][:20]:  # 最大20件
+            name = tag.get('name', '')
+            category = tag.get('category', 'unknown')
+            rel_fname = tag.get('rel_fname', '')
+            line = tag.get('line', 0)
+
+            key = (name, rel_fname)
+            if key not in seen:
+                seen.add(key)
+                lines.append(f"- {name} ({category}) @ {rel_fname}:{line}")
+        lines.append("")
+
+    # References セクション
+    if matched_tags['ref']:
+        lines.append("References (call sites):")
+        seen = set()
+        for tag in matched_tags['ref'][:15]:  # 最大15件
+            name = tag.get('name', '')
+            rel_fname = tag.get('rel_fname', '')
+            line = tag.get('line', 0)
+
+            key = (name, rel_fname, line)
+            if key not in seen:
+                seen.add(key)
+                lines.append(f"- {name} @ {rel_fname}:{line}")
+        lines.append("")
+
+    return "\n".join(lines)
+
+
+# ============================================================================
+# Caller/Callee Context (Improved keyword graph context)
+# ============================================================================
+
+KEYWORD_STOP_WORDS = {
+    # 一般的な英単語（冠詞・前置詞・接続詞など）
+    'and', 'or', 'not', 'for', 'with', 'from', 'the', 'all', 'any', 'but',
+    'are', 'can', 'has', 'use', 'new', 'old', 'one', 'two', 'this', 'that',
+    'into', 'also', 'been', 'have', 'will', 'would', 'could', 'should',
+
+    # Python キーワード・組み込み
+    'none', 'true', 'false', 'self', 'cls',
+
+    # 非常に一般的な変数名
+    'name', 'value', 'data', 'type', 'key', 'item', 'items', 'result',
+    'args', 'kwargs', 'info',
+}
+
+
+def filter_keywords_with_stopwords(keywords: dict, min_length: int = 4) -> dict:
+    """
+    ストップワードと長さでキーワードをフィルタリング
+
+    Args:
+        keywords: {'functions': [...], 'classes': [...]}
+        min_length: 最小文字数
+
+    Returns:
+        フィルタリングされたキーワード辞書
+    """
+    def is_valid_keyword(kw):
+        kw_lower = kw.lower()
+        # ストップワードチェック
+        if kw_lower in KEYWORD_STOP_WORDS:
+            return False
+        # 長さチェック
+        if len(kw) < min_length:
+            return False
+        # 数字のみは除外
+        if kw.isdigit():
+            return False
+        return True
+
+    return {
+        'functions': [kw for kw in keywords.get('functions', []) if is_valid_keyword(kw)],
+        'classes': [kw for kw in keywords.get('classes', []) if is_valid_keyword(kw)]
+    }
+
+
+def get_containing_function(ref_tag: dict, graph_tags: list) -> dict:
+    """
+    ref タグを含む関数を特定する
+
+    Args:
+        ref_tag: 参照タグ (kind='ref')
+        graph_tags: 全タグリスト
+
+    Returns:
+        {'name': 関数名, 'file': ファイルパス} or None
+    """
+    ref_file = ref_tag.get('rel_fname', '')
+    ref_line = ref_tag.get('line', 0)
+
+    # 同じファイル内のdef関数タグを取得
+    def_tags_in_file = [
+        t for t in graph_tags
+        if t.get('rel_fname') == ref_file
+        and t.get('kind') == 'def'
+        and t.get('category') == 'function'
+    ]
+
+    # 行番号でソート
+    def_tags_in_file.sort(key=lambda t: t.get('line', 0))
+
+    # ref_line より前で最も近いdef関数を見つける
+    containing_func = None
+    for tag in def_tags_in_file:
+        if tag.get('line', 0) <= ref_line:
+            containing_func = tag
+        else:
+            break
+
+    if containing_func:
+        return {
+            'name': containing_func.get('name', ''),
+            'file': containing_func.get('rel_fname', '')
+        }
+    return None
+
+
+def get_callers(keyword: str, graph_tags: list, found_files: list = None, max_count_per_func: int = 5) -> dict:
+    """
+    キーワードにマッチした関数ごとに、その関数を呼び出している関数（caller）を取得
+
+    Args:
+        keyword: 検索キーワード
+        graph_tags: 全タグリスト
+        found_files: 検索対象ファイルリスト (Noneの場合はフィルタなし)
+        max_count_per_func: 関数あたりの最大caller数
+
+    Returns:
+        {
+            'matched_func_name': [{'name': caller関数名, 'file': ファイルパス}, ...],
+            ...
+        }
+    """
+    # マッチした関数名ごとにcallerをグループ化
+    callers_by_func = {}
+    seen_by_func = {}
+    keyword_lower = keyword.lower()
+
+    for tag in graph_tags:
+        # refタグのみ対象
+        if tag.get('kind') != 'ref':
+            continue
+
+        # found_files内のみ対象 (Noneの場合はスキップ)
+        if found_files is not None and tag.get('rel_fname') not in found_files:
+            continue
+
+        # 部分一致でキーワードを含むか確認
+        tag_name = tag.get('name', '')
+        if keyword_lower not in tag_name.lower():
+            continue
+
+        # このrefタグを含む関数を取得
+        caller = get_containing_function(tag, graph_tags)
+        if caller:
+            # 自己参照を除外（自分自身を呼び出しているケースは除外）
+            if caller['name'].lower() == tag_name.lower():
+                continue
+
+            # マッチした関数名でグループ化
+            if tag_name not in callers_by_func:
+                callers_by_func[tag_name] = []
+                seen_by_func[tag_name] = set()
+
+            key = (caller['name'], caller['file'])
+            if key not in seen_by_func[tag_name]:
+                if len(callers_by_func[tag_name]) < max_count_per_func:
+                    seen_by_func[tag_name].add(key)
+                    callers_by_func[tag_name].append(caller)
+
+    return callers_by_func
+
+
+def get_callees(keyword: str, graph_tags: list, found_files: list, max_count_per_func: int = 5) -> dict:
+    """
+    キーワードにマッチした関数ごとに、その関数が呼び出している関数（callee）を取得
+
+    Args:
+        keyword: 検索キーワード
+        graph_tags: 全タグリスト
+        found_files: 検索対象ファイルリスト
+        max_count_per_func: 関数あたりの最大callee数
+
+    Returns:
+        {
+            'matched_func_name': [{'name': callee関数名, 'file': ファイルパス}, ...],
+            ...
+        }
+    """
+    callees_by_func = {}
+    keyword_lower = keyword.lower()
+
+    # キーワードにマッチする全てのdef関数を見つける
+    matching_defs = []
+    for tag in graph_tags:
+        if tag.get('kind') != 'def':
+            continue
+        if tag.get('rel_fname') not in found_files:
+            continue
+        if keyword_lower not in tag.get('name', '').lower():
+            continue
+        matching_defs.append(tag)
+
+    # 各マッチした関数についてcalleeを取得
+    for def_tag in matching_defs:
+        def_file = def_tag.get('rel_fname', '')
+        def_line = def_tag.get('line', 0)
+        def_name = def_tag.get('name', '')
+
+        # 次の関数定義の行を見つけて、関数の終了位置を推定
+        next_def_line = None
+        for tag in graph_tags:
+            if (tag.get('rel_fname') == def_file
+                and tag.get('kind') == 'def'
+                and tag.get('category') == 'function'
+                and tag.get('line', 0) > def_line):
+                if next_def_line is None or tag.get('line', 0) < next_def_line:
+                    next_def_line = tag.get('line', 0)
+
+        # 関数の範囲を設定（次の関数まで、または500行後）
+        func_end = next_def_line - 1 if next_def_line else def_line + 500
+
+        # 関数内のrefタグを収集
+        callees = []
+        seen = set()
+        for tag in graph_tags:
+            if tag.get('kind') != 'ref':
+                continue
+            if tag.get('rel_fname') != def_file:
+                continue
+
+            tag_line = tag.get('line', 0)
+            if def_line <= tag_line <= func_end:
+                callee_name = tag.get('name', '')
+
+                # 自己参照を除外
+                if callee_name.lower() == def_name.lower():
+                    continue
+
+                if callee_name not in seen:
+                    seen.add(callee_name)
+                    callees.append({
+                        'name': callee_name,
+                        'file': def_file
+                    })
+
+                    if len(callees) >= max_count_per_func:
+                        break
+
+        if callees:
+            callees_by_func[def_name] = callees
+
+    return callees_by_func
+
+
+def build_caller_callee_context(keywords: dict,
+                                 graph_tags: list,
+                                 found_files: list,
+                                 max_callers_per_func: int = 5,
+                                 max_callees_per_func: int = 5,
+                                 max_keywords: int = 20,
+                                 max_functions: int = 30) -> str:
+    """
+    キーワードにマッチした関数ごとにcaller/callee関係を構築してコンテキストを生成
+
+    Args:
+        keywords: 抽出されたキーワード {'functions': [...], 'classes': [...]}
+        graph_tags: RepoGraphのタグリスト
+        found_files: 検索対象ファイルリスト
+        max_callers_per_func: 関数あたりの最大caller数
+        max_callees_per_func: 関数あたりの最大callee数
+        max_keywords: 処理する最大キーワード数
+        max_functions: 出力する最大関数数
+
+    Returns:
+        フォーマットされたコンテキスト文字列
+    """
+    # ストップワードでフィルタリング
+    filtered = filter_keywords_with_stopwords(keywords)
+    all_keywords = filtered.get('functions', []) + filtered.get('classes', [])
+
+    if not all_keywords:
+        return ""
+
+    # 全キーワードからマッチした関数を収集
+    # {関数名: {'callers': [...], 'callees': [...]}}
+    func_info = {}
+
+    processed_keywords = 0
+    for keyword in all_keywords:
+        if processed_keywords >= max_keywords:
+            break
+
+        # callerを取得（関数名でグループ化された結果）
+        callers_by_func = get_callers(keyword, graph_tags, found_files, max_callers_per_func)
+        for func_name, callers in callers_by_func.items():
+            if func_name not in func_info:
+                func_info[func_name] = {'callers': [], 'callees': []}
+            # 重複を避けて追加
+            existing_callers = {(c['name'], c['file']) for c in func_info[func_name]['callers']}
+            for c in callers:
+                if (c['name'], c['file']) not in existing_callers:
+                    func_info[func_name]['callers'].append(c)
+
+        # calleeを取得（関数名でグループ化された結果）
+        callees_by_func = get_callees(keyword, graph_tags, found_files, max_callees_per_func)
+        for func_name, callees in callees_by_func.items():
+            if func_name not in func_info:
+                func_info[func_name] = {'callers': [], 'callees': []}
+            # 重複を避けて追加
+            existing_callees = {(c['name'], c['file']) for c in func_info[func_name]['callees']}
+            for c in callees:
+                if (c['name'], c['file']) not in existing_callees:
+                    func_info[func_name]['callees'].append(c)
+
+        processed_keywords += 1
+
+    if not func_info:
+        return ""
+
+    # 出力を構築 (ヘッダーはテンプレート側で定義)
+    lines = []
+
+    output_count = 0
+    for func_name, info in func_info.items():
+        if output_count >= max_functions:
+            break
+
+        callers = info['callers']
+        callees = info['callees']
+
+        # caller も callee も見つからなければスキップ
+        if not callers and not callees:
+            continue
+
+        lines.append(f"## {func_name}")
+
+        if callers:
+            lines.append("Callers:")
+            for c in callers[:max_callers_per_func]:
+                lines.append(f"  - {c['file']}::{c['name']}")
+
+        if callees:
+            lines.append("Callees:")
+            for c in callees[:max_callees_per_func]:
+                lines.append(f"  - {c['file']}::{c['name']}")
+
+        lines.append("")
+        output_count += 1
+
+    if output_count == 0:
+        return ""
+
+    return "\n".join(lines)
+
+
+# ============================================================================
+# Repair Phase Graph Context (Caller filter disabled)
+# ============================================================================
+
+def build_repair_graph_context(keywords: dict,
+                                graph_tags: list,
+                                found_files: list,
+                                max_callers_per_func: int = 5,
+                                max_callees_per_func: int = 5,
+                                max_keywords: int = 20,
+                                max_functions: int = 30) -> str:
+    """
+    Repair用のGraph Context構築
+
+    Localization用の build_caller_callee_context との違い:
+    - Callers: found_filesフィルタなし（全ファイルから取得）
+    - Callees: found_filesフィルタあり（従来通り）
+
+    Args:
+        keywords: {'functions': [...], 'classes': [...]}
+        graph_tags: tags_*.json のデータ
+        found_files: Localizationで特定されたファイル（calleesのみに使用）
+        max_callers_per_func: 関数あたりの最大caller数
+        max_callees_per_func: 関数あたりの最大callee数
+        max_keywords: 処理する最大キーワード数
+        max_functions: 出力する最大関数数
+
+    Returns:
+        フォーマットされたコンテキスト文字列
+    """
+    # ストップワードでフィルタリング
+    filtered = filter_keywords_with_stopwords(keywords)
+    all_keywords = filtered.get('functions', []) + filtered.get('classes', [])
+
+    if not all_keywords:
+        return ""
+
+    # 全キーワードからマッチした関数を収集
+    func_info = {}
+
+    processed_keywords = 0
+    for keyword in all_keywords:
+        if processed_keywords >= max_keywords:
+            break
+
+        # Callers: found_files=None でフィルタなし（全ファイルから取得）
+        callers_by_func = get_callers(keyword, graph_tags, None, max_callers_per_func)
+        for func_name, callers in callers_by_func.items():
+            if func_name not in func_info:
+                func_info[func_name] = {'callers': [], 'callees': []}
+            existing_callers = {(c['name'], c['file']) for c in func_info[func_name]['callers']}
+            for c in callers:
+                if (c['name'], c['file']) not in existing_callers:
+                    func_info[func_name]['callers'].append(c)
+
+        # Callees: found_files でフィルタあり（従来通り）
+        callees_by_func = get_callees(keyword, graph_tags, found_files, max_callees_per_func)
+        for func_name, callees in callees_by_func.items():
+            if func_name not in func_info:
+                func_info[func_name] = {'callers': [], 'callees': []}
+            existing_callees = {(c['name'], c['file']) for c in func_info[func_name]['callees']}
+            for c in callees:
+                if (c['name'], c['file']) not in existing_callees:
+                    func_info[func_name]['callees'].append(c)
+
+        processed_keywords += 1
+
+    if not func_info:
+        return ""
+
+    # 出力を構築
+    lines = []
+    output_count = 0
+
+    for func_name, info in func_info.items():
+        if output_count >= max_functions:
+            break
+
+        callers = info['callers']
+        callees = info['callees']
+
+        # caller も callee も見つからなければスキップ
+        if not callers and not callees:
+            continue
+
+        lines.append(f"## {func_name}")
+
+        if callers:
+            lines.append("Callers:")
+            for c in callers[:max_callers_per_func]:
+                lines.append(f"  - {c['file']}::{c['name']}")
+
+        if callees:
+            lines.append("Callees:")
+            for c in callees[:max_callees_per_func]:
+                lines.append(f"  - {c['file']}::{c['name']}")
+
+        lines.append("")
+        output_count += 1
+
+    if output_count == 0:
+        return ""
 
     return "\n".join(lines)

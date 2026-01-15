@@ -234,6 +234,91 @@ function: MyClass5
 Return just the location(s). Do not include any comments or explanations. Do not forget the "```".
 """
 
+    obtain_relevant_code_with_dependencies_prompt = """
+Please review the following GitHub problem description and relevant files, and provide a set of locations that need to be edited to fix the issue.
+The locations can be specified as function or method names, or exact line numbers that require modification.
+Pay attention! You should identify the method responsible for the core functionality of the issue. Focus on areas that define or enforce foundational behavior rather than case-specific in the issue.
+
+### GitHub Problem Description ###
+{problem_statement}
+
+###
+
+Each file section is introduced by
+### File: path/to/file.py ###
+followed by its contents with line numbers on the left.
+Be sure to associate each line number with the correct file, and only consider the files explicitly listed.
+{file_contents}
+
+### Function Dependencies ###
+
+The file skeletons above show the structure but not how functions interact.
+Below are caller/callee relationships as supplementary context:
+- Callers: Functions that call this function
+- Callees: Functions that this function calls
+
+Use this to understand function interactions not visible in the skeleton.
+
+{dependencies}
+
+###
+
+{last_search_results}
+
+Please provide the class name, function or method name, or the exact line numbers that need to be edited.
+If the relevant context is not in a class or function, please provide all the line numbers that may be critical and need to be edited.
+If you need to edit multiple classes or functions, please provide all the function names or the line numbers in the class.
+You should always include a class or function, do not provide just the line numbers without the class or function name.
+You should include every line number that you think is important, but if you think the whole class or whole function are important for understanding the issue, you can just include the class or function name.
+You should include every line number that is related to the issue and need to be edited.
+Note that if a function needs to be edited, you should also consider the locations that may be affected by the edition, like the function call or the class instantiation or configuration.
+Here is the format you need to follow, don't forget the "```":
+### Examples:
+```
+full_path1/file1.py
+class: MyClass1
+line: 51
+line: 52
+line: 53
+
+full_path2/file2.py
+function: MyClass2.my_method
+line: 12
+line: 422
+
+full_path3/file3.py
+function: my_function
+
+full_path4/file4.py
+line: 1
+line: 12
+line: 19
+line: 20
+line: 21
+line: 22
+line: 23
+line: 24
+line: 25
+line: 26
+line: 27
+line: 28
+line: 29
+line: 30
+line: 31
+line: 80
+line: 81
+line: 82
+line: 83
+line: 84
+line: 85
+
+full_path5/file5.py
+function: MyClass5
+```
+
+Return just the location(s). Do not include any comments or explanations. Do not forget the "```".
+"""
+
     obtain_relevant_code_graph_prompt = """
 Please review the following GitHub problem description and relevant files, and provide a set of locations that need to be edited to fix the issue.
 You will also be given a focused list of function/class dependencies to help you understand the immediate context of required changes.
@@ -243,34 +328,23 @@ The locations can be specified as class names, function or method names, or exac
 {problem_statement}
 
 ### Related Files ###
-Each file section is introduced by
-### File: path/to/file.py ###
-followed by its contents with line numbers on the left.
-Be sure to associate each line number with the correct file, and only consider the files explicitly listed.
+Below are the files that contain the code mentioned in the problem description.
+Each file section is marked with ### File: followed by the file path and contents with line numbers.
+Only consider the files explicitly listed below.
 {file_contents}
 
-### Graph Context: Focused Function Dependencies for Target Files ###
-The following shows the most important functions that directly interact with the target functions.
-This is a FOCUSED view - it shows only direct relationships, not the entire codebase.
+### Code Relationship Graph ###
 
-**Structure of this graph**:
-- Each section shows "### Dependencies for <function_name>"
-- This lists the functions that are most relevant to understanding <function_name>
-- Functions with higher in_degree (called more frequently) appear first
+Format:
+- Each "### Dependencies for X" section lists functions directly connected to X
+- Entries are ordered by relevance to the bug
+- Graph includes only immediate relationships (1-hop neighbors)
 
-**Critical guidance for using this graph**:
-1. **Primary edit location**: Find the function/line with the core bug logic (mentioned in problem description)
-2. **Secondary locations**: Check functions that CALL the target function - they may:
-   - Need updates if the target function's behavior changes
-   - Have related bugs that stem from the same root cause
-   - Require coordinated error handling changes
-3. **Coordination points**: Check functions CALLED BY the target function:
-   - If you modify how the target function calls them, update the calls
-   - If those functions have expectations about error handling, align with your changes
-4. **Pattern matching**: If multiple related functions appear, they likely interact - fix them together
-
-**Important**: This graph is focused (limited to most critical relationships).
-Use it to guide your search but trust the problem description as the primary source of truth.
+For bug fixing:
+1. Identify the function with the core bug from the problem description
+2. Check callers (functions that call the target): may need coordinated updates if behavior changes
+3. Check callees (functions called by target): updates here may need propagation to callers
+4. Primary source is the problem description; use this graph to identify related code locations
 
 {code_graph}
 
@@ -377,6 +451,58 @@ You should explicitly analyse whether a new function needs to be added, output w
 Each file section is introduced by
 ### File: path/to/file.py ###  
 {file_contents}
+
+Please provide the complete set of locations as either a class name, a function name, or a variable name.
+Note that if you include a class, you do not need to list its specific methods.
+You can include either the entire class or don't include the class name and instead include specific methods in the class.
+Here is the format you need to follow, don't forget the "```":
+### Examples:
+```
+full_path1/file1.py
+function: my_function_1
+class: MyClass1
+function: MyClass2.my_method
+
+full_path2/file2.py
+variable: my_var
+function: MyClass3.my_method
+
+full_path3/file3.py
+function: my_function_2
+function: my_function_3
+function: MyClass4.my_method_1
+class: MyClass5
+```
+
+Return just the locations. Do not include any comments or explanations. Do not forget the "```".
+"""
+
+    obtain_relevant_functions_and_vars_from_compressed_files_with_dependencies_prompt = """
+Please look through the following GitHub Problem Description and the Skeleton of Relevant Files.
+Identify all locations that need inspection or editing to fix the problem, including directly related areas as well as any potentially related global variables, functions, and classes.
+For each location you provide, either give the name of the class, the name of a method in a class, the name of a function, or the name of a global variable.
+You should explicitly analyse whether a new function needs to be added, output whether a new function should be added and why. If a new function needs to be added, you should provide the class where the new function should be introduced as one of the locations, listing only the class name in this case. All other locations should be returned as usual, so do not return only this one class.
+
+### GitHub Problem Description ###
+{problem_statement}
+
+### Skeleton of Relevant Files ###
+Each file section is introduced by
+### File: path/to/file.py ###
+{file_contents}
+
+### Function Dependencies ###
+
+The file skeletons above show the structure but not how functions interact.
+Below are caller/callee relationships as supplementary context:
+- Callers: Functions that call this function
+- Callees: Functions that this function calls
+
+Use this to understand function interactions not visible in the skeleton.
+
+{dependencies}
+
+###
 
 Please provide the complete set of locations as either a class name, a function name, or a variable name.
 Note that if you include a class, you do not need to list its specific methods.
@@ -654,12 +780,20 @@ Return just the locations. Do not include any comments or explanations. Do not f
             for fn, code in compressed_file_contents.items()
         ]
         file_contents = "".join(contents)
-        template = (
-            self.obtain_relevant_functions_and_vars_from_compressed_files_prompt_more
-        )
-        message = template.format(
-            problem_statement=self.problem_statement, file_contents=file_contents
-        )
+
+        # Select template based on whether additional_info (dependencies) is provided
+        if additional_info:
+            template = self.obtain_relevant_functions_and_vars_from_compressed_files_with_dependencies_prompt
+            message = template.format(
+                problem_statement=self.problem_statement,
+                file_contents=file_contents,
+                dependencies=additional_info
+            )
+        else:
+            template = self.obtain_relevant_functions_and_vars_from_compressed_files_prompt_more
+            message = template.format(
+                problem_statement=self.problem_statement, file_contents=file_contents
+            )
 
         def message_too_long(message):
             return (
@@ -670,9 +804,17 @@ Return just the locations. Do not include any comments or explanations. Do not f
             self.logger.info(f"reducing to \n{len(contents)} files")
             contents = contents[:-1]
             file_contents = "".join(contents)
-            message = template.format(
-                problem_statement=self.problem_statement, file_contents=file_contents
-            )  # Recreate message
+            # Recreate message with appropriate template
+            if additional_info:
+                message = template.format(
+                    problem_statement=self.problem_statement,
+                    file_contents=file_contents,
+                    dependencies=additional_info
+                )
+            else:
+                message = template.format(
+                    problem_statement=self.problem_statement, file_contents=file_contents
+                )
 
         if message_too_long(message):
             raise ValueError(
@@ -702,9 +844,12 @@ Return just the locations. Do not include any comments or explanations. Do not f
             temperature=self.temperature,
             batch_size=num_samples,
         )
-        # traj = model.codegen(message, num_samples=num_samples)[0]
+        # Log whether dependencies are included
         if additional_info:
-            message = message + additional_info
+            self.logger.info(f"==== DEPENDENCIES INCLUDED IN PROMPT ====")
+            self.logger.info(f"dependencies length: {len(additional_info)} chars")
+        else:
+            self.logger.info(f"==== NO DEPENDENCIES FOR RELATED LEVEL ====")
         raw_trajs = model.codegen(message, num_samples=num_samples)
         raw_outputs = [raw_traj["response"] for raw_traj in raw_trajs]
         traj = {

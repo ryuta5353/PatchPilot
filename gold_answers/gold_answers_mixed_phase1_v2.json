@@ -1,0 +1,439 @@
+{
+  "astropy__astropy-12907": {
+    "instance_id": "astropy__astropy-12907",
+    "gold_files": [
+      "astropy/modeling/separable.py"
+    ],
+    "gold_lines": {
+      "astropy/modeling/separable.py": [
+        245
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Modeling's `separability_matrix` does not compute separability correctly for nested CompoundModels"
+  },
+  "astropy__astropy-14182": {
+    "instance_id": "astropy__astropy-14182",
+    "gold_files": [
+      "astropy/io/ascii/rst.py"
+    ],
+    "gold_lines": {
+      "astropy/io/ascii/rst.py": [
+        30,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        76,
+        77,
+        81,
+        82,
+        84,
+        85,
+        86,
+        87
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Please support header rows in RestructuredText output"
+  },
+  "django__django-10914": {
+    "instance_id": "django__django-10914",
+    "gold_files": [
+      "django/conf/global_settings.py"
+    ],
+    "gold_lines": {
+      "django/conf/global_settings.py": [
+        307
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Set default FILE_UPLOAD_PERMISSION to 0o644."
+  },
+  "django__django-11999": {
+    "instance_id": "django__django-11999",
+    "gold_files": [
+      "django/db/models/fields/__init__.py"
+    ],
+    "gold_lines": {
+      "django/db/models/fields/__init__.py": [
+        766,
+        767,
+        768,
+        769,
+        770,
+        771
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Cannot override get_FOO_display() in Django 2.2+."
+  },
+  "django__django-13401": {
+    "instance_id": "django__django-13401",
+    "gold_files": [
+      "django/db/models/fields/__init__.py"
+    ],
+    "gold_lines": {
+      "django/db/models/fields/__init__.py": [
+        519,
+        520,
+        521,
+        522,
+        527,
+        529,
+        530,
+        531,
+        532,
+        533,
+        534,
+        535,
+        536,
+        537,
+        538,
+        539,
+        540,
+        541,
+        545,
+        546,
+        547,
+        548,
+        549
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Abstract model field should not be equal across models"
+  },
+  "django__django-13933": {
+    "instance_id": "django__django-13933",
+    "gold_files": [
+      "django/forms/models.py"
+    ],
+    "gold_lines": {
+      "django/forms/models.py": [
+        1287,
+        1288,
+        1289,
+        1290,
+        1291
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "ModelChoiceField does not provide value of invalid choice when raising ValidationError"
+  },
+  "django__django-14534": {
+    "instance_id": "django__django-14534",
+    "gold_files": [
+      "django/forms/boundfield.py"
+    ],
+    "gold_lines": {
+      "django/forms/boundfield.py": [
+        280
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "BoundWidget.id_for_label ignores id set by ChoiceWidget.options"
+  },
+  "django__django-15695": {
+    "instance_id": "django__django-15695",
+    "gold_files": [
+      "django/db/migrations/operations/models.py"
+    ],
+    "gold_lines": {
+      "django/db/migrations/operations/models.py": [
+        963,
+        964,
+        965
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "RenameIndex() crashes when unnamed index is moving backward and forward."
+  },
+  "matplotlib__matplotlib-23314": {
+    "instance_id": "matplotlib__matplotlib-23314",
+    "gold_files": [
+      "lib/mpl_toolkits/mplot3d/axes3d.py"
+    ],
+    "gold_lines": {
+      "lib/mpl_toolkits/mplot3d/axes3d.py": [
+        390,
+        391
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "[Bug]: set_visible() not working for 3d projection "
+  },
+  "matplotlib__matplotlib-23476": {
+    "instance_id": "matplotlib__matplotlib-23476",
+    "gold_files": [
+      "lib/matplotlib/figure.py"
+    ],
+    "gold_lines": {
+      "lib/matplotlib/figure.py": [
+        3026,
+        3027,
+        3028
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "[Bug]: DPI of a figure is doubled after unpickling on M1 Mac"
+  },
+  "matplotlib__matplotlib-24970": {
+    "instance_id": "matplotlib__matplotlib-24970",
+    "gold_files": [
+      "lib/matplotlib/colors.py"
+    ],
+    "gold_lines": {
+      "lib/matplotlib/colors.py": [
+        718,
+        719,
+        720,
+        721,
+        722,
+        723,
+        724,
+        725,
+        726,
+        727,
+        728
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "[Bug]: NumPy 1.24 deprecation warnings"
+  },
+  "psf__requests-2317": {
+    "instance_id": "psf__requests-2317",
+    "gold_files": [
+      "requests/sessions.py"
+    ],
+    "gold_lines": {
+      "requests/sessions.py": [
+        16,
+        428
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "method = builtin_str(method) problem"
+  },
+  "pydata__xarray-4094": {
+    "instance_id": "pydata__xarray-4094",
+    "gold_files": [
+      "xarray/core/dataarray.py"
+    ],
+    "gold_lines": {
+      "xarray/core/dataarray.py": [
+        1964
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "to_unstacked_dataset broken for single-dim variables"
+  },
+  "pylint-dev__pylint-7080": {
+    "instance_id": "pylint-dev__pylint-7080",
+    "gold_files": [
+      "pylint/lint/expand_modules.py"
+    ],
+    "gold_lines": {
+      "pylint/lint/expand_modules.py": [
+        55
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "`--recursive=y` ignores `ignore-paths`"
+  },
+  "pytest-dev__pytest-7432": {
+    "instance_id": "pytest-dev__pytest-7432",
+    "gold_files": [
+      "src/_pytest/skipping.py"
+    ],
+    "gold_lines": {
+      "src/_pytest/skipping.py": [
+        294,
+        295
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "skipping: --runxfail breaks pytest.mark.skip location reporting"
+  },
+  "pytest-dev__pytest-7490": {
+    "instance_id": "pytest-dev__pytest-7490",
+    "gold_files": [
+      "src/_pytest/skipping.py"
+    ],
+    "gold_lines": {
+      "src/_pytest/skipping.py": [
+        234,
+        235,
+        237,
+        239,
+        240,
+        241,
+        250,
+        251,
+        255,
+        256,
+        257,
+        258,
+        259
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Pytest 6: Dynamically adding xfail marker in test no longer ignores failure"
+  },
+  "scikit-learn__scikit-learn-10297": {
+    "instance_id": "scikit-learn__scikit-learn-10297",
+    "gold_files": [
+      "sklearn/linear_model/ridge.py"
+    ],
+    "gold_lines": {
+      "sklearn/linear_model/ridge.py": [
+        1215,
+        1216,
+        1223,
+        1224,
+        1225,
+        1226,
+        1304,
+        1305,
+        1306,
+        1307,
+        1308,
+        1309,
+        1312,
+        1313,
+        1314,
+        1315,
+        1316,
+        1341,
+        1342,
+        1345
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "linear_model.RidgeClassifierCV's Parameter store_cv_values issue"
+  },
+  "scikit-learn__scikit-learn-13496": {
+    "instance_id": "scikit-learn__scikit-learn-13496",
+    "gold_files": [
+      "sklearn/ensemble/iforest.py"
+    ],
+    "gold_lines": {
+      "sklearn/ensemble/iforest.py": [
+        123,
+        124,
+        125,
+        126,
+        127,
+        128,
+        182,
+        183,
+        195
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Expose warm_start in Isolation forest"
+  },
+  "scikit-learn__scikit-learn-14983": {
+    "instance_id": "scikit-learn__scikit-learn-14983",
+    "gold_files": [
+      "sklearn/model_selection/_split.py"
+    ],
+    "gold_lines": {
+      "sklearn/model_selection/_split.py": [
+        1166,
+        1167,
+        1168,
+        2164,
+        2165
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "RepeatedKFold and RepeatedStratifiedKFold do not show correct __repr__ string"
+  },
+  "sphinx-doc__sphinx-11445": {
+    "instance_id": "sphinx-doc__sphinx-11445",
+    "gold_files": [
+      "sphinx/util/rst.py"
+    ],
+    "gold_lines": {
+      "sphinx/util/rst.py": [
+        13,
+        16,
+        21,
+        23,
+        78,
+        89
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Using rst_prolog removes top level headings containing a domain directive"
+  },
+  "sphinx-doc__sphinx-8595": {
+    "instance_id": "sphinx-doc__sphinx-8595",
+    "gold_files": [
+      "sphinx/ext/autodoc/__init__.py"
+    ],
+    "gold_lines": {
+      "sphinx/ext/autodoc/__init__.py": [
+        1077
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "autodoc: empty __all__ attribute is ignored"
+  },
+  "sympy__sympy-13031": {
+    "instance_id": "sympy__sympy-13031",
+    "gold_files": [
+      "sympy/matrices/sparse.py"
+    ],
+    "gold_lines": {
+      "sympy/matrices/sparse.py": [
+        988,
+        989,
+        990,
+        991,
+        1196,
+        1197,
+        1198,
+        1199
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Behavior of Matrix hstack and vstack changed in sympy 1.1"
+  },
+  "sympy__sympy-20590": {
+    "instance_id": "sympy__sympy-20590",
+    "gold_files": [
+      "sympy/core/_print_helpers.py"
+    ],
+    "gold_lines": {
+      "sympy/core/_print_helpers.py": [
+        20,
+        21,
+        22,
+        23,
+        24
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Symbol instances have __dict__ since 1.7?"
+  }
+}

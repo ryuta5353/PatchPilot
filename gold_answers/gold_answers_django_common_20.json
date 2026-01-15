@@ -1,0 +1,351 @@
+{
+  "django__django-10914": {
+    "instance_id": "django__django-10914",
+    "gold_files": [
+      "django/conf/global_settings.py"
+    ],
+    "gold_lines": {
+      "django/conf/global_settings.py": [
+        307
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Set default FILE_UPLOAD_PERMISSION to 0o644."
+  },
+  "django__django-11099": {
+    "instance_id": "django__django-11099",
+    "gold_files": [
+      "django/contrib/auth/validators.py"
+    ],
+    "gold_lines": {
+      "django/contrib/auth/validators.py": [
+        10,
+        20
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "UsernameValidator allows trailing newline in usernames"
+  },
+  "django__django-11133": {
+    "instance_id": "django__django-11133",
+    "gold_files": [
+      "django/http/response.py"
+    ],
+    "gold_lines": {
+      "django/http/response.py": [
+        232
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "HttpResponse doesn't handle memoryview objects"
+  },
+  "django__django-11179": {
+    "instance_id": "django__django-11179",
+    "gold_files": [
+      "django/db/models/deletion.py"
+    ],
+    "gold_lines": {
+      "django/db/models/deletion.py": [
+        280
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "delete() on instances of models without any dependencies doesn't clear PKs."
+  },
+  "django__django-11815": {
+    "instance_id": "django__django-11815",
+    "gold_files": [
+      "django/db/migrations/serializer.py"
+    ],
+    "gold_lines": {
+      "django/db/migrations/serializer.py": [
+        123,
+        124,
+        125,
+        126
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Migrations uses value of enum object instead of its name."
+  },
+  "django__django-11848": {
+    "instance_id": "django__django-11848",
+    "gold_files": [
+      "django/utils/http.py"
+    ],
+    "gold_lines": {
+      "django/utils/http.py": [
+        179,
+        180,
+        181,
+        182,
+        183,
+        184,
+        186
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "django.utils.http.parse_http_date two digit year check is incorrect"
+  },
+  "django__django-11964": {
+    "instance_id": "django__django-11964",
+    "gold_files": [
+      "django/db/models/enums.py"
+    ],
+    "gold_lines": {
+      "django/db/models/enums.py": [
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "The value of a TextChoices/IntegerChoices field has a differing type"
+  },
+  "django__django-11999": {
+    "instance_id": "django__django-11999",
+    "gold_files": [
+      "django/db/models/fields/__init__.py"
+    ],
+    "gold_lines": {
+      "django/db/models/fields/__init__.py": [
+        766,
+        767,
+        768,
+        769,
+        770,
+        771
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Cannot override get_FOO_display() in Django 2.2+."
+  },
+  "django__django-12125": {
+    "instance_id": "django__django-12125",
+    "gold_files": [
+      "django/db/migrations/serializer.py"
+    ],
+    "gold_lines": {
+      "django/db/migrations/serializer.py": [
+        272
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "makemigrations produces incorrect path for inner classes"
+  },
+  "django__django-12308": {
+    "instance_id": "django__django-12308",
+    "gold_files": [
+      "django/contrib/admin/utils.py"
+    ],
+    "gold_lines": {
+      "django/contrib/admin/utils.py": [
+        401,
+        402,
+        403,
+        404,
+        405
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "JSONField are not properly displayed in admin when they are readonly."
+  },
+  "django__django-12708": {
+    "instance_id": "django__django-12708",
+    "gold_files": [
+      "django/db/backends/base/schema.py"
+    ],
+    "gold_lines": {
+      "django/db/backends/base/schema.py": [
+        396,
+        397,
+        398,
+        399,
+        400,
+        401
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Migration crashes deleting an index_together if there is a unique_together on the same fields"
+  },
+  "django__django-13028": {
+    "instance_id": "django__django-13028",
+    "gold_files": [
+      "django/db/models/sql/query.py"
+    ],
+    "gold_lines": {
+      "django/db/models/sql/query.py": [
+        1127,
+        1128,
+        1129,
+        1130
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Queryset raises NotSupportedError when RHS has filterable=False attribute."
+  },
+  "django__django-13033": {
+    "instance_id": "django__django-13033",
+    "gold_files": [
+      "django/db/models/sql/compiler.py"
+    ],
+    "gold_lines": {
+      "django/db/models/sql/compiler.py": [
+        730,
+        731,
+        732,
+        733,
+        734,
+        735
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Self referencing foreign key doesn't correctly order by a relation \"_id\" field."
+  },
+  "django__django-13158": {
+    "instance_id": "django__django-13158",
+    "gold_files": [
+      "django/db/models/sql/query.py"
+    ],
+    "gold_lines": {
+      "django/db/models/sql/query.py": [
+        308,
+        1781,
+        1782
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "QuerySet.none() on combined queries returns all results."
+  },
+  "django__django-13315": {
+    "instance_id": "django__django-13315",
+    "gold_files": [
+      "django/forms/models.py"
+    ],
+    "gold_lines": {
+      "django/forms/models.py": [
+        100,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110,
+        111
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "limit_choices_to on a ForeignKey can render duplicate options in formfield"
+  },
+  "django__django-13401": {
+    "instance_id": "django__django-13401",
+    "gold_files": [
+      "django/db/models/fields/__init__.py"
+    ],
+    "gold_lines": {
+      "django/db/models/fields/__init__.py": [
+        519,
+        520,
+        521,
+        522,
+        527,
+        529,
+        530,
+        531,
+        532,
+        533,
+        534,
+        535,
+        536,
+        537,
+        538,
+        539,
+        540,
+        541,
+        545,
+        546,
+        547,
+        548,
+        549
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Abstract model field should not be equal across models"
+  },
+  "django__django-13551": {
+    "instance_id": "django__django-13551",
+    "gold_files": [
+      "django/contrib/auth/tokens.py"
+    ],
+    "gold_lines": {
+      "django/contrib/auth/tokens.py": [
+        81,
+        82,
+        83,
+        97,
+        98,
+        99
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Changing user's email could invalidate password reset tokens"
+  },
+  "django__django-13590": {
+    "instance_id": "django__django-13590",
+    "gold_files": [
+      "django/db/models/sql/query.py"
+    ],
+    "gold_lines": {
+      "django/db/models/sql/query.py": [
+        1080,
+        1084,
+        1085,
+        1086,
+        1087
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "Upgrading 2.2>3.0 causes named tuples used as arguments to __range to error."
+  },
+  "django__django-13658": {
+    "instance_id": "django__django-13658",
+    "gold_files": [
+      "django/core/management/__init__.py"
+    ],
+    "gold_lines": {
+      "django/core/management/__init__.py": [
+        347,
+        348,
+        349,
+        350,
+        351,
+        352
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "ManagementUtility instantiates CommandParser without passing already-computed prog argument"
+  },
+  "django__django-13925": {
+    "instance_id": "django__django-13925",
+    "gold_files": [
+      "django/db/models/base.py"
+    ],
+    "gold_lines": {
+      "django/db/models/base.py": [
+        1302,
+        1303,
+        1304,
+        1305,
+        1306
+      ]
+    },
+    "gold_functions": [],
+    "problem_summary": "models.W042 is raised on inherited manually specified primary key."
+  }
+}

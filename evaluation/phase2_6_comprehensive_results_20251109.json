@@ -1,0 +1,249 @@
+{
+  "file_level": {
+    "baseline_avg": 68.42105263157895,
+    "repograph_avg": 73.68421052631578,
+    "delta_pp": 5.263157894736835,
+    "improved": 2,
+    "degraded": 1,
+    "same": 16
+  },
+  "line_level": {
+    "baseline_avg": 24.098016781083142,
+    "repograph_avg": 15.619279176201372,
+    "delta_pp": -8.47873760488177,
+    "improved": 1,
+    "degraded": 4,
+    "same": 14
+  },
+  "total_instances": 19,
+  "details": [
+    {
+      "instance_id": "astropy__astropy-12907",
+      "file_recall_base": 1.0,
+      "file_recall_repo": 1.0,
+      "file_status": "SAME (=)",
+      "line_recall_base": 0.0,
+      "line_recall_repo": 0.0,
+      "line_status": "SAME (=)",
+      "gold_files": [
+        "astropy/modeling/separable.py"
+      ]
+    },
+    {
+      "instance_id": "astropy__astropy-14182",
+      "file_recall_base": 1.0,
+      "file_recall_repo": 1.0,
+      "file_status": "SAME (=)",
+      "line_recall_base": 0.125,
+      "line_recall_repo": 0.09375,
+      "line_status": "DEGRADED (-)",
+      "gold_files": [
+        "astropy/io/ascii/rst.py"
+      ]
+    },
+    {
+      "instance_id": "django__django-10914",
+      "file_recall_base": 1.0,
+      "file_recall_repo": 1.0,
+      "file_status": "SAME (=)",
+      "line_recall_base": 1.0,
+      "line_recall_repo": 1.0,
+      "line_status": "SAME (=)",
+      "gold_files": [
+        "django/conf/global_settings.py"
+      ]
+    },
+    {
+      "instance_id": "django__django-11999",
+      "file_recall_base": 0.0,
+      "file_recall_repo": 0.0,
+      "file_status": "SAME (=)",
+      "line_recall_base": 0.0,
+      "line_recall_repo": 0.0,
+      "line_status": "SAME (=)",
+      "gold_files": [
+        "django/db/models/fields/__init__.py"
+      ]
+    },
+    {
+      "instance_id": "django__django-13401",
+      "file_recall_base": 1.0,
+      "file_recall_repo": 1.0,
+      "file_status": "SAME (=)",
+      "line_recall_base": 0.08695652173913043,
+      "line_recall_repo": 0.17391304347826086,
+      "line_status": "IMPROVED (+)",
+      "gold_files": [
+        "django/db/models/fields/__init__.py"
+      ]
+    },
+    {
+      "instance_id": "django__django-13933",
+      "file_recall_base": 1.0,
+      "file_recall_repo": 1.0,
+      "file_status": "SAME (=)",
+      "line_recall_base": 0.2,
+      "line_recall_repo": 0.2,
+      "line_status": "SAME (=)",
+      "gold_files": [
+        "django/forms/models.py"
+      ]
+    },
+    {
+      "instance_id": "django__django-14534",
+      "file_recall_base": 1.0,
+      "file_recall_repo": 1.0,
+      "file_status": "SAME (=)",
+      "line_recall_base": 1.0,
+      "line_recall_repo": 1.0,
+      "line_status": "SAME (=)",
+      "gold_files": [
+        "django/forms/boundfield.py"
+      ]
+    },
+    {
+      "instance_id": "django__django-15695",
+      "file_recall_base": 0.0,
+      "file_recall_repo": 0.0,
+      "file_status": "SAME (=)",
+      "line_recall_base": 0.0,
+      "line_recall_repo": 0.0,
+      "line_status": "SAME (=)",
+      "gold_files": [
+        "django/db/migrations/operations/models.py"
+      ]
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-23314",
+      "file_recall_base": 0.0,
+      "file_recall_repo": 0.0,
+      "file_status": "SAME (=)",
+      "line_recall_base": 0.0,
+      "line_recall_repo": 0.0,
+      "line_status": "SAME (=)",
+      "gold_files": [
+        "lib/mpl_toolkits/mplot3d/axes3d.py"
+      ]
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-23476",
+      "file_recall_base": 1.0,
+      "file_recall_repo": 1.0,
+      "file_status": "SAME (=)",
+      "line_recall_base": 0.0,
+      "line_recall_repo": 0.0,
+      "line_status": "SAME (=)",
+      "gold_files": [
+        "lib/matplotlib/figure.py"
+      ]
+    },
+    {
+      "instance_id": "psf__requests-2317",
+      "file_recall_base": 1.0,
+      "file_recall_repo": 1.0,
+      "file_status": "SAME (=)",
+      "line_recall_base": 0.5,
+      "line_recall_repo": 0.5,
+      "line_status": "SAME (=)",
+      "gold_files": [
+        "requests/sessions.py"
+      ]
+    },
+    {
+      "instance_id": "pydata__xarray-4094",
+      "file_recall_base": 0.0,
+      "file_recall_repo": 1.0,
+      "file_status": "IMPROVED (+)",
+      "line_recall_base": 0.0,
+      "line_recall_repo": 0.0,
+      "line_status": "SAME (=)",
+      "gold_files": [
+        "xarray/core/dataarray.py"
+      ]
+    },
+    {
+      "instance_id": "pylint-dev__pylint-7080",
+      "file_recall_base": 0.0,
+      "file_recall_repo": 0.0,
+      "file_status": "SAME (=)",
+      "line_recall_base": 0.0,
+      "line_recall_repo": 0.0,
+      "line_status": "SAME (=)",
+      "gold_files": [
+        "pylint/lint/expand_modules.py"
+      ]
+    },
+    {
+      "instance_id": "pytest-dev__pytest-7432",
+      "file_recall_base": 1.0,
+      "file_recall_repo": 1.0,
+      "file_status": "SAME (=)",
+      "line_recall_base": 0.5,
+      "line_recall_repo": 0.0,
+      "line_status": "DEGRADED (-)",
+      "gold_files": [
+        "src/_pytest/skipping.py"
+      ]
+    },
+    {
+      "instance_id": "pytest-dev__pytest-7490",
+      "file_recall_base": 0.0,
+      "file_recall_repo": 1.0,
+      "file_status": "IMPROVED (+)",
+      "line_recall_base": 0.0,
+      "line_recall_repo": 0.0,
+      "line_status": "SAME (=)",
+      "gold_files": [
+        "src/_pytest/skipping.py"
+      ]
+    },
+    {
+      "instance_id": "scikit-learn__scikit-learn-13496",
+      "file_recall_base": 1.0,
+      "file_recall_repo": 1.0,
+      "file_status": "SAME (=)",
+      "line_recall_base": 0.0,
+      "line_recall_repo": 0.0,
+      "line_status": "SAME (=)",
+      "gold_files": [
+        "sklearn/ensemble/iforest.py"
+      ]
+    },
+    {
+      "instance_id": "scikit-learn__scikit-learn-14983",
+      "file_recall_base": 1.0,
+      "file_recall_repo": 1.0,
+      "file_status": "SAME (=)",
+      "line_recall_base": 0.0,
+      "line_recall_repo": 0.0,
+      "line_status": "SAME (=)",
+      "gold_files": [
+        "sklearn/model_selection/_split.py"
+      ]
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-11445",
+      "file_recall_base": 1.0,
+      "file_recall_repo": 0.0,
+      "file_status": "DEGRADED (-)",
+      "line_recall_base": 0.16666666666666666,
+      "line_recall_repo": 0.0,
+      "line_status": "DEGRADED (-)",
+      "gold_files": [
+        "sphinx/util/rst.py"
+      ]
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-8595",
+      "file_recall_base": 1.0,
+      "file_recall_repo": 1.0,
+      "file_status": "SAME (=)",
+      "line_recall_base": 1.0,
+      "line_recall_repo": 0.0,
+      "line_status": "DEGRADED (-)",
+      "gold_files": [
+        "sphinx/ext/autodoc/__init__.py"
+      ]
+    }
+  ]
+}

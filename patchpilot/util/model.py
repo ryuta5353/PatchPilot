@@ -369,6 +369,119 @@ class ClaudeChatDecoder(DecoderBase):
                 trajs.append(response_block)
             return trajs
 
+    def codegen_litellm(self, message: str, num_samples: int = 1, tools=None, **kwargs) -> List[dict]:
+        """
+        Claude tool calling implementation using Anthropic's native API.
+        Converts OpenAI-style tool schemas to Anthropic format and handles tool_use responses.
+
+        Args:
+            message: The prompt message
+            num_samples: Number of samples to generate
+            tools: List of tool schemas in OpenAI format
+            **kwargs: Additional arguments
+
+        Returns:
+            List of response dicts with 'response', 'tool_call', and 'usage' keys
+        """
+        import anthropic
+
+        # Convert OpenAI tool format to Anthropic format
+        anthropic_tools = []
+        if tools:
+            for tool in tools:
+                if tool.get("type") == "function":
+                    func = tool["function"]
+                    anthropic_tools.append({
+                        "name": func["name"],
+                        "description": func.get("description", ""),
+                        "input_schema": func.get("parameters", {"type": "object", "properties": {}})
+                    })
+
+        client = anthropic.Anthropic()
+
+        trajs = []
+        for _ in range(num_samples):
+            try:
+                self.logger.info("Creating API request with tools")
+
+                # Build messages
+                if isinstance(message, list):
+                    messages = message
+                else:
+                    messages = [{"role": "user", "content": message}]
+
+                # Create request config
+                request_config = {
+                    "model": self.name,
+                    "max_tokens": self.max_new_tokens,
+                    "temperature": self.temperature,
+                    "messages": messages,
+                }
+
+                if anthropic_tools:
+                    request_config["tools"] = anthropic_tools
+
+                ret = client.messages.create(**request_config)
+
+                self.logger.info(f"API response: {ret}")
+
+                if ret:
+                    # Parse response for text and tool calls
+                    response_text = ""
+                    tool_calls = []
+
+                    for content_block in ret.content:
+                        if content_block.type == "text":
+                            response_text = content_block.text
+                        elif content_block.type == "tool_use":
+                            # Create a compatible object that mimics OpenAI's tool_call format
+                            # FL.py expects: tool_call.function.name and tool_call.function.arguments
+                            class FunctionCall:
+                                def __init__(self, name, arguments):
+                                    self.name = name
+                                    self.arguments = arguments if isinstance(arguments, str) else json.dumps(arguments)
+
+                            class ToolCall:
+                                def __init__(self, function):
+                                    self.function = function
+
+                            tool_calls.append(ToolCall(FunctionCall(
+                                content_block.name,
+                                content_block.input
+                            )))
+
+                    trajs.append({
+                        "response": response_text,
+                        "tool_call": tool_calls if tool_calls else None,
+                        "usage": {
+                            "completion_tokens": ret.usage.output_tokens,
+                            "prompt_tokens": ret.usage.input_tokens,
+                        },
+                    })
+                else:
+                    trajs.append({
+                        "response": "",
+                        "tool_call": None,
+                        "usage": {
+                            "completion_tokens": 0,
+                            "prompt_tokens": 0,
+                        },
+                    })
+
+            except anthropic.AnthropicError as e:
+                self.logger.error(f"Anthropic API error: {e}")
+                print(f"Anthropic API error: {e}")
+                trajs.append({
+                    "response": "",
+                    "tool_call": None,
+                    "usage": {
+                        "completion_tokens": 0,
+                        "prompt_tokens": 0,
+                    },
+                })
+
+        return trajs
+
     def is_direct_completion(self) -> bool:
         return False
 

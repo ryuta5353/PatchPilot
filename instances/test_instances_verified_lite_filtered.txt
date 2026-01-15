@@ -1,0 +1,10 @@
+sympy__sympy-12419
+sympy__sympy-13031
+sympy__sympy-12481
+django__django-10914
+django__django-11099
+django__django-11133
+django__django-11179
+matplotlib__matplotlib-23299
+matplotlib__matplotlib-23314
+matplotlib__matplotlib-23476

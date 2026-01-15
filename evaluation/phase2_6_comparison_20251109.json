@@ -1,0 +1,305 @@
+{
+  "baseline_avg": 65.0,
+  "repograph_avg": 0.0,
+  "delta_pp": -65.0,
+  "improved": 0,
+  "degraded": 13,
+  "same": 7,
+  "total": 20,
+  "details": [
+    {
+      "instance_id": "astropy__astropy-12907",
+      "baseline": 1.0,
+      "repograph": 0.0,
+      "status": "DEGRADED (-)",
+      "gold_files": [
+        "astropy/modeling/separable.py"
+      ],
+      "pred_files_base": [
+        "astropy/modeling/separable.py",
+        "astropy/modeling/core.py"
+      ],
+      "pred_files_repo": []
+    },
+    {
+      "instance_id": "astropy__astropy-14182",
+      "baseline": 1.0,
+      "repograph": 0.0,
+      "status": "DEGRADED (-)",
+      "gold_files": [
+        "astropy/io/ascii/rst.py"
+      ],
+      "pred_files_base": [
+        "astropy/io/ascii/rst.py",
+        "astropy/io/ascii/connect.py",
+        "astropy/io/ascii/ui.py"
+      ],
+      "pred_files_repo": []
+    },
+    {
+      "instance_id": "django__django-10914",
+      "baseline": 1.0,
+      "repograph": 0.0,
+      "status": "DEGRADED (-)",
+      "gold_files": [
+        "django/conf/global_settings.py"
+      ],
+      "pred_files_base": [
+        "django/core/files/uploadedfile.py",
+        "django/core/files/storage.py",
+        "django/conf/global_settings.py"
+      ],
+      "pred_files_repo": []
+    },
+    {
+      "instance_id": "django__django-11999",
+      "baseline": 0.0,
+      "repograph": 0.0,
+      "status": "SAME (=)",
+      "gold_files": [
+        "django/db/models/fields/__init__.py"
+      ],
+      "pred_files_base": [
+        "django/db/models/base.py",
+        "django/contrib/admin/models.py",
+        "django/contrib/auth/models.py"
+      ],
+      "pred_files_repo": []
+    },
+    {
+      "instance_id": "django__django-13401",
+      "baseline": 1.0,
+      "repograph": 0.0,
+      "status": "DEGRADED (-)",
+      "gold_files": [
+        "django/db/models/fields/__init__.py"
+      ],
+      "pred_files_base": [
+        "django/db/models/fields/__init__.py",
+        "django/db/models/fields/related.py",
+        "django/db/models/options.py"
+      ],
+      "pred_files_repo": []
+    },
+    {
+      "instance_id": "django__django-13933",
+      "baseline": 1.0,
+      "repograph": 0.0,
+      "status": "DEGRADED (-)",
+      "gold_files": [
+        "django/forms/models.py"
+      ],
+      "pred_files_base": [
+        "django/forms/models.py"
+      ],
+      "pred_files_repo": []
+    },
+    {
+      "instance_id": "django__django-14534",
+      "baseline": 1.0,
+      "repograph": 0.0,
+      "status": "DEGRADED (-)",
+      "gold_files": [
+        "django/forms/boundfield.py"
+      ],
+      "pred_files_base": [
+        "django/forms/boundfield.py",
+        "django/forms/widgets.py"
+      ],
+      "pred_files_repo": []
+    },
+    {
+      "instance_id": "django__django-15695",
+      "baseline": 0.0,
+      "repograph": 0.0,
+      "status": "SAME (=)",
+      "gold_files": [
+        "django/db/migrations/operations/models.py"
+      ],
+      "pred_files_base": [
+        "django/db/backends/base/creation.py",
+        "django/db/migrations/migration.py",
+        "django/db/backends/postgresql/operations.py"
+      ],
+      "pred_files_repo": []
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-23314",
+      "baseline": 0.0,
+      "repograph": 0.0,
+      "status": "SAME (=)",
+      "gold_files": [
+        "lib/mpl_toolkits/mplot3d/axes3d.py"
+      ],
+      "pred_files_base": [
+        "lib/matplotlib/axes/_axes.py",
+        "lib/matplotlib/artist.py",
+        "lib/matplotlib/figure.py"
+      ],
+      "pred_files_repo": []
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-23476",
+      "baseline": 1.0,
+      "repograph": 0.0,
+      "status": "DEGRADED (-)",
+      "gold_files": [
+        "lib/matplotlib/figure.py"
+      ],
+      "pred_files_base": [
+        "lib/matplotlib/figure.py",
+        "lib/matplotlib/backends/backend_macosx.py",
+        "lib/matplotlib/backend_bases.py"
+      ],
+      "pred_files_repo": []
+    },
+    {
+      "instance_id": "psf__requests-2317",
+      "baseline": 1.0,
+      "repograph": 0.0,
+      "status": "DEGRADED (-)",
+      "gold_files": [
+        "requests/sessions.py"
+      ],
+      "pred_files_base": [
+        "requests/sessions.py",
+        "requests/utils.py",
+        "requests/adapters.py"
+      ],
+      "pred_files_repo": []
+    },
+    {
+      "instance_id": "pydata__xarray-4094",
+      "baseline": 0.0,
+      "repograph": 0.0,
+      "status": "SAME (=)",
+      "gold_files": [
+        "xarray/core/dataarray.py"
+      ],
+      "pred_files_base": [
+        "xarray/core/merge.py",
+        "xarray/core/dataset.py",
+        "xarray/core/variable.py"
+      ],
+      "pred_files_repo": []
+    },
+    {
+      "instance_id": "pylint-dev__pylint-7080",
+      "baseline": 0.0,
+      "repograph": 0.0,
+      "status": "SAME (=)",
+      "gold_files": [
+        "pylint/lint/expand_modules.py"
+      ],
+      "pred_files_base": [
+        "pylint/config/config_file_parser.py",
+        "pylint/lint/pylinter.py",
+        "pylint/config/option.py"
+      ],
+      "pred_files_repo": []
+    },
+    {
+      "instance_id": "pytest-dev__pytest-7432",
+      "baseline": 1.0,
+      "repograph": 0.0,
+      "status": "DEGRADED (-)",
+      "gold_files": [
+        "src/_pytest/skipping.py"
+      ],
+      "pred_files_base": [
+        "src/_pytest/skipping.py",
+        "src/_pytest/runner.py",
+        "src/_pytest/hookspec.py"
+      ],
+      "pred_files_repo": []
+    },
+    {
+      "instance_id": "pytest-dev__pytest-7490",
+      "baseline": 0.0,
+      "repograph": 0.0,
+      "status": "SAME (=)",
+      "gold_files": [
+        "src/_pytest/skipping.py"
+      ],
+      "pred_files_base": [
+        "src/_pytest/mark/structures.py",
+        "src/_pytest/mark/expression.py",
+        "src/_pytest/nodes.py"
+      ],
+      "pred_files_repo": []
+    },
+    {
+      "instance_id": "scikit-learn__scikit-learn-13496",
+      "baseline": 1.0,
+      "repograph": 0.0,
+      "status": "DEGRADED (-)",
+      "gold_files": [
+        "sklearn/ensemble/iforest.py"
+      ],
+      "pred_files_base": [
+        "sklearn/ensemble/iforest.py",
+        "sklearn/ensemble/bagging.py",
+        "sklearn/ensemble/forest.py"
+      ],
+      "pred_files_repo": []
+    },
+    {
+      "instance_id": "scikit-learn__scikit-learn-14983",
+      "baseline": 1.0,
+      "repograph": 0.0,
+      "status": "DEGRADED (-)",
+      "gold_files": [
+        "sklearn/model_selection/_split.py"
+      ],
+      "pred_files_base": [
+        "sklearn/model_selection/_split.py"
+      ],
+      "pred_files_repo": []
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-11445",
+      "baseline": 1.0,
+      "repograph": 0.0,
+      "status": "DEGRADED (-)",
+      "gold_files": [
+        "sphinx/util/rst.py"
+      ],
+      "pred_files_base": [
+        "sphinx/domains/rst.py",
+        "sphinx/writers/html.py",
+        "sphinx/util/rst.py"
+      ],
+      "pred_files_repo": []
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-8595",
+      "baseline": 1.0,
+      "repograph": 0.0,
+      "status": "DEGRADED (-)",
+      "gold_files": [
+        "sphinx/ext/autodoc/__init__.py"
+      ],
+      "pred_files_base": [
+        "sphinx/ext/autodoc/__init__.py",
+        "sphinx/ext/autodoc/directive.py",
+        "sphinx/ext/autodoc/importer.py"
+      ],
+      "pred_files_repo": []
+    },
+    {
+      "instance_id": "sympy__sympy-13031",
+      "baseline": 0.0,
+      "repograph": 0.0,
+      "status": "SAME (=)",
+      "gold_files": [
+        "sympy/matrices/sparse.py"
+      ],
+      "pred_files_base": [
+        "sympy/matrices/matrices.py",
+        "sympy/matrices/dense.py",
+        "sympy/matrices/densearith.py"
+      ],
+      "pred_files_repo": []
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+## 1. 目的 (Objective)
+
+PatchPilotの `File-level Localization` フェーズにおいて、既存のキーワード検索（Search Tools）では発見できない「真の原因ファイル（上位のCaller）」を、RepoGraph（構造情報）とPoC Coverage（実行情報）を用いて特定・追加する。
+
+## 2. 処理フロー (Process Flow)
+
+この処理は、`search_in_problem_statement`（検索実行）の後、`localize`（LLMによる決定）の前に実行される **"Step 1.5: Candidate Expansion"** である。
+
+### Input Data
+
+- **`seed_files`**: Step 1の検索ツール（`search_string`等）でヒットした上位ファイルリスト（例: Top-10）。
+- **`repograph`**: リポジトリ全体の依存関係グラフ（`.pkl`からロード）。
+- **`coverage_dict`**: PoC実行によるカバレッジ情報（存在しない場合は `None` または空）。
+
+### Algorithm: Hub & Bonus Scoring
+
+各 `candidate_file`（`seed_files` の直接の呼び出し元）に対して、以下のスコア計算を行い、上位ファイルを抽出する。
+
+### Step 1: 候補の列挙 (Expansion)
+
+`seed_files` 内の各ファイルについて、RepoGraphを用いて `1-hop Caller`（呼び出し元）をすべて取得し、候補リストに追加する。
+
+### Step 2: スコアリング (Scoring)
+
+各候補ファイル `f` に対して、初期スコア 0 から開始し、以下のルールで加点する。
+
+1. **Reference Score (基本点)**
+    - `seed_files` のいずれかから参照されていれば加点。
+    - Score += 1
+2. **Hub Bonus (ハブ・ボーナス)**
+    - **条件**: `seed_files` のうち、**2つ以上の異なるファイル**から参照されている（共通の上司である）場合。
+    - **理由**: 複数の検索ヒットファイル（症状）を制御している箇所（原因）である可能性が高いため。
+    - **Score += 30**
+3. **Coverage Bonus (カバレッジ・ボーナス)**
+    - **条件**: `coverage_dict` が有効（Not None）であり、かつファイル `f` が `coverage_dict` に含まれている場合。
+    - **理由**: バグ再現時に実際に実行されたファイルであり、修正対象である確度が極めて高いため。
+    - **Score += 50**
+
+### Step 3: フィルタリングと統合 (Filtering & Merge)
+
+1. スコアの降順で候補ファイルをソートする。
+2. 上位 `N` 個（例: Top-3 〜 Top-5）を抽出する。
+3. これを元の `seed_files` リストに統合し、重複を除去して最終候補リストとする。
+
+3. LLMへの提示フォーマット (Prompt Injection)
+localize() 関数でLLMに渡すプロンプトに、拡張されたファイル情報を以下の形式で注入する。
+
+Markdown
+
+### Expanded Search Results (Ranked by Structural Importance) ###
+
+1. django/core/files/storage.py
+   - **Type**: Caller (Inferred from RepoGraph)
+   - **Reason**: This file controls multiple search hits ('uploadedfile.py', 'move.py'). [Hub Detected]
+   - **Status**: Executed in PoC (Confirmed in Coverage).
+
+2. django/core/files/uploadedfile.py
+   - **Type**: Keyword Match
+   - **Reason**: Contains search term "0o600".
+
+3. ...
+4. エッジケース対応 (Edge Cases)
+Case A: Coverageが存在しない場合 (No Coverage)
+
+Coverage Bonus (+50) は適用されない。
+
+Hub Bonus (+30) のみが適用される。
+
+結果: カバレッジがなくても、「複数の検索結果から参照されているファイル（Hub）」が上位に来るため、構造的な推論が可能になる。
+
+Case B: 共通の上司がいない場合 (No Hub)
+
+すべてのCallerが 1つのSeedしか参照していない場合。
+
+Coverage Bonus があれば、実行されたものが選ばれる。
+
+両方ない場合は、単純なReverse Dependencyとして扱われる（従来の検索結果＋αとなる）。

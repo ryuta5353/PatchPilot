@@ -1,0 +1,30 @@
+{
+  "django__django-11001": {
+    "instance_id": "django__django-11001",
+    "gold_files": [
+      "django/db/models/sql/compiler.py"
+    ],
+    "gold_functions": [
+      "SQLCompiler.get_order_by"
+    ],
+    "gold_lines": [],
+    "problem_summary": "Incorrect removal of order_by clause created as multiline RawSQL",
+    "test_fail_to_pass": [
+      "test_order_by_multiline_sql",
+      "test_order_of_operations"
+    ]
+  },
+  "django__django-11019": {
+    "instance_id": "django__django-11019",
+    "gold_files": [
+      "django/forms/widgets.py"
+    ],
+    "gold_functions": [
+      "Media.merge",
+      "Media._js"
+    ],
+    "gold_lines": [],
+    "problem_summary": "Merging 3 or more media objects can throw unnecessary MediaOrderConflictWarnings",
+    "test_fail_to_pass": []
+  }
+}

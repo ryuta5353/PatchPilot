@@ -4660,3 +4660,267 @@ YYYYMMDD の形式:
 2. Baseline と Repograph は常にペアで実行し、比較可能な名前をつける
 3. **日付は必須（YYYYMMDD形式）** ← 実験の時系列を明確にするため
 4. テスト内容（インスタンス数、フェーズ番号）を明示する
+
+---
+
+## 21. File-Level Localization におけるRepoGraph活用調査（2025-11-27）
+
+### 21.1 調査目的
+
+現在のRepoGraph統合はFine-grain Level（関数・クラスレベル）で行われているが、File-Level Localization（ファイルレベル）でもRepoGraphを活用できないかを調査する。
+
+### 21.2 新プラン: Step 1.5 Candidate Expansion
+
+#### 21.2.1 概要
+
+`search_in_problem_statement`（検索実行）の後、`localize`（LLMによるファイル選択）の前に実行する新しいステップ。
+
+```
+【現在のフロー】
+Step 0: LLM が検索キーワード提案
+Step 1: 検索実行 → seed_files 取得
+Step 2: LLM がファイル選択
+
+【提案するフロー】
+Step 0: LLM が検索キーワード提案
+Step 1: 検索実行 → seed_files 取得
+Step 1.5: Candidate Expansion（RepoGraph + Coverage）← NEW
+Step 2: LLM がファイル選択（拡張された候補から）
+```
+
+#### 21.2.2 Hub & Bonus Scoring アルゴリズム
+
+各候補ファイルに対して以下のスコア計算を行い、上位ファイルを抽出する：
+
+| スコア種別 | 加点 | 条件 | 理由 |
+|-----------|------|------|------|
+| Reference Score | +1 | seed_files のいずれかから参照されている | 基本点 |
+| Hub Bonus | +30 | seed_files のうち2つ以上から参照されている | 複数の検索結果を制御する「共通の上司」 |
+| Coverage Bonus | +50 | PoC Coverage に含まれている | 実際に実行されたファイル |
+
+#### 21.2.3 実装場所
+
+`patchpilot/fl/localize.py` の行 147-150 付近：
+
+```python
+# 行 147: 検索実行
+search_str_with_file = fl.search_in_problem_statement(...)
+
+# ここに Step 1.5 を挿入
+# NEW: Candidate Expansion
+if args.repo_graph and graph_tags is not None:
+    expanded_candidates = expand_with_repograph(
+        seed_files=list(search_str_with_file.values()),
+        graph_tags=graph_tags,
+        coverage_dict=coverage_info.get("coverage_dict")
+    )
+
+# 行 150: ファイルレベル探索
+if args.file_level:
+    ...
+```
+
+### 21.3 Coverage 可用性調査
+
+#### 21.3.1 調査対象
+
+`test_instances_mixed_phase1_v2.txt` に含まれる23インスタンス
+
+#### 21.3.2 調査結果
+
+| 指標 | 値 | 備考 |
+|------|-----|------|
+| Coverage が存在するインスタンス | 7/23 (30.4%) | |
+| Coverage が存在しないインスタンス | 16/23 (69.6%) | |
+| Coverage 存在時の Gold ファイル含有率 | 6/7 (85.7%) | Coverage があれば高確率で Gold を含む |
+
+#### 21.3.3 Coverage 不在の根本原因
+
+`patchpilot/reproduce/reproduce.py` 行 555-566：
+
+```python
+if if_match:  # exec_match_wrong_behavior=True の場合のみ
+    coverage = task.get_poc_coverage(poc_info)
+    if coverage:
+        poc_info["result"]["coverage"] = coverage
+```
+
+**原因**: Coverage は PoC がバグを正常に再現した場合（`exec_match_wrong_behavior=True`）にのみ収集される。70% のインスタンスでは PoC がバグ再現に失敗しているため Coverage が存在しない。
+
+#### 21.3.4 Coverage 存在インスタンス一覧
+
+| Instance ID | Gold Files in Coverage | Coverage File Count |
+|-------------|----------------------|---------------------|
+| django__django-10914 | ✓ 全て含む | 少数 |
+| django__django-11999 | ✓ 全て含む | 中程度 |
+| matplotlib__matplotlib-23314 | ✓ 全て含む | 多数 |
+| scikit-learn__scikit-learn-10297 | ✓ 全て含む | 多数 |
+| sphinx-doc__sphinx-8595 | ✓ 全て含む | 多数 |
+| sympy__sympy-20590 | ✓ 全て含む | 多数 |
+| pytest-dev__pytest-7432 | 部分的 | 多数 |
+
+### 21.4 検索結果の Gold ファイル発見率調査
+
+#### 21.4.1 調査目的
+
+Step 0 の検索結果が、そもそも Gold ファイルを発見できているかを確認する。
+
+#### 21.4.2 調査結果
+
+| 指標 | 値 | 備考 |
+|------|-----|------|
+| 検索結果に Gold が含まれるインスタンス | 9/23 (39.1%) | |
+| 検索結果に Gold が含まれないインスタンス | 14/23 (60.9%) | **重要**: 6割は検索で見つからない |
+
+#### 21.4.3 詳細内訳
+
+**検索で Gold が見つかったインスタンス (9件)**:
+- astropy__astropy-12907
+- django__django-10914
+- django__django-11019
+- django__django-11039
+- django__django-11179
+- psf__requests-2317
+- scikit-learn__scikit-learn-10297
+- sympy__sympy-13031
+- sympy__sympy-20590
+
+**検索で Gold が見つからなかったインスタンス (14件)**:
+- django__django-10924
+- django__django-11001
+- django__django-11049
+- django__django-11099
+- django__django-11133
+- django__django-11283
+- django__django-11999
+- matplotlib__matplotlib-23314
+- matplotlib__matplotlib-23476
+- matplotlib__matplotlib-24970
+- pylint-dev__pylint-7080
+- pytest-dev__pytest-7432
+- pytest-dev__pytest-7490
+- sphinx-doc__sphinx-8595
+
+#### 21.4.4 含意
+
+- **60.9%** のインスタンスで、キーワード検索だけでは Gold ファイルを発見できない
+- これらのインスタンスこそ、RepoGraph による Candidate Expansion が有効な対象
+- Coverage Bonus だけでなく、Hub Bonus（依存関係）が重要
+
+### 21.5 Caller vs Callee 方向の調査
+
+#### 21.5.1 発見
+
+django__django-11999 でのテストにより、Caller 方向と Callee 方向の違いが判明：
+
+- **Caller 方向**: seed_file の関数を「呼び出している」ファイルを探す
+- **Callee 方向**: seed_file が「呼び出している」ファイルを探す
+
+#### 21.5.2 django__django-11999 での検証
+
+| 方向 | 発見ファイル数 | Gold ファイル発見 |
+|------|--------------|------------------|
+| Caller | 29 files | ❌ 未発見 |
+| Callee | 8 files | ✓ Rank 3 で発見 |
+
+**結論**: Gold ファイル（`fields/__init__.py`）は、検索ヒットファイル（`base.py`）が「使用している」ファイルであった。Caller だけでなく Callee 方向も考慮する必要がある。
+
+#### 21.5.3 関数実装
+
+```python
+def get_callers_from_tags(target_file, tags):
+    """target_file の関数を呼び出しているファイルを取得（Caller方向）"""
+    defs_in_target = [t for t in tags if t['rel_fname'] == target_file and t['kind'] == 'def']
+    def_names = set(t['name'] for t in defs_in_target)
+
+    callers = defaultdict(set)
+    for t in tags:
+        if t['kind'] == 'ref' and t['name'] in def_names and t['rel_fname'] != target_file:
+            callers[t['rel_fname']].add(t['name'])
+    return dict(callers)
+
+def get_callees_for_file(source_file, tags):
+    """source_file が呼び出しているファイルを取得（Callee方向）"""
+    refs_in_source = [t for t in tags if t['rel_fname'] == source_file and t['kind'] == 'ref']
+    ref_names = set(t['name'] for t in refs_in_source)
+
+    callees = defaultdict(set)
+    for t in tags:
+        if t['kind'] == 'def' and t['name'] in ref_names and t['rel_fname'] != source_file:
+            callees[t['rel_fname']].add(t['name'])
+    return dict(callees)
+```
+
+### 21.6 計算コストの確認
+
+#### 21.6.1 懸念
+
+各 seed_file 内のすべての関数に対して RepoGraph を検索すると、計算量が爆発する可能性がある。
+
+#### 21.6.2 検証結果
+
+```
+File: django/db/models/base.py
+  Functions/Classes: 54
+  Caller extraction time: 0.8ms
+
+Total candidates: 29 files
+Scoring time: < 1ms
+```
+
+**結論**: 計算コストは問題にならない（< 1ms）。ただし、候補ファイル数が多い場合（37 files with same score）、スコアによる差別化が課題。
+
+### 21.7 スコアリングの課題と改善案
+
+#### 21.7.1 観察された問題
+
+django__django-10914 での Hub & Bonus Scoring シミュレーション結果：
+
+```
+Score 81: 37 files (Hub Bonus なし、Coverage Bonus のみ)
+Score 31: 多数 (Hub Bonus あり)
+Score 1: 多数 (Reference Score のみ)
+```
+
+Gold ファイル（`uploadedfile.py`）は Score 81 で Rank 5。しかし、37 ファイルが同スコアのため順位が不安定。
+
+#### 21.7.2 改善案
+
+1. **二次ソートキー**: 同スコアのファイルを関数接続数で並び替え
+2. **検索キーワード限定**: seed_file 内の全関数ではなく、検索でヒットした関数のみを対象にする
+3. **両方向探索**: Caller + Callee の両方を考慮
+
+### 21.8 今後の実装計画
+
+#### 21.8.1 Phase A: 基本実装
+
+1. `repograph_utils.py` に `expand_files_with_dependencies()` 関数を追加
+2. `localize.py` の行 147-150 に Step 1.5 を挿入
+3. 両方向（Caller + Callee）探索をサポート
+
+#### 21.8.2 Phase B: 検索キーワード限定版
+
+1. 検索でヒットした関数・クラスのみを対象にグラフ探索
+2. `search_str_with_file` から対象関数名を抽出
+3. 計算量削減とノイズ低減
+
+#### 21.8.3 評価計画
+
+| 指標 | Baseline | With Step 1.5 |
+|------|----------|---------------|
+| File Recall@3 | 現状値 | +5-10% 期待 |
+| File Recall@5 | 現状値 | +5-10% 期待 |
+
+**重点評価対象**: 検索で Gold が見つからなかった 14 インスタンス
+
+### 21.9 まとめ
+
+| 調査項目 | 結果 | 含意 |
+|---------|------|------|
+| Coverage 可用性 | 30.4% | Coverage Bonus だけでは不十分 |
+| Coverage 時 Gold 含有率 | 85.7% | Coverage があれば有効 |
+| 検索結果 Gold 発見率 | 39.1% | 60% は検索で見つからない → RepoGraph が重要 |
+| Caller vs Callee | 両方必要 | 片方向だけでは Gold を逃す |
+| 計算コスト | < 1ms | 問題なし |
+
+**結論**: File-Level Localization における RepoGraph 活用は有望。特に検索で Gold が見つからない 60% のインスタンスに対して、依存関係による候補拡張が有効である可能性が高い
