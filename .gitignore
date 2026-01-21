@@ -4,8 +4,8 @@ results/
 playground/
 analysis/
 cache/
-RepoGraph_cache/
 __pycache__/
 *.pyc
 .claude/
 nul
+RepoGraph_cache/
